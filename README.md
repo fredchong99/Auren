@@ -13,16 +13,18 @@ Or open [`index.html`](index.html) directly in any browser — it is fully self-
 
 ### What the demo shows
 
-Exactly what the Full Project Paper (Part Six) promises the Madrid judging panel will see:
+A 16-section interactive walkthrough built on Fred's concept design (dark navy/graphite + lime identity, Digital Human host in every section — source in `src/App.tsx`, React + Tailwind, bundled to a single self-contained `index.html`):
 
-1. **A playable live rehearsal** — the learner enters a simulated WhatsApp "private investment group." AI personas apply pressure (social proof, guarantee claims, urgency, trust-transfer). AUREN coaches live, mid-conversation. Every response is scored in real time against the five AILS dimensions.
-2. **A deepfake video rehearsal** — the video pauses mid-play ("What would you do next?") and the four detection signals are annotated on the exact asset being evaluated.
-3. **The AI tool literacy exercise** — the foundational flag-vs-accept contrast of two AI answers, on the three grounds from §10.
-4. **The evidential scorecard** — generated from the viewer's actual choices: quote-level, turn-stamped, competency-mapped, auto-classified as Certified / Needs review / Requires retraining.
-5. **The AILS trajectory** — five dimensions, starting score 42 → projected 76.
-6. **The regulator view** — anonymized cohort analytics, vulnerability heatmap, cross-jurisdictional comparison, and early-warning scam analytics (illustrative simulated data, labeled as such).
+1. **Overview · Problem · Journey** — the thesis, the $12.5B / $4.57B / 10× fraud stats, five vulnerabilities, IOSCO PS1/PS2 mapping.
+2. **AUREN Interview** — click-through conversational assessment with live observations rail.
+3. **AILS Assessment · Dashboard · 3-Day Course · AI Memory** — five-dimension score (42 → 76), adaptive course, persistent-memory timeline.
+4. **AI Literacy Lab** — the flag-vs-accept AI answer exercise on the three grounds from §10.
+5. **Spot-the-Scam Lab** — four scenario walkthroughs; the deepfake scenario includes an interactive mock video that pauses mid-play ("What would you do next?") with the four detection signals annotated.
+6. **Rehearsal Engine** — the playable WhatsApp scam rehearsal: AI persona pressure, live AUREN coaching, real-time Scam Resistance meter, and a quote-level evidential scorecard classified Certified / Needs review / Retrain.
+7. **Simulation · Report** — decision scenarios; the Report shows "this session's live evidence" carried over from your actual rehearsal choices.
+8. **Regulator View · Platform · Enterprise** — the C8 oversight dashboard, four-layer architecture, five revenue engines, and the IOSCO weighted-criteria scoring (8.5 → 9.0–9.4).
 
-All quoted text in the demo is verbatim from the three source documents.
+All quoted text in the demo is verbatim from the three source documents, cited inline.
 
 ## Source documents
 
