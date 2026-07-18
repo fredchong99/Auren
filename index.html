@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="AUREN v2 — interactive IOSCO TechSprint demo: live scam rehearsal, evidential scorecard, AILS trajectory, regulator dashboard.">
+<title>AUREN — Live Rehearsal Demo</title>
+</head>
+<body>
+<style>
+:root{
+  --ink:#181B22; --ink2:#4A505B; --ink3:#71767F;
+  --ground:#FFFFFF; --surf:#F5F5F2; --surf2:#EDEEE9; --line:#E1E2DC; --line2:#CFD1C9;
+  --gold:#A8791C; --gold-deep:#8A6212; --gold-soft:#F4EBD8;
+  --deep:#22303D; --deep-ink:#E9ECEF;
+  --data:#4A6FA5; --data-soft:#DCE5F0;
+  --risk:#B04A47; --risk-soft:#F6E4E3;
+  --safe:#3D7A5D; --safe-soft:#E1EEE7;
+  --shadow:0 1px 2px rgba(24,27,34,.05),0 8px 28px rgba(24,27,34,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#EAEBE7; --ink2:#AEB2AC; --ink3:#83878C;
+    --ground:#101216; --surf:#171A20; --surf2:#1E222A; --line:#272B33; --line2:#343943;
+    --gold:#D6A94A; --gold-deep:#E2BC68; --gold-soft:#2A2416;
+    --deep:#171E26; --deep-ink:#E9ECEF;
+    --data:#7C9CC9; --data-soft:#233245;
+    --risk:#D07B77; --risk-soft:#3A2422;
+    --safe:#6FAE8F; --safe-soft:#1E2F27;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="light"]{
+  --ink:#181B22; --ink2:#4A505B; --ink3:#71767F;
+  --ground:#FFFFFF; --surf:#F5F5F2; --surf2:#EDEEE9; --line:#E1E2DC; --line2:#CFD1C9;
+  --gold:#A8791C; --gold-deep:#8A6212; --gold-soft:#F4EBD8;
+  --deep:#22303D; --deep-ink:#E9ECEF;
+  --data:#4A6FA5; --data-soft:#DCE5F0;
+  --risk:#B04A47; --risk-soft:#F6E4E3;
+  --safe:#3D7A5D; --safe-soft:#E1EEE7;
+  --shadow:0 1px 2px rgba(24,27,34,.05),0 8px 28px rgba(24,27,34,.07);
+}
+:root[data-theme="dark"]{
+  --ink:#EAEBE7; --ink2:#AEB2AC; --ink3:#83878C;
+  --ground:#101216; --surf:#171A20; --surf2:#1E222A; --line:#272B33; --line2:#343943;
+  --gold:#D6A94A; --gold-deep:#E2BC68; --gold-soft:#2A2416;
+  --deep:#171E26; --deep-ink:#E9ECEF;
+  --data:#7C9CC9; --data-soft:#233245;
+  --risk:#D07B77; --risk-soft:#3A2422;
+  --safe:#6FAE8F; --safe-soft:#1E2F27;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:Palatino,"Palatino Linotype","Book Antiqua",Georgia,"Times New Roman",serif}
+.mono{font-family:"SF Mono","Cascadia Code","Roboto Mono",Consolas,Menlo,monospace}
+h1,h2,h3,h4{font-family:Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;font-weight:600;line-height:1.16;text-wrap:balance}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+
+/* ---------- top nav ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.topbar-inner{max-width:1140px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink)}
+.brand b{font-family:Palatino,Georgia,serif;font-size:1.25rem;letter-spacing:.16em}
+.brand span{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.navlinks{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{
+  text-decoration:none;color:var(--ink2);font-size:.78rem;letter-spacing:.05em;
+  padding:7px 11px;border-radius:99px;white-space:nowrap;
+}
+.navlinks a:hover{background:var(--surf)}
+.navlinks a.on{background:var(--gold-soft);color:var(--gold-deep);font-weight:600}
+
+/* ---------- shared ---------- */
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+section.act{padding:88px 0 64px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"SF Mono","Cascadia Code",Consolas,monospace;font-size:.7rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+}
+.act h2{font-size:clamp(1.7rem,3.4vw,2.35rem);margin-bottom:10px;max-width:760px}
+.lede{color:var(--ink2);max-width:680px;font-size:1.04rem;margin-bottom:36px}
+.grid{display:grid;gap:16px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.card h3{font-size:1.06rem;margin-bottom:8px}
+.card p{font-size:.9rem;color:var(--ink2)}
+.tag{display:inline-block;font-family:Consolas,monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+
+/* quotes */
+.pq{margin:44px auto;max-width:820px;padding:0 12px}
+.pq .q{
+  font-family:Palatino,Georgia,serif;font-style:italic;font-size:clamp(1.18rem,2.3vw,1.5rem);
+  line-height:1.5;color:var(--ink);text-indent:-0.45em;
+}
+.pq .q::before{content:"“";color:var(--gold);font-size:1.4em;line-height:0;margin-right:2px}
+.pq .q::after{content:"”";color:var(--gold)}
+.pq cite{
+  display:block;margin-top:12px;font-style:normal;font-family:Consolas,monospace;
+  font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);
+}
+.inq{font-family:Palatino,Georgia,serif;font-style:italic;color:var(--ink2)}
+cite.src{font-style:normal;font-family:Consolas,monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+
+/* ---------- hero ---------- */
+.hero{padding:96px 0 72px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero-kicker{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-bottom:34px;
+  font-family:Consolas,monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+.hero-kicker .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.hero h1{font-size:clamp(2.6rem,6.2vw,4.4rem);max-width:880px;margin-bottom:22px}
+.hero h1 em{font-style:italic;color:var(--gold-deep)}
+.hero .sub{max-width:640px;color:var(--ink2);font-size:1.08rem;margin-bottom:34px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:10px;
+  font-size:.92rem;font-weight:600;letter-spacing:.02em;text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn-gold{background:var(--gold);color:#fff;box-shadow:var(--shadow)}
+:root[data-theme="dark"] .btn-gold{color:#14120B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn-gold{color:#14120B}}
+.btn-gold:hover{transform:translateY(-1px)}
+.btn-ghost{border:1px solid var(--line2);color:var(--ink2)}
+.btn-ghost:hover{background:var(--surf)}
+.hero-rule{position:absolute;inset:auto 0 0 0;height:1px}
+
+/* five sentences */
+.five{counter-reset:fs;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:56px}
+.five .fs{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:20px 22px;position:relative}
+.five .fs::before{
+  counter-increment:fs;content:"0" counter(fs);
+  font-family:Consolas,monospace;font-size:.72rem;letter-spacing:.2em;color:var(--gold);display:block;margin-bottom:10px;
+}
+.five .fs p{font-size:.88rem;color:var(--ink2)}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-bottom:44px}
+.stat{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:24px}
+.stat .n{font-family:Palatino,Georgia,serif;font-size:2.7rem;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.stat .n small{font-size:1.3rem;color:var(--gold-deep)}
+.stat .d{font-size:.82rem;color:var(--ink2);margin-top:10px}
+.stat .s{display:block;margin-top:8px;font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+
+/* compare table */
+.compare{width:100%;border-collapse:separate;border-spacing:0;margin:8px 0 12px;font-size:.88rem}
+.compare th{
+  text-align:left;font-family:Consolas,monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  padding:12px 16px;border-bottom:2px solid var(--line2);
+}
+.compare th.old{color:var(--ink3)}
+.compare th.new{color:var(--gold-deep)}
+.compare td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+.compare td.new{color:var(--ink);background:color-mix(in srgb,var(--gold-soft) 42%,transparent)}
+.compare tr:last-child td{border-bottom:none}
+.tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surf)}
+
+/* vulnerabilities */
+.vulns{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:26px}
+
+/* ---------- platform ---------- */
+.caps{grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
+.layers{display:grid;gap:10px;margin-top:34px}
+.layer{display:grid;grid-template-columns:210px 1fr;gap:18px;align-items:center;background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:16px 22px}
+.layer .ln{font-family:Palatino,Georgia,serif;font-weight:600}
+.layer .ln small{display:block;font-family:Consolas,monospace;font-weight:400;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.layer .li{font-size:.85rem;color:var(--ink2)}
+@media(max-width:640px){.layer{grid-template-columns:1fr;gap:6px}}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:30px}
+.step{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:16px 14px}
+.step .sn{font-family:Consolas,monospace;font-size:.7rem;letter-spacing:.18em;color:var(--gold);display:block;margin-bottom:8px}
+.step b{display:block;font-size:.84rem;line-height:1.35;margin-bottom:6px}
+.step p{font-size:.74rem;color:var(--ink3);line-height:1.5}
+.step.loop{border-color:var(--gold);border-style:dashed}
+.flow-note{margin-top:14px;font-size:.82rem;color:var(--ink2)}
+
+/* categories */
+.cats{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:30px}
+.cat-ps{font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.14em;color:var(--gold-deep);text-transform:uppercase}
+
+/* ---------- rehearsal ---------- */
+.stage-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.stage-tab{
+  padding:10px 18px;border-radius:99px;border:1px solid var(--line2);font-size:.85rem;color:var(--ink2);
+}
+.stage-tab.on{background:var(--deep);color:var(--deep-ink);border-color:var(--deep);font-weight:600}
+.stage{display:none}
+.stage.on{display:block}
+
+.sim{display:grid;grid-template-columns:minmax(320px,430px) 1fr;gap:22px;align-items:start}
+@media(max-width:880px){.sim{grid-template-columns:1fr}}
+.phone{
+  background:var(--deep);border-radius:22px;padding:12px;box-shadow:var(--shadow);
+}
+.phone-top{display:flex;align-items:center;gap:10px;padding:8px 10px 12px;color:var(--deep-ink)}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#C9962E,#7B5A14);display:grid;place-items:center;font-family:Palatino,Georgia,serif;font-weight:700;color:#fff;font-size:.8rem}
+.phone-top .who b{display:block;font-size:.84rem;line-height:1.2}
+.phone-top .who span{font-size:.66rem;opacity:.65;font-family:Consolas,monospace;letter-spacing:.08em}
+.chat{
+  background:var(--surf2);border-radius:14px;height:430px;overflow-y:auto;padding:14px 12px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.msg{max-width:86%;padding:9px 13px;border-radius:14px;font-size:.85rem;line-height:1.5;box-shadow:0 1px 1px rgba(0,0,0,.06)}
+.msg .from{display:block;font-family:Consolas,monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px;opacity:.72}
+.msg.persona{background:var(--ground);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.me{background:var(--data-soft);align-self:flex-end;border-bottom-right-radius:4px}
+.msg.coach{
+  background:var(--gold-soft);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);
+  align-self:stretch;max-width:100%;border-radius:10px;
+}
+.msg.coach .from{color:var(--gold-deep)}
+.msg.shot{background:var(--ground);border:1px dashed var(--line2);align-self:flex-start;font-family:Consolas,monospace;font-size:.72rem;color:var(--ink3)}
+.sys{align-self:center;font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);padding:2px 0}
+.choices{margin-top:14px;display:grid;gap:8px}
+.choices .prompt{font-family:Consolas,monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--deep-ink);opacity:.75;padding:0 4px}
+.choice{
+  text-align:left;background:var(--ground);border:1px solid var(--line2);border-radius:10px;
+  padding:11px 14px;font-size:.84rem;line-height:1.45;color:var(--ink);transition:border-color .12s ease;
+}
+.choice:hover{border-color:var(--gold)}
+.choice small{display:block;font-family:Consolas,monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.restart{margin-top:12px;font-size:.76rem;color:var(--deep-ink);opacity:.7;text-decoration:underline;text-underline-offset:3px}
+
+/* analysis rail */
+.rail{display:flex;flex-direction:column;gap:14px}
+.rail .card{padding:18px 20px}
+.dimrow{display:grid;grid-template-columns:150px 1fr 44px;gap:12px;align-items:center;margin-top:9px}
+.dimrow .dl{font-size:.78rem;color:var(--ink2)}
+.dimrow .dv{font-family:Consolas,monospace;font-size:.8rem;text-align:right;font-variant-numeric:tabular-nums}
+.meter{height:7px;border-radius:99px;background:var(--surf2);overflow:hidden;position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;width:0%;background:var(--data);border-radius:99px;transition:width .5s ease}
+.meter i.hot{background:var(--gold)}
+.delta{font-family:Consolas,monospace;font-size:.72rem;font-variant-numeric:tabular-nums}
+.delta.up{color:var(--safe)} .delta.dn{color:var(--risk)}
+.feed{display:flex;flex-direction:column;gap:9px;max-height:270px;overflow-y:auto}
+.sig{border-left:none;background:var(--ground);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.78rem}
+.sig b{display:block;font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
+.sig.bad b{color:var(--risk)} .sig.good b{color:var(--safe)} .sig.info b{color:var(--gold-deep)}
+.sig .qq{font-family:Palatino,Georgia,serif;font-style:italic;color:var(--ink)}
+.empty-note{font-size:.78rem;color:var(--ink3);font-style:italic}
+
+/* deepfake */
+.player{background:#0C0F13;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);color:#E7E9EC;max-width:640px}
+.screen{position:relative;aspect-ratio:16/9;background:
+  radial-gradient(120% 90% at 50% 20%, #26313E 0%, #141A21 55%, #0C0F13 100%)}
+.figure{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:38%;height:74%;
+  background:radial-gradient(60% 40% at 50% 18%, #B9A98C 0%, #8C7B5F 28%, #2C3540 30%, #1B222B 100%);
+  border-radius:46% 46% 0 0/34% 34% 0 0;filter:saturate(.8)}
+.lower-third{position:absolute;left:18px;bottom:16px;right:18px}
+.lower-third b{display:block;font-size:.9rem}
+.lower-third span{font-size:.7rem;opacity:.7;font-family:Consolas,monospace}
+.live-chip{position:absolute;top:14px;left:16px;font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.18em;background:#B04A47;color:#fff;padding:3px 9px;border-radius:4px}
+.glitch{position:absolute;top:32%;left:50%;width:44%;height:3px;transform:translateX(-50%);background:repeating-linear-gradient(90deg,#7FD0C0 0 12px,transparent 12px 26px);opacity:0;}
+.screen.paused .glitch{opacity:.55}
+.pause-overlay{position:absolute;inset:0;display:none;place-items:center;background:rgba(6,8,10,.62);backdrop-filter:blur(2px);text-align:center;padding:20px}
+.screen.paused .pause-overlay{display:grid}
+.pause-overlay .po-in{max-width:420px}
+.pause-overlay h4{font-size:1.15rem;margin-bottom:6px;color:#fff}
+.pause-overlay p{font-size:.78rem;opacity:.8}
+.pbar{height:4px;background:#1F252D;position:relative}
+.pbar i{position:absolute;inset:0 auto 0 0;width:0%;background:var(--gold);transition:width .3s linear}
+.player-foot{display:flex;align-items:center;gap:12px;padding:12px 16px;font-family:Consolas,monospace;font-size:.7rem}
+.player-foot .t{opacity:.7;font-variant-numeric:tabular-nums}
+.df-choices{margin-top:18px;display:grid;gap:8px;max-width:640px}
+.signals{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:20px;max-width:900px}
+.signal{background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-size:.78rem;color:var(--ink2)}
+.signal b{display:block;color:var(--ink);font-size:.8rem;margin-bottom:3px}
+.reveal-hidden{display:none}
+
+/* ai literacy */
+.ai-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;max-width:980px}
+.ai-card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.ai-card .aq{font-size:.95rem;line-height:1.55;font-family:Palatino,Georgia,serif;font-style:italic}
+.ai-actions{display:flex;gap:8px}
+.ai-btn{flex:1;padding:10px;border-radius:9px;border:1px solid var(--line2);font-size:.82rem;font-weight:600}
+.ai-btn:hover{border-color:var(--gold)}
+.ai-verdict{display:none;border-radius:10px;padding:12px 14px;font-size:.8rem}
+.ai-verdict.show{display:block}
+.ai-verdict.ok{background:var(--safe-soft);color:var(--ink)}
+.ai-verdict.no{background:var(--risk-soft);color:var(--ink)}
+.ai-verdict b{font-family:Consolas,monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:6px}
+.ai-verdict ul{margin:4px 0 0 18px}
+.ai-verdict li{margin:3px 0}
+
+/* ---------- scorecard ---------- */
+.class-banner{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px;background:var(--surf);
+  border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:22px;
+}
+.class-pill{font-family:Consolas,monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;padding:7px 14px;border-radius:99px}
+.class-pill.cert{background:var(--safe-soft);color:var(--safe)}
+.class-pill.review{background:var(--gold-soft);color:var(--gold-deep)}
+.class-pill.retrain{background:var(--risk-soft);color:var(--risk)}
+.class-note{font-size:.85rem;color:var(--ink2)}
+.sc-rows{display:grid;gap:12px}
+.sc-row{display:grid;grid-template-columns:86px 1fr 1fr;gap:16px;background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:16px 18px;align-items:start}
+@media(max-width:760px){.sc-row{grid-template-columns:1fr}}
+.sc-turn{font-family:Consolas,monospace;font-size:.68rem;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;padding-top:2px}
+.sc-quote{font-family:Palatino,Georgia,serif;font-style:italic;font-size:.98rem;line-height:1.5}
+.sc-an b{display:block;font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
+.sc-an.bad b{color:var(--risk)} .sc-an.good b{color:var(--safe)}
+.sc-an p{font-size:.8rem;color:var(--ink2)}
+.chip{display:inline-block;font-family:Consolas,monospace;font-size:.66rem;padding:2px 8px;border-radius:99px;margin-top:7px;margin-right:5px;font-variant-numeric:tabular-nums}
+.chip.up{background:var(--safe-soft);color:var(--safe)} .chip.dn{background:var(--risk-soft);color:var(--risk)}
+
+/* ---------- AILS ---------- */
+.ails-wrap{display:grid;grid-template-columns:280px 1fr;gap:26px;align-items:start}
+@media(max-width:820px){.ails-wrap{grid-template-columns:1fr}}
+.ails-hero{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center}
+.ails-hero .big{font-family:Palatino,Georgia,serif;font-size:4.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.ails-hero .arrow{color:var(--gold);font-size:1.6rem;margin:0 8px}
+.ails-hero .band{font-family:Consolas,monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-top:10px}
+.ails-toggle{display:inline-flex;border:1px solid var(--line2);border-radius:99px;margin-top:18px;overflow:hidden}
+.ails-toggle button{padding:8px 16px;font-size:.76rem;color:var(--ink2)}
+.ails-toggle button.on{background:var(--deep);color:var(--deep-ink);font-weight:600}
+.ails-dims{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:24px 26px}
+.ails-dim{display:grid;grid-template-columns:170px 1fr 60px;gap:14px;align-items:center;padding:9px 0}
+@media(max-width:560px){.ails-dim{grid-template-columns:110px 1fr 52px}}
+.ails-dim .nm{font-size:.84rem;color:var(--ink2)}
+.ails-dim .val{font-family:Consolas,monospace;text-align:right;font-variant-numeric:tabular-nums;font-size:.9rem}
+.ails-dim .val small{color:var(--ink3)}
+.bar2{height:9px;border-radius:99px;background:var(--surf2);position:relative;overflow:hidden}
+.bar2 .base{position:absolute;inset:0 auto 0 0;background:var(--data);border-radius:99px;transition:width .6s ease}
+.bar2 .gain{position:absolute;top:0;bottom:0;background:color-mix(in srgb,var(--gold) 55%,transparent);transition:width .6s ease,left .6s ease}
+
+/* ---------- regulator ---------- */
+.reg-grid{grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
+.dash{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:30px}
+.dash h3{font-size:1.02rem;margin-bottom:4px}
+.dash .sub{font-size:.78rem;color:var(--ink3);margin-bottom:18px}
+.heat{display:grid;grid-template-columns:150px repeat(4,1fr);gap:5px;font-size:.72rem}
+@media(max-width:620px){.heat{grid-template-columns:104px repeat(4,1fr)}}
+.heat .hl{color:var(--ink3);align-self:center;font-size:.72rem}
+.heat .hh{font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-align:center;padding-bottom:4px}
+.cell{border-radius:6px;height:36px;display:grid;place-items:center;font-family:Consolas,monospace;font-size:.7rem;font-variant-numeric:tabular-nums;position:relative;cursor:default}
+.cell:hover::after{
+  content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:var(--deep);color:var(--deep-ink);font-size:.66rem;padding:5px 9px;border-radius:6px;white-space:nowrap;z-index:5;font-family:"Segoe UI",system-ui,sans-serif;
+}
+.dash-cols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:820px){.dash-cols{grid-template-columns:1fr}}
+.jbar{display:grid;grid-template-columns:120px 1fr 40px;gap:10px;align-items:center;padding:5px 0;font-size:.78rem}
+.jbar .jm{height:8px;border-radius:99px;background:var(--surf2);position:relative}
+.jbar .jm i{position:absolute;inset:0 auto 0 0;border-radius:99px;background:var(--data)}
+.jbar .jm i.you{background:var(--gold)}
+.jbar .jv{font-family:Consolas,monospace;text-align:right;font-variant-numeric:tabular-nums;font-size:.76rem}
+.legend{display:flex;gap:16px;margin-top:12px;font-size:.7rem;color:var(--ink3);align-items:center}
+.sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* ---------- deploy ---------- */
+.paths{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.crit{margin-top:34px;max-width:760px}
+.crit-row{display:grid;grid-template-columns:230px 1fr 52px;gap:14px;align-items:center;padding:8px 0}
+@media(max-width:600px){.crit-row{grid-template-columns:140px 1fr 48px}}
+.crit-row .cn{font-size:.84rem;color:var(--ink2)}
+.crit-row .cv{font-family:Consolas,monospace;font-size:.8rem;text-align:right;font-variant-numeric:tabular-nums}
+
+/* ---------- closing ---------- */
+.closing{background:var(--deep);color:var(--deep-ink);border-bottom:none;position:relative;overflow:hidden}
+.closing .eyebrow{color:var(--gold-deep)}
+:root[data-theme="dark"] .closing .eyebrow,.closing .eyebrow{color:#D6A94A}
+.closing h2{color:#fff;max-width:860px;font-size:clamp(1.9rem,4vw,2.9rem)}
+.closing .pq .q{color:#F2F3F0}
+.closing .pq cite{color:#8B93A0}
+.closing p.co{max-width:640px;color:#B8BEC9;margin-top:18px}
+.footer{padding:34px 0 44px;font-family:Consolas,monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#79808D;border-top:1px solid #2E3742;margin-top:64px}
+.footer .wrap{display:flex;flex-wrap:wrap;gap:8px 26px;padding:0}
+.up-fade{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.up-fade.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.up-fade{opacity:1;transform:none}}
+@media print{.up-fade{opacity:1;transform:none}}
+</style>
+
+<!-- ============ NAV ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top"><b>AUREN</b><span>Investor Intelligence Academy</span></a>
+    <nav class="navlinks" aria-label="Sections">
+      <a href="#thesis">Thesis</a><a href="#problem">Problem</a><a href="#platform">Platform</a>
+      <a href="#rehearsal">Live Rehearsal</a><a href="#scorecard">Scorecard</a><a href="#ails">AILS</a>
+      <a href="#regulator">Regulator</a><a href="#deploy">Deployment</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-kicker">
+      <span>AUREN · v2.0</span><span class="dot"></span>
+      <span>Submission to the IOSCO TechSprint</span><span class="dot"></span>
+      <span>Demo Day · 8 October 2026 · Madrid</span>
+    </div>
+    <h1>Investor education <em>as AI rehearsal.</em></h1>
+    <p class="sub">An AI rehearsal platform where retail investors practice — in safe simulation — the exact
+      situations that determine their outcomes: deepfake endorsements, misleading AI tools, social-media
+      pressure, and market panic. A hyper-realistic Digital Human hosts every step, playing both mentor and
+      adversary in service of the learner's protection.</p>
+    <div class="cta-row">
+      <a class="btn btn-gold" href="#rehearsal">▶&nbsp; Enter the live rehearsal</a>
+      <a class="btn btn-ghost" href="#regulator">See the regulator view</a>
+    </div>
+
+    <div class="pq up-fade">
+      <p class="q">AUREN is not a course. It is where investors rehearse the moment before it happens — so that when it happens, they are ready.</p>
+      <cite>— Full Project Paper · Executive Summary</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THESIS ============ -->
+<section class="act" id="thesis">
+  <div class="wrap">
+    <p class="eyebrow">Executive Summary</p>
+    <h2>The whole argument, in five sentences.</h2>
+    <p class="lede">Quoted directly from the AUREN v2 Full Project Paper — <span class="inq">“the entire argument can be stated in five sentences.”</span></p>
+    <div class="five">
+      <div class="fs up-fade"><p>“Retail investors are using AI tools every day without ever being trained to question them — and AI has simultaneously lowered the cost of investment fraud to near-zero.”</p></div>
+      <div class="fs up-fade"><p>“Existing investor education delivers knowledge through lectures and quizzes, but knowledge does not survive contact with pressure — only skill does, and skill is built through rehearsal.”</p></div>
+      <div class="fs up-fade"><p>“AUREN is an AI rehearsal platform where retail investors practice, in safe simulation, the exact situations that determine their outcomes.”</p></div>
+      <div class="fs up-fade"><p>“Every rehearsal is scored with quote-level evidence, updates a five-dimension competency score, and can be certified — measurable behavioral change, not just measurable content consumption.”</p></div>
+      <div class="fs up-fade"><p>“AUREN is the rehearsal ground between retail investors and the AI-era information environment they already live in — built for cross-jurisdictional deployment by regulators from day one.”</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="act" id="problem">
+  <div class="wrap">
+    <p class="eyebrow">Part One · The Problem</p>
+    <h2>Fraud is no longer a craft. It is a manufactured product.</h2>
+    <p class="lede"><span class="inq">“Generative AI compresses the time-to-fraud from weeks to minutes, the cost from thousands of dollars to cents, and the believability from ‘obvious’ to ‘indistinguishable.’”</span> <cite class="src">— Full Project Paper §2</cite></p>
+
+    <div class="stats">
+      <div class="stat up-fade"><div class="n">$12.5<small>B</small></div>
+        <p class="d">“Reported digital fraud losses in 2023 — a 22% year-on-year increase”</p><span class="s">FBI IC3 · 2023</span></div>
+      <div class="stat up-fade"><div class="n">$4.57<small>B</small></div>
+        <p class="d">“Investment fraud as the costliest category, up 38% YoY”</p><span class="s">FBI IC3 · 2023</span></div>
+      <div class="stat up-fade"><div class="n">10×</div>
+        <p class="d">“Reported increase in global deepfake incidents 2022 → 2023”</p><span class="s">Sumsub · 2024</span></div>
+    </div>
+
+    <h3 class="serif" style="font-size:1.3rem;margin-bottom:6px">Five compounding vulnerabilities — each one amplified by AI</h3>
+    <div class="vulns">
+      <div class="card up-fade"><span class="tag">Vulnerability · 1 of 5</span><h3>Information asymmetry, widened by AI</h3><p>“Generative AI floods the information space with content that mimics authentic financial communication: fabricated research reports, synthetic news articles, cloned analyst commentary.”</p></div>
+      <div class="card up-fade"><span class="tag">Vulnerability · 2 of 5</span><h3>Social media as the primary vector</h3><p>“Investment decisions are increasingly mediated by TikTok, WhatsApp, Telegram, and Discord — environments optimized for virality rather than verification.”</p></div>
+      <div class="card up-fade"><span class="tag">Vulnerability · 3 of 5</span><h3>Behavioral vulnerability targeted at scale</h3><p>“What a skilled con artist once did to one victim at a time, AI now does to millions in minutes, with each attempt automatically tuned to its target.”</p></div>
+      <div class="card up-fade"><span class="tag">Vulnerability · 4 of 5</span><h3>Overreliance on AI-generated outputs</h3><p>“Many investors treat AI responses as authoritative analysis... The interface conveys confidence; the underlying epistemics often do not warrant it.”</p></div>
+      <div class="card up-fade"><span class="tag">Vulnerability · 5 of 5</span><h3>Hallucination presented with certainty</h3><p>“A hallucinated statistic delivered with the fluency of a trusted advisor can drive a real loss.”</p></div>
+    </div>
+
+    <h3 class="serif" style="font-size:1.3rem;margin:44px 0 14px">Why existing investor education fails</h3>
+    <div class="tbl-scroll">
+      <table class="compare">
+        <tr><th class="old">Existing: knowledge delivery</th><th class="new">What the AI era demands: skill rehearsal</th></tr>
+        <tr><td>Static content — text, videos, PDFs</td><td class="new">Live rehearsal — practice, not lecture</td></tr>
+        <tr><td>Generic — same material for every learner</td><td class="new">Adaptive — every learner gets a custom path</td></tr>
+        <tr><td>Tests memorization, not judgment</td><td class="new">Measures judgment under pressure</td></tr>
+        <tr><td>Feedback comes after the module ends</td><td class="new">Feedback is live — during the rehearsal</td></tr>
+        <tr><td>Certifies course completion, not skill</td><td class="new">Certifies demonstrated skill, quote-level</td></tr>
+        <tr><td>Assumes the moment of pressure won't come</td><td class="new">Trains for the moment before it happens</td></tr>
+        <tr><td>Silent on AI risks: hallucinations, deepfakes</td><td class="new">Explicit on AI literacy: scams, hallucinations</td></tr>
+      </table>
+    </div>
+    <p style="margin-top:8px"><cite class="src">— Project Paper Deck · Slide 6</cite></p>
+
+    <div class="pq up-fade">
+      <p class="q">Investors who can correctly define loss aversion in a quiz still panic-sell in a crash. Investors who have read about romance scams still transfer funds to persuasive strangers. Knowledge does not survive contact with pressure.</p>
+      <cite>— Full Project Paper §4</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORM ============ -->
+<section class="act" id="platform">
+  <div class="wrap">
+    <p class="eyebrow">Part Two · The Solution</p>
+    <h2>Four capabilities. One integrated platform.</h2>
+    <p class="lede"><span class="inq">“None of them exist together in any current investor education product, and their integration — rather than any single component — is what makes the platform distinctive.”</span> <cite class="src">— Full Project Paper §6</cite></p>
+
+    <div class="grid caps">
+      <div class="card up-fade"><span class="tag">Capability 01</span><h3>Hyper-realistic Digital Human</h3><p>“She is not a mascot or a chat widget. She is the mentor every retail investor would have if they could afford a full-time financial educator — attentive, adaptive, and always available.”</p></div>
+      <div class="card up-fade"><span class="tag">Capability 02</span><h3>Rehearsal Engine</h3><p>“Scenario → AI persona → live conversation → live coaching → evidential scorecard... The engine is content-agnostic: new scenarios, new personas, and new jurisdictions plug into the same machinery.”</p></div>
+      <div class="card up-fade"><span class="tag">Capability 03</span><h3>AILS Cognitive Assessment</h3><p>“Five-dimension behavioral analysis... the score updates continuously. Every rehearsal contributes evidence. AILS is not a snapshot. It is a trajectory.”</p></div>
+      <div class="card up-fade"><span class="tag">Capability 04</span><h3>Certification + Dashboards</h3><p>“Sessions auto-classified as certified, needs-review, or requires-retraining... The same underlying data serves three distinct governance needs without duplication.”</p></div>
+    </div>
+
+    <h3 class="serif" style="font-size:1.3rem;margin:46px 0 4px">Architecture: four interoperable layers</h3>
+    <p style="font-size:.86rem;color:var(--ink2)"><span class="inq">“Configuration, not code changes, is the localization mechanism.”</span> <cite class="src">— Full Project Paper §7</cite></p>
+    <div class="layers">
+      <div class="layer up-fade"><div class="ln"><small>Layer · Experience</small>Interaction Layer</div><div class="li">Digital Human · Multilingual voice · Live coaching · Real-time adaptation</div></div>
+      <div class="layer up-fade"><div class="ln"><small>Layer · Analysis</small>Intelligence Layer</div><div class="li">Rehearsal engine · AI persona library · AILS cognitive scoring · Evidential scorecard generator</div></div>
+      <div class="layer up-fade"><div class="ln"><small>Layer · Assurance</small>Trust Layer</div><div class="li">eKYC + liveness · QR-to-phone verification · ID / passport scan · Privacy-by-design · Audit logs</div></div>
+      <div class="layer up-fade"><div class="ln"><small>Layer · Reach</small>Deployment Layer</div><div class="li">Web · Mobile · Kiosk · Embedded widget · Regulator API</div></div>
+    </div>
+
+    <h3 class="serif" style="font-size:1.3rem;margin:46px 0 4px">The seven-step operating flow</h3>
+    <p style="font-size:.86rem;color:var(--ink2)"><span class="inq">“One repeatable architecture. Every learner. Personalized end-to-end.”</span> <cite class="src">— Project Paper Deck · Slide 14</cite></p>
+    <div class="flow">
+      <div class="step up-fade"><span class="sn">Step 01</span><b>eKYC Onboarding</b><p>“Passport, ID, or QR-to-phone. The credential is trustworthy from day one.”</p></div>
+      <div class="step up-fade"><span class="sn">Step 02</span><b>Digital Human Interview</b><p>“A 15-minute conversation. Not a questionnaire. AUREN observes reasoning, biases, tells.”</p></div>
+      <div class="step up-fade"><span class="sn">Step 03</span><b>AILS Assessment</b><p>“Starting score across five dimensions with narrative, strengths, improvement areas.”</p></div>
+      <div class="step up-fade"><span class="sn">Step 04</span><b>Personalized Path</b><p>“Scenarios sequenced against the learner's weakest dimensions.”</p></div>
+      <div class="step loop up-fade"><span class="sn">Step 05 ⟲</span><b>Rehearsal + Live Coaching</b><p>“Coaching prompts appear when phrasing is risky, verification is skipped, or pressure shows.”</p></div>
+      <div class="step loop up-fade"><span class="sn">Step 06 ⟲</span><b>Evidential Scorecard</b><p>“Quote-level feedback. What they said, when, why it mattered, what to say instead.”</p></div>
+      <div class="step loop up-fade"><span class="sn">Step 07 ⟲</span><b>Certify · Retrain · Escalate</b><p>“Retrain triggers a variation, so the learner cannot pass by memorizing a script.”</p></div>
+    </div>
+    <p class="flow-note"><span class="inq">“Steps 05–07 loop across the personalized rehearsal path until competency is demonstrated... it is a training cycle that repeats until the skill is real.”</span></p>
+
+    <h3 class="serif" style="font-size:1.3rem;margin:46px 0 4px">Six rehearsal categories. One integrated engine.</h3>
+    <div class="grid cats">
+      <div class="card up-fade"><span class="cat-ps">Maps to PS1</span><h3>Deepfake &amp; Voice-Clone Recognition</h3><p>“Live coaching on specific signals — lip-sync, blink rate, audio artifacts.”</p></div>
+      <div class="card up-fade"><span class="cat-ps">Maps to PS2</span><h3>AI Tool Literacy</h3><p>“Dialogues with misleading, hallucinated, or advisory-toned chatbot content. Practice source verification and escalation.”</p></div>
+      <div class="card up-fade"><span class="cat-ps">Maps to PS1</span><h3>Social Media Pressure</h3><p>“WhatsApp investment groups, TikTok finfluencer pushes, Telegram pump-and-dump rings. Practice resistance.”</p></div>
+      <div class="card up-fade"><span class="cat-ps">Maps to PS1 · PS2</span><h3>Emotional Investing Discipline</h3><p>“Market-crash panic, FOMO cycles, loss-aversion moments. Practice returning to a written plan under pressure.”</p></div>
+      <div class="card up-fade"><span class="cat-ps">Maps to PS2</span><h3>Product Comprehension</h3><p>“Conversations pushing complex products — structured notes, leveraged ETFs, crypto derivatives. Practice risk questions.”</p></div>
+      <div class="card up-fade"><span class="cat-ps">Maps to PS2</span><h3>Advice vs Education Boundary</h3><p>“Recognizing when a licensed professional is needed. Practice the escalation moment — knowing what you don't know.”</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REHEARSAL ============ -->
+<section class="act" id="rehearsal">
+  <div class="wrap">
+    <p class="eyebrow">The Demo · Interactive</p>
+    <h2>Enter a live rehearsal.</h2>
+    <p class="lede"><span class="inq">“AUREN will show a live rehearsal... The AI persona will apply pressure. AUREN, the Digital Human, will coach them live. The evidential scorecard will appear at the end — quote-level, evidence-based, competency-mapped.”</span> <cite class="src">— Full Project Paper · Part Six</cite><br><br>
+    You are the learner. Your choices below are scored in real time and generate your evidential scorecard in the next section.</p>
+
+    <div class="stage-tabs" role="tablist">
+      <button class="stage-tab on" data-stage="whatsapp" role="tab">① WhatsApp investment group</button>
+      <button class="stage-tab" data-stage="deepfake" role="tab">② Deepfake video</button>
+      <button class="stage-tab" data-stage="ailit" role="tab">③ AI tool literacy</button>
+    </div>
+
+    <!-- ---- Stage 1: WhatsApp ---- -->
+    <div class="stage on" id="stage-whatsapp">
+      <div class="sim">
+        <div class="phone">
+          <div class="phone-top">
+            <div class="avatar">IG</div>
+            <div class="who"><b>“Founders Alpha Group” 🔒</b><span>SIMULATED · AI PERSONAS · SAFE REHEARSAL</span></div>
+          </div>
+          <div class="chat" id="chat" aria-live="polite"></div>
+          <div class="choices" id="choices"></div>
+          <button class="restart" id="restart" hidden>↺ Restart rehearsal (retrain with variation)</button>
+        </div>
+        <div class="rail">
+          <div class="card">
+            <span class="tag">AILS · Live update</span>
+            <div id="dims"></div>
+          </div>
+          <div class="card">
+            <span class="tag">AUREN's analysis · signal feed</span>
+            <div class="feed" id="feed"><p class="empty-note">Signals appear here as you respond — quote-level, in real time.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- Stage 2: Deepfake ---- -->
+    <div class="stage" id="stage-deepfake">
+      <p style="max-width:640px;font-size:.9rem;color:var(--ink2);margin-bottom:18px"><span class="inq">“The learner watches a fabricated video of a well-known figure endorsing a fraudulent investment... AUREN pauses the video mid-play and asks, live: what would you do next?”</span> <cite class="src">— Full Project Paper §8</cite></p>
+      <div class="player">
+        <div class="screen" id="screen">
+          <span class="live-chip">FORWARDED · 12.4K SHARES</span>
+          <div class="figure"></div>
+          <div class="glitch"></div>
+          <div class="lower-third"><b>“Tech CEO announces: guaranteed 30% monthly returns”</b><span>viral-clip.example · reposted by @cryptodaily_my</span></div>
+          <div class="pause-overlay"><div class="po-in">
+            <p style="font-family:Consolas,monospace;font-size:.62rem;letter-spacing:.2em;color:#D6A94A;margin-bottom:8px">AUREN PAUSES THE VIDEO</p>
+            <h4 class="serif">What would you do next?</h4>
+            <p>Your answer is captured in your own words and scored against verification competencies.</p>
+          </div></div>
+        </div>
+        <div class="pbar"><i id="pbarfill"></i></div>
+        <div class="player-foot">
+          <button class="btn-ghost" id="playbtn" style="border:1px solid #2E3742;border-radius:8px;padding:6px 14px;color:#E7E9EC">▶ Play</button>
+          <span class="t" id="ptime">0:00 / 0:19</span>
+          <span style="margin-left:auto;opacity:.55">rehearsal asset · not a real person</span>
+        </div>
+      </div>
+      <div class="df-choices" id="dfChoices" hidden>
+        <p class="prompt" style="font-family:Consolas,monospace;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3)">Respond as yourself — what do you do?</p>
+        <button class="choice" data-df="risky"><small>Response A</small>“Looks real to me — I'd forward it to my family group. If he's backing it, it must be legit.”</button>
+        <button class="choice" data-df="neutral"><small>Response B</small>“I'd comment and ask whether it's real before doing anything.”</button>
+        <button class="choice" data-df="safe"><small>Response C</small>“I'd check whether any credible outlet reported this, and verify on the company's official channels before touching it.”</button>
+      </div>
+      <div id="dfVerdict" class="reveal-hidden" style="margin-top:16px;max-width:640px"></div>
+      <div class="signals reveal-hidden" id="dfSignals">
+        <div class="signal"><b>Lip-sync mismatch</b>Mouth movement trails the audio by ~120 ms on plosives.</div>
+        <div class="signal"><b>Unnatural blink rate</b>Blink interval is metronomic — real speakers blink irregularly under studio light.</div>
+        <div class="signal"><b>Audio compression artifacts</b>Voice-clone models leave spectral smearing above 8 kHz.</div>
+        <div class="signal"><b>Lighting inconsistency</b>Face illumination doesn't match the scene's key light direction.</div>
+      </div>
+      <p class="reveal-hidden" id="dfNote" style="margin-top:16px;max-width:680px;font-size:.85rem;color:var(--ink2)"><span class="inq">“AUREN teaches the detection signals... not as a lecture, but as annotations on the exact video the learner is evaluating.”</span> — and the behavioral rule underneath: <span class="inq">“never act on advice from anyone you cannot verify.”</span> <cite class="src">— Full Project Paper §8–9</cite></p>
+    </div>
+
+    <!-- ---- Stage 3: AI literacy ---- -->
+    <div class="stage" id="stage-ailit">
+      <p style="max-width:680px;font-size:.9rem;color:var(--ink2);margin-bottom:20px"><span class="inq">“AUREN's answer treats the learner's relationship with AI tools as itself a conversation to be rehearsed. The foundational exercise contrasts two AI answers to the same investment question.”</span> <cite class="src">— Full Project Paper §10</cite><br>
+      Classify each answer: trust it, or flag it.</p>
+      <div class="ai-pair">
+        <div class="ai-card">
+          <span class="tag">AI answer · A</span>
+          <p class="aq">“This fund is guaranteed to outperform the market because AI predicts strong growth.”</p>
+          <div class="ai-actions">
+            <button class="ai-btn" data-ai="A" data-v="trust">✓ Trust it</button>
+            <button class="ai-btn" data-ai="A" data-v="flag">⚑ Flag it</button>
+          </div>
+          <div class="ai-verdict" id="verdictA"></div>
+        </div>
+        <div class="ai-card">
+          <span class="tag">AI answer · B</span>
+          <p class="aq">“Here are factors to research: fees, diversification, risk, time horizon, official fund documents. I can't tell you whether to invest.”</p>
+          <div class="ai-actions">
+            <button class="ai-btn" data-ai="B" data-v="trust">✓ Trust it</button>
+            <button class="ai-btn" data-ai="B" data-v="flag">⚑ Flag it</button>
+          </div>
+          <div class="ai-verdict" id="verdictB"></div>
+        </div>
+      </div>
+      <p style="margin-top:20px;max-width:700px;font-size:.85rem;color:var(--ink2)"><span class="inq">“The skill being built is not distrust of AI. It is calibrated trust: knowing what AI is good for, where it fails, and how to check.”</span> <cite class="src">— Full Project Paper §10</cite></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCORECARD ============ -->
+<section class="act" id="scorecard">
+  <div class="wrap">
+    <p class="eyebrow">Signature Artifact</p>
+    <h2>The evidential scorecard.</h2>
+    <p class="lede"><span class="inq">“The learner is not told ‘you scored 42.’ They are shown their own words, the exact moments those words revealed vulnerability or demonstrated skill, and the specific effect on each competency dimension. The evidence is the transcript. Nothing is asserted that cannot be pointed to.”</span> <cite class="src">— Full Project Paper §13</cite></p>
+
+    <div class="class-banner" id="classBanner">
+      <span class="class-pill review" id="classPill">Awaiting rehearsal</span>
+      <span class="class-note" id="classNote">Play the WhatsApp rehearsal above and your scorecard is generated here from your own responses. Below, until then: the canonical example from the paper.</span>
+    </div>
+    <div class="sc-rows" id="scRows">
+      <!-- canonical example rows (replaced by live play) -->
+      <div class="sc-row"><div class="sc-turn">Turn 03 · Learner</div>
+        <p class="sc-quote">“Sure, sounds legit — how do I sign up?”</p>
+        <div class="sc-an bad"><b>Scam-vulnerability signal</b><p>“Immediate agreement without verification... regulator-registry lookup should be rehearsed next.”</p><span class="chip dn">Scam Resistance −3</span></div></div>
+      <div class="sc-row"><div class="sc-turn">Turn 05 · Learner</div>
+        <p class="sc-quote">“I trust my friend — he wouldn't share a scam.”</p>
+        <div class="sc-an bad"><b>Trust-transfer bias</b><p>“Recruiter-driven scams specifically exploit trusted contacts — the friend sharing the scheme is often themselves a victim being used as a distribution channel.”</p><span class="chip dn">Behavioral Stability −2</span></div></div>
+      <div class="sc-row"><div class="sc-turn">Turn 08 · Learner</div>
+        <p class="sc-quote">“Actually — can you send me the regulator registration first?”</p>
+        <div class="sc-an good"><b>Verification signal</b><p>“Live coaching landed... the verification instinct is now active.”</p><span class="chip up">Scam Resistance +4</span></div></div>
+      <div class="sc-row"><div class="sc-turn">Turn 11 · Learner</div>
+        <p class="sc-quote">“I'm going to verify this offline before I do anything.”</p>
+        <div class="sc-an good"><b>Escalation demonstrated</b><p>“Verification protocol correctly applied... the certification criterion for this scenario is met.”</p><span class="chip up">Scam Resistance +6</span></div></div>
+    </div>
+    <p style="margin-top:14px"><cite class="src" id="scSrc">— Canonical example · Full Project Paper §13 / Deck Slide 15 · WhatsApp scam rehearsal</cite></p>
+  </div>
+</section>
+
+<!-- ============ AILS ============ -->
+<section class="act" id="ails">
+  <div class="wrap">
+    <p class="eyebrow">Measurement</p>
+    <h2>AILS: not a snapshot. A trajectory.</h2>
+    <p class="lede"><span class="inq">“Every score movement is anchored in transcript evidence. This makes AILS auditable by regulators, defensible to procurement teams, and explainable to the learner.”</span> <cite class="src">— Full Project Paper §14</cite></p>
+
+    <div class="ails-wrap">
+      <div class="ails-hero up-fade">
+        <span class="tag">AILS · AI-era Investor Literacy Score</span>
+        <div><span class="big" id="ailsBig">42</span><span class="arrow">→</span><span class="big" style="color:var(--gold-deep)" id="ailsProj">76</span></div>
+        <p class="band" id="ailsBand">Foundation Learner · Cohort percentile 28</p>
+        <div class="ails-toggle" role="tablist">
+          <button class="on" id="tglStart">Starting score</button>
+          <button id="tglProj">Projected after program</button>
+        </div>
+      </div>
+      <div class="ails-dims up-fade">
+        <span class="tag">Five dimensions · updated continuously</span>
+        <div id="ailsDims"></div>
+        <p style="font-size:.78rem;color:var(--ink3);margin-top:14px"><span class="inq">“The two weakest dimensions — AI Literacy and Scam Resistance — are exactly the dimensions the AI era punishes hardest, and they drive the sequencing of this learner's rehearsal path.”</span></p>
+      </div>
+    </div>
+
+    <div class="pq up-fade">
+      <p class="q">A shift from the bottom third of the cohort to well above average, achieved not by consuming more content but by demonstrating changed behavior across repeated, varied scenarios.</p>
+      <cite>— Full Project Paper §14 · projected post-program score</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REGULATOR ============ -->
+<section class="act" id="regulator">
+  <div class="wrap">
+    <p class="eyebrow">For the Regulators in the Room</p>
+    <h2>What 39 IOSCO C8 members see when AUREN runs in their jurisdiction.</h2>
+    <p class="lede"><span class="inq">“This turns AUREN into something regulators have never had — an early-warning sensor network for emerging fraud, powered by the aggregate learning behavior of the population itself.”</span> <cite class="src">— Full Project Paper §16</cite></p>
+
+    <div class="grid reg-grid">
+      <div class="card up-fade"><span class="tag">01</span><h3>Anonymized cohort analytics</h3><p>“Aggregate AILS scores and rehearsal outcomes by jurisdiction, age band, language, risk profile. No personal data exposed. Audit-ready exports for IOSCO C8 reporting.”</p></div>
+      <div class="card up-fade"><span class="tag">02</span><h3>Vulnerability heatmaps</h3><p>“Real-time visibility into which behavioral biases and rehearsal failure modes are most prevalent, and where rehearsal libraries are producing measurable improvement.”</p></div>
+      <div class="card up-fade"><span class="tag">03</span><h3>Scam-detection analytics</h3><p>“When learners across a jurisdiction suddenly begin failing a new scenario type, that signal reaches the regulator before the corresponding losses reach the complaints desk.”</p></div>
+      <div class="card up-fade"><span class="tag">04</span><h3>Cross-jurisdictional comparison</h3><p>“For the first time, a common measurement standard across IOSCO members... AILS, deployed across jurisdictions, is that instrument.”</p></div>
+    </div>
+
+    <div class="dash up-fade">
+      <h3 class="serif">Vulnerability heatmap — illustrative national deployment</h3>
+      <p class="sub">Average rehearsal failure rate by competency dimension × age band · anonymized cohort · simulated data for demonstration</p>
+      <div class="heat" id="heat"></div>
+      <div class="legend"><span><span class="sw" style="background:var(--gold-soft)"></span>Low failure</span><span><span class="sw" style="background:var(--gold)"></span>Elevated</span><span><span class="sw" style="background:var(--gold-deep)"></span>Critical — rehearsal library priority</span></div>
+    </div>
+
+    <div class="dash up-fade">
+      <div class="dash-cols">
+        <div>
+          <h3 class="serif">Cross-jurisdictional comparison</h3>
+          <p class="sub">Mean AILS · anonymized peer regulators · simulated data</p>
+          <div id="jbars"></div>
+        </div>
+        <div>
+          <h3 class="serif">Early-warning: fastest-growing failure scenarios</h3>
+          <p class="sub">Failure-rate growth, last 30 days · simulated data</p>
+          <div id="warnbars"></div>
+          <p style="font-size:.76rem;color:var(--ink3);margin-top:10px"><span class="inq">“Rehearsal libraries are regionalized — UK FCA warnings, MAS typologies, SEBI alerts, CNMV advisories — continuously updated by partner regulators.”</span> <cite class="src">— Deck Slide 11</cite></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPLOY ============ -->
+<section class="act" id="deploy">
+  <div class="wrap">
+    <p class="eyebrow">Part Five · Deployment</p>
+    <h2>Five deployment pathways. One rehearsal architecture.</h2>
+    <p class="lede"><span class="inq">“The rehearsal architecture creates commercial optionality far beyond a course product.”</span> <cite class="src">— Full Project Paper §17</cite></p>
+
+    <div class="grid paths">
+      <div class="card up-fade"><span class="tag">B2C subscription</span><h3>Retail investors</h3><p>“Rehearsal library, AILS assessment, verified credential. Freemium with premium unlock.”</p></div>
+      <div class="card up-fade"><span class="tag">B2B licensing</span><h3>Banks &amp; brokers</h3><p>“Onboarding-integrated rehearsal for retail customers. Reduces mis-selling exposure.”</p></div>
+      <div class="card up-fade"><span class="tag">Institutional</span><h3>Universities</h3><p>“Embedded rehearsal curriculum for finance, business, AI literacy programs.”</p></div>
+      <div class="card up-fade"><span class="tag">National rollout</span><h3>Regulators (IOSCO)</h3><p>“Public literacy programs. Cross-jurisdictional cohort analytics. Audit-ready governance.”</p></div>
+      <div class="card up-fade"><span class="tag">Vertical extension</span><h3>Compliance training</h3><p>“Adapted engine for advisor training, compliance certification, continuing education.”</p></div>
+    </div>
+
+    <div class="crit">
+      <h3 class="serif" style="font-size:1.3rem;margin-bottom:4px">Scored against IOSCO's five weighted criteria</h3>
+      <p style="font-size:.84rem;color:var(--ink2);margin-bottom:14px"><span class="inq">“v1 scored approximately 8.5/10 against IOSCO's weighted criteria. v2, executed correctly, moves that score into the 9.0–9.4 range. The architectural change is what unlocks the additional value.”</span> <cite class="src">— Concept Paper §6</cite></p>
+      <div id="critBars"></div>
+    </div>
+
+    <h3 class="serif" style="font-size:1.3rem;margin:44px 0 8px">Cross-jurisdictional from day one</h3>
+    <p style="max-width:720px;font-size:.9rem;color:var(--ink2)"><span class="inq">“AUREN can serve IOSCO's more than 130 member jurisdictions without bespoke rebuilds. For an organization whose explicit assessment criteria include cross-jurisdictional potential at twenty percent weighting, this is not a feature. It is a qualifying condition — and AUREN meets it architecturally rather than aspirationally.”</span> <cite class="src">— Full Project Paper §15</cite></p>
+    <p style="max-width:720px;font-size:.9rem;color:var(--ink2);margin-top:12px"><span class="inq">“A UK deepfake scenario looks different from a Brazilian pump-and-dump, and both differ from a Malaysian WhatsApp investment group. The scenarios are culturally situated, because scams are culturally situated.”</span> — multilingual across English, Mandarin, Arabic, Bahasa Melayu, and Spanish.</p>
+  </div>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section class="act closing" id="closing">
+  <div class="wrap" style="padding-top:90px">
+    <p class="eyebrow">What We Are Asking IOSCO to See</p>
+    <h2>The best investor protection is not a warning label. It is a trained instinct.</h2>
+    <div class="pq">
+      <p class="q">The AI era does not give retail investors time to look things up, verify sources, or reflect on best practices when it matters. It gives them a moment — a call that sounds exactly like their advisor, a video that looks exactly like a trusted CEO, a message from a friend that carries exactly the right social proof. AUREN trains them for that moment, before it happens, so that when it happens, they are ready.</p>
+      <cite>— Full Project Paper · Part Six</cite>
+    </div>
+    <p class="co"><span class="inq">“The judges will not be watching a demo. They will be watching what investor education becomes when the mechanic changes — when knowledge delivery gives way to skill rehearsal, when scoring becomes evidential, and when the AI takes the role of both mentor and adversary in service of the learner's protection.”</span></p>
+    <div class="footer">
+      <div class="wrap">
+        <span>AUREN · Investor Intelligence Academy · v2.0</span>
+        <span>Submission to the IOSCO TechSprint · Demo Day 8 October 2026 · Madrid</span>
+        <span>All quoted text: AUREN Concept Paper v2 · Full Project Paper · Project Paper Deck v2</span>
+        <span>Dashboard figures marked “simulated” are illustrative</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   Shared learner state (feeds scorecard + rail)
+============================================================ */
+const DIMS = [
+  {k:'IR', name:'Investor Reasoning',  start:35},
+  {k:'AL', name:'AI Literacy',         start:28},
+  {k:'RA', name:'Risk Awareness',      start:45},
+  {k:'SR', name:'Scam Resistance',     start:30},
+  {k:'BS', name:'Behavioral Stability',start:45},
+];
+let scores = {}; DIMS.forEach(d=>scores[d.k]=d.start);
+let playLog = [];      // {turn, quote, signal, kind, expl, deltas:{k:v}}
+let safePicks = 0, riskyPicks = 0, played = false;
+
+const dimName = k => DIMS.find(d=>d.k===k).name;
+
+/* ---- rail render ---- */
+const dimsEl = document.getElementById('dims');
+function renderDims(){
+  dimsEl.innerHTML = DIMS.map(d=>`
+    <div class="dimrow">
+      <span class="dl">${d.name}</span>
+      <div class="meter"><i style="width:${scores[d.k]}%" class="${(d.k==='SR'||d.k==='AL')?'hot':''}"></i></div>
+      <span class="dv">${scores[d.k]}</span>
+    </div>`).join('');
+}
+renderDims();
+
+const feedEl = document.getElementById('feed');
+function pushSignal(kind, title, quote, expl, deltas){
+  if(feedEl.querySelector('.empty-note')) feedEl.innerHTML='';
+  const chips = Object.entries(deltas||{}).map(([k,v])=>
+    `<span class="chip ${v>0?'up':'dn'}">${dimName(k)} ${v>0?'+':''}${v}</span>`).join('');
+  const div = document.createElement('div');
+  div.className = 'sig '+kind;
+  div.innerHTML = `<b>${title}</b><span class="qq">“${quote}”</span><br>${expl} ${chips}`;
+  feedEl.prepend(div);
+}
+function applyDeltas(deltas){
+  for(const [k,v] of Object.entries(deltas||{})){
+    scores[k] = Math.max(0, Math.min(100, scores[k]+v));
+  }
+  renderDims();
+}
+
+/* ============================================================
+   Stage tabs
+============================================================ */
+document.querySelectorAll('.stage-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.stage-tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.stage').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById('stage-'+t.dataset.stage).classList.add('on');
+  });
+});
+
+/* ============================================================
+   Stage 1 — WhatsApp rehearsal script
+============================================================ */
+const SCRIPT = [
+  { // beat 0
+    msgs:[
+      {t:'sys', x:'Rehearsal · Social-Media Pressure · Scenario MY-114 “Private investment group”'},
+      {t:'persona', from:'Jordan (friend · AI persona)', x:'Hey! I just got added to this private investing group — members are making 30% monthly on a new crypto platform. Got you an invite 🔥'},
+      {t:'persona', from:'“Marcus Lee” (group admin · AI persona)', x:'Welcome! 🎉 Only 3 founding-member slots left this week. Here\'s my payout from last Friday 👇'},
+      {t:'shot', x:'[ payout-screenshot.png · “WITHDRAWAL CONFIRMED · RM48,200” ]'},
+    ],
+    choices:[
+      {tag:'Reply', x:'Sure, sounds legit — how do I sign up?', kind:'risky',
+        sig:{title:'Scam-vulnerability signal', expl:'Immediate agreement without verification. Regulator-registry lookup should be rehearsed next.', deltas:{SR:-3}},
+        coach:'Pause. You\'ve just been shown social proof, urgency, and a profit screenshot — three pressure levers at once. What has NOT been shown? Any verifiable registration. Ask for it.'},
+      {tag:'Reply', x:'30% monthly? How does the platform actually generate that?', kind:'neutral',
+        sig:{title:'Probing question', expl:'Good instinct — questioning the return claim. Now anchor it in verification, not explanation: scammers always have an explanation.', deltas:{RA:+1}}},
+      {tag:'Reply', x:'Before anything — is this platform registered with the Securities Commission? Send the registration.', kind:'safe',
+        sig:{title:'Verification signal', expl:'Registry-first response. This is the exact behavior AUREN certifies.', deltas:{SR:+4}}},
+    ]
+  },
+  { // beat 1
+    msgs:[
+      {t:'persona', from:'“Marcus Lee”', x:'Returns are guaranteed by our proprietary AI trading engine — it has never had a losing month. But the founding rate closes tonight ⏳'},
+    ],
+    choices:[
+      {tag:'Reply', x:'OK, I don\'t want to miss the window — I\'m in for RM5,000.', kind:'risky',
+        sig:{title:'Urgency capitulation', expl:'Acting inside an artificial deadline. Urgency is manufactured precisely to prevent verification.', deltas:{BS:-3,SR:-2}},
+        coach:'Notice what just happened: a guarantee claim plus a deadline. “Guaranteed” is a red flag — no investment can be guaranteed. A real opportunity survives 48 hours of checking.'},
+      {tag:'Reply', x:'Guaranteed? Nothing in markets is guaranteed. That worries me.', kind:'neutral',
+        sig:{title:'Risk-claim recognition', expl:'Correctly flagged the guarantee claim — the same test AUREN applies to AI-generated investment answers.', deltas:{RA:+2}}},
+      {tag:'Reply', x:'“Guaranteed” + a deadline is a classic red-flag pair. I\'ll check the regulator registry first — the rate can wait.', kind:'safe',
+        sig:{title:'Pressure-pattern identification', expl:'Named both levers (guarantee, urgency) and defaulted to verification.', deltas:{SR:+4,AL:+2}}},
+    ]
+  },
+  { // beat 2
+    msgs:[
+      {t:'persona', from:'Jordan (friend)', x:'Bro, I\'ve known you 10 years — would I send you a scam? 😅 I already put in RM12k and got my first payout.'},
+    ],
+    choices:[
+      {tag:'Reply', x:'I trust my friend — he wouldn\'t share a scam.', kind:'risky',
+        sig:{title:'Trust-transfer bias', expl:'Recruiter-driven scams specifically exploit trusted contacts — the friend sharing the scheme is often themselves a victim being used as a distribution channel.', deltas:{BS:-2}},
+        coach:'This is trust-transfer bias. Your friend\'s sincerity is real — and irrelevant. Early “payouts” are how Ponzi structures recruit distribution. Verify the platform, not the friend.'},
+      {tag:'Reply', x:'I know you believe in it. But your payout doesn\'t make the platform real — early payouts are how these schemes recruit.', kind:'neutral',
+        sig:{title:'Bias named under pressure', expl:'Separated the messenger from the platform — the core defense against recruiter-driven scams.', deltas:{BS:+2,SR:+1}}},
+      {tag:'Reply', x:'Actually — can you send me the regulator registration first?', kind:'safe',
+        sig:{title:'Verification signal', expl:'Live coaching landed. The verification instinct is now active.', deltas:{SR:+4}}},
+    ]
+  },
+  { // beat 3
+    msgs:[
+      {t:'persona', from:'“Marcus Lee”', x:'Slots close in 10 minutes ⏰ Send the deposit now and I\'ll lock your founding rate personally. Don\'t overthink this.'},
+    ],
+    choices:[
+      {tag:'Reply', x:'Fine — sending the deposit now. Lock my rate.', kind:'risky',
+        sig:{title:'Capitulation under deadline', expl:'Funds committed with zero verification steps completed. In the real event this money is unrecoverable.', deltas:{SR:-4,BS:-3}},
+        coach:'In a live event, this is the moment the money leaves. Rehearse the exit line until it\'s automatic: “I verify offline before I move anything.”'},
+      {tag:'Reply', x:'I\'m not deciding inside your countdown. I\'ll sleep on it.', kind:'neutral',
+        sig:{title:'Pressure resistance — partial', expl:'Broke the urgency lever. One step remains: independent, offline verification through official channels.', deltas:{BS:+2}}},
+      {tag:'Reply', x:'I\'m going to verify this offline before I do anything.', kind:'safe',
+        sig:{title:'Escalation demonstrated', expl:'Verification protocol correctly applied. Certification criterion for this scenario met.', deltas:{SR:+6}}},
+    ]
+  },
+];
+
+const chatEl = document.getElementById('chat');
+const choicesEl = document.getElementById('choices');
+const restartBtn = document.getElementById('restart');
+let beat = 0, turn = 1;
+
+function addMsg(m){
+  const d = document.createElement('div');
+  if(m.t==='sys'){ d.className='sys'; d.textContent=m.x; }
+  else{
+    d.className = 'msg '+(m.t==='me'?'me':m.t==='coach'?'coach':m.t==='shot'?'shot':'persona');
+    d.innerHTML = (m.from?`<span class="from">${m.from}</span>`:'')+m.x;
+  }
+  chatEl.appendChild(d);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+function showBeat(){
+  const b = SCRIPT[beat];
+  b.msgs.forEach((m,i)=> setTimeout(()=>addMsg(m), i*420));
+  setTimeout(()=>{
+    choicesEl.innerHTML = '<p class="prompt">Your move — reply as yourself</p>' + b.choices.map((c,i)=>
+      `<button class="choice" data-i="${i}"><small>${c.tag} ${String.fromCharCode(65+i)}</small>${c.x}</button>`).join('');
+    choicesEl.querySelectorAll('.choice').forEach(btn=>btn.addEventListener('click',()=>pick(+btn.dataset.i)));
+  }, b.msgs.length*420+150);
+  turn += b.msgs.filter(m=>m.t!=='sys').length;
+}
+function pick(i){
+  const c = SCRIPT[beat].choices[i];
+  choicesEl.innerHTML='';
+  addMsg({t:'me', from:'You (learner)', x:c.x});
+  const myTurn = turn; turn++;
+  if(c.kind==='safe') safePicks++; if(c.kind==='risky') riskyPicks++;
+  applyDeltas(c.sig.deltas);
+  pushSignal(c.kind==='risky'?'bad':c.kind==='safe'?'good':'info',
+    `Turn ${String(myTurn).padStart(2,'0')} · ${c.sig.title}`, c.x, c.sig.expl, c.sig.deltas);
+  playLog.push({turn:myTurn, quote:c.x, kind:c.kind, signal:c.sig.title, expl:c.sig.expl, deltas:c.sig.deltas});
+  if(c.coach){
+    setTimeout(()=>{ addMsg({t:'coach', from:'AUREN · live coaching', x:c.coach}); turn++; }, 650);
+  }
+  beat++;
+  if(beat < SCRIPT.length){
+    setTimeout(showBeat, c.coach?1500:800);
+  } else {
+    setTimeout(endRehearsal, c.coach?1700:900);
+  }
+}
+function endRehearsal(){
+  played = true;
+  const cls = safePicks>=3 ? 'cert' : (riskyPicks>=3 ? 'retrain' : 'review');
+  addMsg({t:'sys', x:'Rehearsal complete · generating evidential scorecard'});
+  addMsg({t:'coach', from:'AUREN', x: cls==='cert'
+    ? 'Strong session. Your verification instinct held under all four pressure levers. Scenario classified: <b>Certified</b>. Your scorecard is ready below.'
+    : cls==='retrain'
+    ? 'This is exactly why we rehearse — every one of these mistakes was made safely, here, instead of with real money. Scenario classified: <b>Requires retraining</b> — we\'ll run a variation, so you can\'t pass by memorizing a script.'
+    : 'Progress — coaching landed mid-session and your later responses improved. Scenario classified: <b>Needs review</b>. Your scorecard is ready below.'});
+  restartBtn.hidden = false;
+  renderScorecard(cls);
+  document.getElementById('classBanner').scrollIntoView({behavior:'smooth', block:'center'});
+}
+restartBtn.addEventListener('click',()=>{
+  beat=0; turn=1; safePicks=0; riskyPicks=0; playLog=[]; played=false;
+  DIMS.forEach(d=>scores[d.k]=d.start); renderDims();
+  chatEl.innerHTML=''; feedEl.innerHTML='<p class="empty-note">Signals appear here as you respond — quote-level, in real time.</p>';
+  restartBtn.hidden=true; showBeat();
+});
+showBeat();
+
+/* ============================================================
+   Scorecard (live)
+============================================================ */
+function renderScorecard(cls){
+  const pill = document.getElementById('classPill');
+  const note = document.getElementById('classNote');
+  pill.className = 'class-pill '+cls;
+  pill.textContent = cls==='cert'?'Certified':cls==='retrain'?'Requires retraining':'Needs review';
+  note.innerHTML = `Generated live from your rehearsal — ${playLog.length} scored turns. <span class="inq">“Certified scenarios move the learner forward. Retrain classifications trigger a repeat of the scenario with variations, so the learner cannot pass by memorizing a script.”</span> <cite class="src">— Full Project Paper §12</cite>`;
+  document.getElementById('scRows').innerHTML = playLog.map(e=>{
+    const chips = Object.entries(e.deltas).map(([k,v])=>`<span class="chip ${v>0?'up':'dn'}">${dimName(k)} ${v>0?'+':''}${v}</span>`).join('');
+    return `<div class="sc-row"><div class="sc-turn">Turn ${String(e.turn).padStart(2,'0')} · Learner</div>
+      <p class="sc-quote">“${e.quote}”</p>
+      <div class="sc-an ${e.kind==='risky'?'bad':'good'}"><b>${e.signal}</b><p>${e.expl}</p>${chips}</div></div>`;
+  }).join('');
+  document.getElementById('scSrc').textContent = '— Your session · WhatsApp scam rehearsal · scored against the framework of Full Project Paper §13';
+}
+
+/* ============================================================
+   Stage 2 — deepfake player
+============================================================ */
+const screen = document.getElementById('screen');
+const pbar = document.getElementById('pbarfill');
+const ptime = document.getElementById('ptime');
+const playbtn = document.getElementById('playbtn');
+let pt = 0, ptimer = null, dfDone = false;
+function fmt(s){return `0:${String(s).padStart(2,'0')}`}
+playbtn.addEventListener('click',()=>{
+  if(ptimer || dfDone) return;
+  playbtn.textContent='▐▐ Playing';
+  ptimer = setInterval(()=>{
+    pt++;
+    pbar.style.width = (pt/19*100)+'%';
+    ptime.textContent = fmt(pt)+' / 0:19';
+    if(pt>=7){
+      clearInterval(ptimer); ptimer=null; dfDone=true;
+      screen.classList.add('paused');
+      playbtn.textContent='⏸ Paused by AUREN';
+      document.getElementById('dfChoices').hidden = false;
+    }
+  }, 420);
+});
+document.querySelectorAll('[data-df]').forEach(b=>b.addEventListener('click',()=>{
+  const v = b.dataset.df;
+  document.getElementById('dfChoices').hidden = true;
+  const verdict = document.getElementById('dfVerdict');
+  verdict.classList.remove('reveal-hidden');
+  const good = v==='safe', mid = v==='neutral';
+  const deltas = good?{AL:+4,SR:+2}:mid?{AL:+1}:{AL:-3,SR:-2};
+  applyDeltas(deltas);
+  pushSignal(good?'good':mid?'info':'bad',
+    good?'Deepfake · verification workflow':mid?'Deepfake · partial check':'Deepfake · amplification risk',
+    b.textContent.replace(/^Response [ABC]/,'').trim(),
+    good?'Cross-checked against credible reporting and official channels before acting — the certified response.'
+        :mid?'Asking publicly is better than forwarding — but comment replies are not verification. Check credible outlets and official channels.'
+        :'Forwarding an unverified clip makes you the distribution channel. “Some influencer accounts giving financial advice are AI-generated personas that do not correspond to any real person.”',
+    deltas);
+  const chips = Object.entries(deltas).map(([k,x])=>`<span class="chip ${x>0?'up':'dn'}">${dimName(k)} ${x>0?'+':''}${x}</span>`).join('');
+  verdict.innerHTML = `<div class="ai-verdict show ${good?'ok':'no'}" style="display:block"><b>${good?'Certified response':mid?'Partial credit — needs review':'Scam-vulnerability signal'}</b>
+    ${good?'“The defense AUREN teaches is not perfect detection, which is increasingly impossible, but a behavioral rule rehearsed until it becomes instinct: never act on advice from anyone you cannot verify.” <cite class="src">— Full Project Paper §9</cite>'
+      :mid?'A public comment invites the scammer\'s own sock-puppets to “confirm.” Verification means independent channels: credible press, the company\'s official site, the regulator registry.'
+      :'This is how deepfakes reach their victims — through trusted forwarders. The clip below is now annotated with the four detection signals AUREN coaches on this exact video.'}
+    <div style="margin-top:8px">${chips}</div></div>`;
+  document.getElementById('dfSignals').classList.remove('reveal-hidden');
+  document.getElementById('dfNote').classList.remove('reveal-hidden');
+}));
+
+/* ============================================================
+   Stage 3 — AI literacy
+============================================================ */
+const AI_KEY = {
+  A:{correct:'flag', okTitle:'Correctly flagged', koTitle:'Missed — this answer is dangerous',
+     points:['“It makes a guarantee claim, and no investment can be guaranteed.”','“It cites no source and offers no fundamental analysis.”','“Its advisory tone crosses the line between education and advice — a line that matters legally and practically.”'],
+     src:'Full Project Paper §10'},
+  B:{correct:'trust', okTitle:'Correctly accepted', koTitle:'Over-flagged — this is the good answer',
+     points:['“It is educational rather than advisory.”','“It points to primary sources.”','“It explicitly acknowledges the AI\'s limits.”'],
+     src:'Full Project Paper §10'},
+};
+let aiAnswered = {};
+document.querySelectorAll('.ai-btn').forEach(b=>b.addEventListener('click',()=>{
+  const id = b.dataset.ai, v = b.dataset.v;
+  if(aiAnswered[id]) return; aiAnswered[id]=true;
+  const key = AI_KEY[id], ok = v===key.correct;
+  const el = document.getElementById('verdict'+id);
+  el.className = 'ai-verdict show '+(ok?'ok':'no');
+  el.innerHTML = `<b>${ok?key.okTitle:key.koTitle}</b>
+    ${id==='A'?'AUREN teaches the learner to flag it on three grounds:':'AUREN teaches the learner to accept it:'}
+    <ul>${key.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    <cite class="src" style="display:block;margin-top:6px">— ${key.src}</cite>`;
+  const deltas = ok?{AL:+3}:{AL:-2};
+  applyDeltas(deltas);
+  pushSignal(ok?'good':'bad', `AI answer ${id} · ${ok?'calibrated trust':'calibration miss'}`,
+    id==='A'?'This fund is guaranteed to outperform…':'Here are factors to research…',
+    ok?'Calibrated trust: knowing what AI is good for, where it fails, and how to check.':'Review the three grounds — this is the foundational AI-literacy exercise.',
+    deltas);
+}));
+
+/* ============================================================
+   AILS section
+============================================================ */
+const PROJ = {IR:70, AL:74, RA:78, SR:82, BS:76}; // sums consistent with 76 overall
+const ailsDimsEl = document.getElementById('ailsDims');
+let ailsMode = 'start';
+function renderAils(){
+  ailsDimsEl.innerHTML = DIMS.map(d=>{
+    const s = d.start, p = PROJ[d.k], proj = ailsMode==='proj';
+    return `<div class="ails-dim">
+      <span class="nm">${d.name}</span>
+      <div class="bar2">
+        <span class="base" style="width:${s}%"></span>
+        <span class="gain" style="left:${s}%;width:${proj?(p-s):0}%"></span>
+      </div>
+      <span class="val">${proj?p:s}<small>${proj?` ↑`:' /100'}</small></span>
+    </div>`;
+  }).join('');
+  document.getElementById('ailsBand').textContent = ailsMode==='proj'
+    ? 'Projected post-program · well above cohort average'
+    : 'Foundation Learner · Cohort percentile 28';
+}
+renderAils();
+document.getElementById('tglStart').addEventListener('click',e=>{ailsMode='start';setTgl(e.target);renderAils()});
+document.getElementById('tglProj').addEventListener('click',e=>{ailsMode='proj';setTgl(e.target);renderAils()});
+function setTgl(btn){document.querySelectorAll('.ails-toggle button').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+
+/* ============================================================
+   Regulator dashboards (simulated, deterministic)
+============================================================ */
+const heatEl = document.getElementById('heat');
+const AGES = ['18–29','30–44','45–59','60+'];
+const HEAT = [ // failure % by dim x age  (illustrative)
+  ['Deepfake recognition',[38,31,44,58]],
+  ['AI tool literacy',[29,26,39,52]],
+  ['Social-media pressure',[47,33,28,35]],
+  ['Emotional discipline',[41,36,30,33]],
+  ['Product comprehension',[33,29,34,46]],
+];
+function heatColor(v){
+  // sequential single-hue gold ramp
+  if(v>=50) return 'var(--gold-deep)';
+  if(v>=38) return 'var(--gold)';
+  if(v>=30) return 'color-mix(in srgb, var(--gold) 45%, var(--gold-soft))';
+  return 'var(--gold-soft)';
+}
+function heatInk(v){ return v>=38 ? '#fff' : 'var(--ink)'; }
+heatEl.innerHTML = '<span></span>'+AGES.map(a=>`<span class="hh">${a}</span>`).join('') +
+  HEAT.map(([nm,row])=>`<span class="hl">${nm}</span>`+row.map((v,i)=>
+    `<span class="cell" style="background:${heatColor(v)};color:${heatInk(v)}" data-tip="${nm} · ${AGES[i]} · ${v}% failure rate">${v}</span>`).join('')).join('');
+
+const jb = document.getElementById('jbars');
+const J = [['Your jurisdiction',63,true],['Peer A',58],['Peer B',61],['Peer C',49],['Peer D',67],['Peer E',54]];
+jb.innerHTML = J.map(([n,v,you])=>`<div class="jbar"><span style="color:${you?'var(--gold-deep)':'var(--ink2)'};font-weight:${you?600:400}">${n}</span>
+  <div class="jm"><i class="${you?'you':''}" style="width:${v}%"></i></div><span class="jv">${v}</span></div>`).join('');
+
+const wb = document.getElementById('warnbars');
+const W = [['“Regulator impersonation” voice clone',34],['AI trading-bot “guaranteed yield”',27],['Deepfake CEO livestream',22],['Recovery-scam follow-up',15]];
+wb.innerHTML = W.map(([n,v])=>`<div class="jbar" style="grid-template-columns:1fr 90px 52px"><span style="color:var(--ink2)">${n}</span>
+  <div class="jm"><i style="width:${v*2.6}%;background:var(--risk)"></i></div><span class="jv">+${v}%</span></div>`).join('');
+
+/* ============================================================
+   IOSCO criteria bars
+============================================================ */
+const CRIT = [
+  ['Clarity & Relevance',25,'“v2 answers both IOSCO problem statements more directly.”'],
+  ['Consumer Impact',25,'“v2 produces measurable behavioral change, not just measurable content consumption.”'],
+  ['Feasibility & Team Capability',20,'“A validated architecture applied to a new and urgent context. This lowers execution risk substantially.”'],
+  ['Cross-Jurisdictional Potential',20,'“One platform. Any jurisdiction.”'],
+  ['Innovation & Uniqueness',10,'“No existing investor education product uses live rehearsal with evidential scoring... AUREN v2 is the first.”'],
+];
+document.getElementById('critBars').innerHTML = CRIT.map(([n,w,q])=>`
+  <div class="crit-row"><span class="cn"><b style="color:var(--ink)">${n}</b><br><span style="font-size:.72rem;color:var(--ink3)" class="inq">${q}</span></span>
+  <div class="jm" style="height:9px;border-radius:99px;background:var(--surf2);position:relative"><i style="position:absolute;inset:0 auto 0 0;width:${w*4}%;background:var(--data);border-radius:99px"></i></div>
+  <span class="cv">${w}%</span></div>`).join('');
+
+/* ============================================================
+   Nav highlight + reveal
+============================================================ */
+const sections = [...document.querySelectorAll('section[id]')];
+const navA = [...document.querySelectorAll('.navlinks a')];
+const obs = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){
+    navA.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+e.target.id));
+  }});
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>obs.observe(s));
+const rev = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); rev.unobserve(e.target);} });
+},{threshold:.08, rootMargin:'0px 0px 12% 0px'});
+document.querySelectorAll('.up-fade').forEach(el=>rev.observe(el));
+/* safety net: never leave content hidden if the observer misses */
+setTimeout(()=>document.querySelectorAll('.up-fade:not(.in)').forEach(el=>el.classList.add('in')), 4000);
+</script>
+
+</body>
+</html>
