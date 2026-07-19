@@ -18,11 +18,13 @@ Both are fully self-contained HTML (no build, no dependencies, work offline). So
 
 The MVP is deliberately cut down to the core loop the papers define — the features that score against IOSCO's criteria as a *working product*, with the Digital Human as the interface the consumer actually talks to:
 
-1. **Meet AUREN** — she greets you and asks your name; you type it and she uses it for the rest of the session (Innovation: the Digital Human IS the product surface).
-2. **Conversational interview** — 3 questions, tap a reply or type your own; observations are logged live and seed the score (Clarity & Relevance: "a conversation, not a questionnaire").
-3. **AILS reveal** — five-dimension score generated from the conversation; every later reply moves it live (the "how outcomes are measured" answer).
-4. **Rehearsal with live coaching** — the WhatsApp scam scenario; AUREN interrupts mid-conversation when you slip (Consumer Impact: behavioral change, demonstrated).
-5. **Evidential scorecard + regulator glimpse** — your own quotes, turn-stamped, with score deltas and a Certified / Needs review / Retrain verdict; one card shows the anonymized data point a regulator receives (Cross-Jurisdictional value in 30 seconds).
+The MVP is styled as a live video call with AUREN — she fills the screen, her words type out as she speaks, and there is exactly ONE way to interact: you talk to her through a single input bar (type anything; mic is mocked for the production voice build). No multiple-choice cards.
+
+1. **She greets you and asks your name** — everything after is personalized in her speech (Innovation: the Digital Human IS the product surface).
+2. **Conversational interview** — three open questions; her scripted brain classifies whatever you type and she reacts by echoing your own words back ("'I just ask ChatGPT' — thank you for the honesty…"). Observations appear as ambient toasts, not panels (Clarity & Relevance: "a conversation, not a questionnaire").
+3. **AILS reveal** — she presents the five-dimension score as an overlay on the call, generated from the conversation (the "how outcomes are measured" answer).
+4. **Rehearsal** — a "Marcus" WhatsApp window is screen-shared into the call; you reply to him through the same input bar while AUREN coaches over it, her frame flashing when she intervenes (Consumer Impact: behavioral change, demonstrated).
+5. **Evidential scorecard + regulator glimpse** — she hands you your own typed words, turn-stamped with score deltas and a Certified / Needs review / Retrain verdict, plus the one anonymized data point a regulator receives (Cross-Jurisdictional value in 30 seconds).
 
 Cut from the MVP (kept in the walkthrough): problem statistics, journey, 3-day course, AI memory, simulations, platform architecture, enterprise. Roadmap belongs in the deck, not the prototype.
 
