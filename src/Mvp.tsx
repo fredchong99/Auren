@@ -119,37 +119,134 @@ const CHIPS = {
 };
 
 // ─────────────────────────────────────────────────────────────
+// ── "Marcus" — the scam persona as a digital human ──
+function MarcusPortrait({ speaking = false }) {
+  return (
+    <svg viewBox="0 0 360 480" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="mskin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#EAC49B" />
+          <stop offset="55%" stopColor="#D3A276" />
+          <stop offset="100%" stopColor="#A97B52" />
+        </linearGradient>
+        <linearGradient id="mhair" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#232019" />
+          <stop offset="100%" stopColor="#12100C" />
+        </linearGradient>
+        <linearGradient id="mtop" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2E2A3E" />
+          <stop offset="100%" stopColor="#161320" />
+        </linearGradient>
+        <radialGradient id="mbg" cx="50%" cy="30%" r="85%">
+          <stop offset="0%" stopColor="#3A3148" />
+          <stop offset="55%" stopColor="#1E1929" />
+          <stop offset="100%" stopColor="#0A0810" />
+        </radialGradient>
+      </defs>
+      <rect width="360" height="480" fill="url(#mbg)" />
+      <ellipse cx="90" cy="130" rx="130" ry="210" fill="rgba(255,107,107,0.05)" />
+      {/* shoulders — casual jacket over tee */}
+      <path d="M 34 480 Q 56 356, 128 318 L 232 318 Q 304 356, 326 480 Z" fill="url(#mtop)" />
+      <path d="M 150 330 Q 180 352 210 330 L 210 322 L 150 322 Z" fill="#0E0C14" />
+      <path d="M 128 318 L 150 400 L 165 340 M 232 318 L 210 400 L 195 340" fill="none" stroke="#3A3450" strokeWidth="2" opacity="0.7" />
+      {/* neck */}
+      <path d="M 160 292 Q 160 318 167 328 L 193 328 Q 200 318 200 292 Z" fill="url(#mskin)" />
+      <path d="M 160 316 Q 180 322 200 316 L 198 328 L 162 328 Z" fill="rgba(0,0,0,0.18)" />
+      {/* head — squarer jaw */}
+      <path d="M 124 205 Q 122 128 180 122 Q 238 128 236 205 Q 236 252 214 278 Q 197 296 180 296 Q 163 296 146 278 Q 124 252 124 205 Z" fill="url(#mskin)" />
+      {/* short hair, faded sides */}
+      <path d="M 121 190 Q 118 112 180 106 Q 242 112 239 190 Q 236 150 208 140 Q 180 150 152 140 Q 124 150 121 190 Z" fill="url(#mhair)" />
+      <path d="M 121 190 Q 120 205 124 216 Q 126 190 130 178 Z M 239 190 Q 240 205 236 216 Q 234 190 230 178 Z" fill="url(#mhair)" opacity="0.8" />
+      {/* brows — slightly raised, salesman confidence */}
+      <path d="M 146 192 Q 158 184 172 189" stroke="#1C170F" strokeWidth="4" fill="none" strokeLinecap="round" />
+      <path d="M 188 189 Q 202 184 214 192" stroke="#1C170F" strokeWidth="4" fill="none" strokeLinecap="round" />
+      {/* eyes */}
+      <path d="M 149 208 Q 158 211 168 208 M 192 208 Q 201 211 211 208" stroke="#8F6A46" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <g className="auren-blink">
+        <ellipse cx="158" cy="207" rx="9" ry="5.5" fill="#F6F3EE" />
+        <ellipse cx="202" cy="207" rx="9" ry="5.5" fill="#F6F3EE" />
+        <circle cx="159" cy="207" r="4.6" fill="#2E2115" />
+        <circle cx="203" cy="207" r="4.6" fill="#2E2115" />
+        <circle cx="159" cy="207" r="2" fill="#0A0705" />
+        <circle cx="203" cy="207" r="2" fill="#0A0705" />
+        <circle cx="160.5" cy="205.5" r="1" fill="#FFFFFF" />
+        <circle cx="204.5" cy="205.5" r="1" fill="#FFFFFF" />
+        <path d="M 149 205 Q 158 202 167 205 M 193 205 Q 202 202 211 205" stroke="#14100A" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+      </g>
+      {/* nose */}
+      <path d="M 180 214 L 175 248 Q 180 254 185 248 Z" fill="rgba(150,100,60,0.25)" />
+      <ellipse cx="176" cy="251" rx="2.2" ry="1.6" fill="rgba(120,80,50,0.35)" />
+      <ellipse cx="184" cy="251" rx="2.2" ry="1.6" fill="rgba(120,80,50,0.35)" />
+      {/* light stubble */}
+      <path d="M 146 262 Q 180 300 214 262 Q 214 276 196 288 Q 180 295 164 288 Q 146 276 146 262 Z" fill="rgba(40,30,20,0.14)" />
+      {/* mouth — confident half-smile / speaking */}
+      {!speaking ? (
+        <path d="M 164 271 Q 182 281 198 269" stroke="#7A4433" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      ) : (
+        <>
+          <ellipse cx="181" cy="273" rx="10" ry="4.6" fill="#4E241B" />
+          <path d="M 171 270 Q 181 266 191 270" stroke="#8A5240" strokeWidth="2" fill="none" />
+        </>
+      )}
+      {/* speaking waveform */}
+      {speaking && (
+        <g transform="translate(180, 385)">
+          {[7, 13, 20, 16, 24, 18, 26, 16, 20, 13, 7].map((h, i) => (
+            <rect key={i} x={(i - 5) * 10 - 2} y={-h / 2} width="3" height={h} rx="1.5" fill="#FF6B6B" opacity={0.45 + (i % 3) * 0.15} className="auren-wave" style={{ transformOrigin: `${(i - 5) * 10}px 0px`, animationDelay: `${i * 0.08}s` }} />
+          ))}
+        </g>
+      )}
+    </svg>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
 export default function AurenMvp() {
   const [phase, setPhase] = useState("intro"); // intro · interview · ails · rehearsal · scorecard
   const [name, setName] = useState("");
   const [dims, setDims] = useState({ IR: 35, AL: 33, RA: 45, SR: 34, BS: 45 });
   const [startDims, setStartDims] = useState(null);
-  const [feed, setFeed] = useState([]);          // chronological conversation feed
+  const [feed, setFeed] = useState([]);
   const [aurenText, setAurenText] = useState("Hello — I'm AUREN, your investor intelligence mentor. This is a live session: you talk, I listen. First — what should I call you?");
+  const [marcusText, setMarcusText] = useState("");
   const [evidence, setEvidence] = useState([]);
   const [awaiting, setAwaiting] = useState("name");
   const [input, setInput] = useState("");
   const [coachFlash, setCoachFlash] = useState(false);
-  const { shown: spokenText, done: doneSpeaking, skip } = useTypewriter(aurenText);
+  const [coachToast, setCoachToast] = useState(null);   // {kind:'improvement'|'good'|'auren', title, text}
+  const [feedbackOn, setFeedbackOn] = useState(true);
+  const aurenTw = useTypewriter(aurenText);
+  const marcusTw = useTypewriter(marcusText);
   const inputRef = useRef(null);
   const speechRef = useRef(null);
   const currentLine = useRef(aurenText);
+  const toastTimer = useRef(null);
+
+  const roleplay = phase === "rehearsal";
+  const doneSpeaking = roleplay ? marcusTw.done : aurenTw.done;
 
   const ails = Math.round(Object.values(dims).reduce((a, b) => a + b, 0) / 5);
   const startAils = startDims ? Math.round(Object.values(startDims).reduce((a, b) => a + b, 0) / 5) : null;
+  const sentiment = evidence.reduce((a, e) => a + e.delta, 0);
+  const sentimentFace = sentiment >= 6 ? "😄" : sentiment >= 1 ? "🙂" : sentiment === 0 ? "😐" : "😟";
 
   useEffect(() => { if (doneSpeaking && inputRef.current) inputRef.current.focus(); }, [doneSpeaking, awaiting]);
-  useEffect(() => { window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" }); }, [feed]);
-  useEffect(() => { if (speechRef.current) speechRef.current.scrollTop = speechRef.current.scrollHeight; }, [spokenText]);
+  useEffect(() => { if (!roleplay) window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" }); }, [feed, roleplay]);
+  useEffect(() => { if (speechRef.current) speechRef.current.scrollTop = speechRef.current.scrollHeight; }, [aurenTw.shown]);
 
   const push = (item) => setFeed(f => [...f, item]);
 
-  // she speaks: previous line drops into the feed as history, new line goes live in her window
   const say = (text, { coach = false } = {}) => {
     if (currentLine.current) push({ type: "auren", text: currentLine.current });
     currentLine.current = text;
     setAurenText(text);
     if (coach) { setCoachFlash(true); setTimeout(() => setCoachFlash(false), 2600); }
+  };
+
+  const toast = (t) => {
+    setCoachToast(t);
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setCoachToast(null), 8000);
   };
 
   const note = (obs, adj) => {
@@ -159,6 +256,10 @@ export default function AurenMvp() {
       deltaStr = Object.entries(adj).map(([k, v]) => `${dimLabel(k)} ${v > 0 ? "+" : ""}${v}`).join(" · ");
     }
     push({ type: "obs", obs, deltaStr });
+  };
+
+  const marcusSays = (text, delay = 0) => {
+    setTimeout(() => { setMarcusText(text); push({ type: "marcus", text }); }, delay);
   };
 
   const submit = (raw) => {
@@ -200,16 +301,16 @@ export default function AurenMvp() {
       const score = Math.round(Object.values(snap).reduce((a, b) => a + b, 0) / 5);
       push({ type: "ails", dims: snap, score });
       const weakest = DIMS.filter(d => snap[d.key] < 40).map(d => d.label).join(" and ") || "honestly, none — a strong start";
-      say(`There it is, ${name} — your starting AILS is ${score}. Not a verdict, a starting point. Most exposed: ${weakest}. So no lecture — instead, something is about to arrive in a chat, a real recruitment pattern in a safe simulation. Treat it as completely real. Say "ready".`);
+      say(`There it is, ${name} — your starting AILS is ${score}. Not a verdict, a starting point. Most exposed: ${weakest}. So no lecture. Next, you'll take a call with "Marcus" — a real recruitment pattern, played by an AI persona, completely safe. He'll fill your screen; I'll stay in the corner, watching. Treat it as real. Say "ready".`);
       return;
     }
 
     if (awaiting === "ready-rehearsal") {
       push({ type: "user", text });
+      push({ type: "sys", text: "Roleplay connected · “Marcus” · AI persona · safe rehearsal" });
       setPhase("rehearsal"); setAwaiting("r0");
-      push({ type: "sys", text: "Simulated chat connected · “Marcus” · AI persona · safe rehearsal" });
-      push({ type: "marcus", text: MARCUS[0] });
-      say(`It's live — he's in the feed below. "Marcus" doesn't know I'm here. Reply to him exactly as you would in real life. I'll step in if I need to.`);
+      toast({ kind: "auren", title: "AUREN · watching", text: "I'm right here in the corner. Reply to him exactly as you would in real life — if I see a risky pattern, my note will appear like this." });
+      marcusSays(MARCUS[0], 400);
       return;
     }
 
@@ -221,36 +322,49 @@ export default function AurenMvp() {
       setDims(d => ({ ...d, [v.dim]: Math.max(5, Math.min(95, d[v.dim] + v.delta)) }));
       push({ type: "obs", obs: v.signal, deltaStr: `${dimLabel(v.dim)} ${v.delta > 0 ? "+" : ""}${v.delta}`, tone: v.tone });
 
+      if (feedbackOn) {
+        if (v.coach) {
+          push({ type: "auren", text: v.coach });
+          setCoachFlash(true); setTimeout(() => setCoachFlash(false), 2600);
+          toast({ kind: "improvement", title: "Improvement", text: v.coach });
+        } else {
+          toast({ kind: "good", title: v.signal, text: v.analysis });
+        }
+      }
+
       if (ti < 2) {
         setAwaiting(`r${ti + 1}`);
-        setTimeout(() => push({ type: "marcus", text: MARCUS[ti + 1] }), v.coach ? 2400 : 1200);
-        say(v.coach ? v.coach + " He's typing again — watch the next move."
-          : (v.tone === "excellent" ? "That question is the strongest filter you have. Watch — he'll dodge it." : "Noted. Keep going — the pressure is about to increase."), { coach: !!v.coach });
+        marcusSays(MARCUS[ti + 1], v.coach ? 2600 : 1400);
       } else {
         setAwaiting("done");
-        const strongCount = [...evidence, v].filter(e => e.tone !== "risky").length;
-        const coachLine = v.coach ? v.coach + " " : "";
-        say(coachLine + `That's the scenario, ${name}. Every word you typed is now evidence — ${strongCount >= 2 ? "and your instincts held better than most first-timers." : "and this is exactly why we rehearse here, not with your savings."} Here is your scorecard.`, { coach: !!v.coach });
-        setTimeout(() => { setPhase("scorecard"); push({ type: "scorecard" }); }, 900);
+        setTimeout(() => {
+          setPhase("scorecard");
+          setMarcusText("");
+          setCoachToast(null);
+          const strongCount = [...evidence, v].filter(e => e.tone !== "risky").length;
+          say(`That's the scenario, ${name}. Every word you typed is now evidence — ${strongCount >= 2 ? "and your instincts held better than most first-timers." : "and this is exactly why we rehearse here, not with your savings."} Here is your scorecard.`);
+          push({ type: "scorecard" });
+        }, 1600);
       }
       return;
     }
   };
 
   const rehearseAgain = () => {
-    setEvidence([]); setPhase("rehearsal"); setAwaiting("r0");
-    push({ type: "sys", text: "Rehearsal restarted with variations · you cannot pass by memorizing a script" });
-    push({ type: "marcus", text: MARCUS[0] });
-    say(`Again, ${name} — same recruiter, varied moves. Reply as yourself.`);
+    setEvidence([]); setAwaiting("r0");
+    push({ type: "sys", text: "Roleplay restarted with variations · you cannot pass by memorizing a script" });
+    setPhase("rehearsal");
+    toast({ kind: "auren", title: "AUREN · watching", text: `Again, ${name} — same recruiter, varied moves. Reply as yourself.` });
+    marcusSays(MARCUS[0], 400);
   };
   const restart = () => {
     setPhase("intro"); setName(""); setDims({ IR: 35, AL: 33, RA: 45, SR: 34, BS: 45 });
     setStartDims(null); setFeed([]); setEvidence([]); setAwaiting("name"); setInput("");
+    setMarcusText(""); setCoachToast(null);
     currentLine.current = "";
     say("Hello again — I'm AUREN. Let's run it once more. What should I call you this time?");
   };
 
-  // verdict for scorecard card
   const totalDelta = evidence.reduce((a, e) => a + e.delta, 0);
   const lastRisky = evidence.length && evidence[evidence.length - 1].tone === "risky";
   const verdict = totalDelta >= 8 && !lastRisky ? "certified" : totalDelta >= 0 ? "review" : "retrain";
@@ -269,35 +383,137 @@ export default function AurenMvp() {
   const placeholder = awaiting === "name" ? "Tell AUREN your name…"
     : awaiting.startsWith("q") ? "Answer AUREN in your own words…"
     : awaiting.startsWith("ready") ? `Say "ready" when you are…`
-    : awaiting.startsWith("r") ? "Reply to Marcus — AUREN is watching…"
+    : awaiting.startsWith("r") ? "Reply to Marcus…"
     : "Session complete — restart below";
 
-  // ───────────────────────────── render ─────────────────────────────
-  // Three true layers:
-  //   z-50 FIXED TOP    — the Digital Human, ~46% of the screen, never covered
-  //   page flow         — the conversation feed, scrolls UNDER her layer
-  //   z-50 FIXED BOTTOM — the input bar
+  // shared input bar (fixed bottom, both modes)
+  const inputBar = (
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t px-3 pb-3 pt-2.5 sm:px-5" style={{ borderColor: "rgba(247,248,250,.08)", background: "rgba(5,7,11,.94)", backdropFilter: "blur(10px)" }}>
+      <div className="mx-auto max-w-3xl">
+        <div className="flex items-center gap-2">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border" style={{ borderColor: "rgba(247,248,250,.2)", background: "rgba(247,248,250,.05)" }} title="Voice input — production build">
+            <span style={{ color: doneSpeaking ? BRAND.lime : "rgba(247,248,250,.35)" }}>🎙</span>
+          </div>
+          <input ref={inputRef} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && submit()}
+            placeholder={doneSpeaking ? placeholder : (roleplay ? "Marcus is speaking…" : "AUREN is speaking…")} disabled={!doneSpeaking || awaiting === "done"} autoComplete="off"
+            className="min-w-0 flex-1 rounded-full border bg-transparent px-4 py-2.5 text-sm text-white placeholder-white/40 outline-none transition focus:border-white/60 disabled:opacity-50"
+            style={{ borderColor: "rgba(247,248,250,.25)", background: "rgba(247,248,250,.04)" }} />
+          <button onClick={() => submit()} disabled={!doneSpeaking || !input.trim() || awaiting === "done"}
+            className="shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:opacity-40" style={{ background: BRAND.lime, color: BRAND.graphite }}>
+            Send
+          </button>
+        </div>
+        {doneSpeaking && chips.length > 0 && awaiting !== "done" && (
+          <div className="no-sb mt-1.5 flex items-center gap-1.5 overflow-x-auto px-1">
+            <span className="shrink-0 text-[8px] uppercase tracking-[.16em] text-white/35">or try:</span>
+            {chips.map(c => (
+              <button key={c} onClick={() => submit(c)} className="shrink-0 rounded-full border px-2.5 py-0.5 text-[11px] text-white/60 transition hover:text-white hover:border-white/50" style={{ borderColor: "rgba(247,248,250,.15)" }}>
+                {c}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  const styles = (
+    <style>{`
+      @keyframes aurenPulse { 0%,100% { opacity:1; transform:scale(1) } 50% { opacity:.5; transform:scale(.85) } }
+      @keyframes aurenPulseRing { 0% { opacity:.6; transform:scale(1) } 100% { opacity:0; transform:scale(1.3) } }
+      @keyframes aurenWave { 0%,100%{transform:scaleY(.3)} 50%{transform:scaleY(1.3)} }
+      @keyframes aurenBlink { 0%, 93%, 100% { opacity:1 } 95.5% { opacity:0 } }
+      @keyframes slideUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
+      @keyframes toastIn { from { opacity:0; transform:translateY(-10px) } to { opacity:1; transform:none } }
+      .auren-pulse { animation: aurenPulse 1.6s ease-in-out infinite; }
+      .auren-pulse-ring { animation: aurenPulseRing 2s ease-out infinite; transform-origin:center; }
+      .auren-wave { animation: aurenWave 1.1s ease-in-out infinite; }
+      .auren-blink { animation: aurenBlink 4.6s linear infinite; }
+      .a-up { animation: slideUp .35s ease both; }
+      .t-in { animation: toastIn .4s ease both; }
+      .no-sb { scrollbar-width:none } .no-sb::-webkit-scrollbar{ display:none }
+      .caret::after { content:"▍"; color:${BRAND.lime}; animation: aurenPulse 1s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce){ .auren-pulse,.auren-pulse-ring,.auren-wave,.auren-blink{animation:none!important} .a-up,.t-in{animation:none!important} }
+    `}</style>
+  );
+
+  // ═══════════════ ROLEPLAY MODE · the persona occupies the main space ═══════════════
+  if (roleplay) {
+    return (
+      <main className="fixed inset-0 flex flex-col text-white" style={{ background: "#0A0810" }}>
+        {styles}
+        {/* top bar — persona identity + sentiment + feedback toggle */}
+        <div className="z-30 flex shrink-0 items-center justify-between gap-2 px-3 py-2 sm:px-5" style={{ background: "rgba(5,7,11,.92)", borderBottom: "1px solid rgba(255,107,107,.2)" }}>
+          <div className="min-w-0">
+            <div className="truncate text-sm font-semibold">"Marcus" <span className="font-normal text-white/50">· Private Trading Group</span></div>
+            <div className="text-[9px] uppercase tracking-[.18em]" style={{ color: BRAND.warmRed }}>AI persona · simulated · safe rehearsal</div>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="rounded-full border px-2.5 py-1 font-mono text-xs" style={{ borderColor: sentiment < 0 ? "rgba(255,107,107,.45)" : "rgba(203,251,0,.4)", background: "rgba(8,10,15,.6)", color: sentiment < 0 ? BRAND.warmRed : BRAND.lime }}>
+              {sentimentFace} {sentiment > 0 ? "+" : ""}{sentiment}
+            </span>
+            <button onClick={() => setFeedbackOn(f => !f)} className="flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] uppercase tracking-[.12em]" style={{ borderColor: feedbackOn ? "rgba(203,251,0,.45)" : "rgba(247,248,250,.2)", color: feedbackOn ? BRAND.lime : "rgba(247,248,250,.5)" }}>
+              Feedback
+              <span className="relative inline-block h-3.5 w-6 rounded-full transition" style={{ background: feedbackOn ? "rgba(203,251,0,.35)" : "rgba(247,248,250,.15)" }}>
+                <span className="absolute top-0.5 h-2.5 w-2.5 rounded-full transition-all" style={{ left: feedbackOn ? "13px" : "2px", background: feedbackOn ? BRAND.lime : "rgba(247,248,250,.6)" }} />
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* the persona — full main space */}
+        <div className="relative min-h-0 flex-1">
+          <MarcusPortrait speaking={!marcusTw.done} />
+
+          {/* AUREN — picture-in-picture, watching */}
+          <div className="absolute left-3 top-3 z-20 w-[88px] overflow-hidden rounded-xl border shadow-xl transition-all duration-500 sm:w-[110px]" style={{ borderColor: coachFlash ? "rgba(203,251,0,.9)" : "rgba(203,251,0,.45)", boxShadow: coachFlash ? "0 0 30px rgba(203,251,0,.45)" : "0 8px 20px rgba(0,0,0,.6)" }}>
+            <div className="relative" style={{ aspectRatio: "4/5", background: "#0A0E15" }}>
+              <DigitalHumanPortrait speaking={coachFlash} listening={false} />
+              <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-1 py-0.5" style={{ background: "rgba(5,7,11,.8)" }}>
+                <span className="auren-pulse h-1 w-1 rounded-full" style={{ background: BRAND.lime }} />
+                <span className="text-[7px] font-semibold uppercase tracking-[.14em]" style={{ color: BRAND.lime }}>AUREN · watching</span>
+              </div>
+            </div>
+          </div>
+
+          {/* AUREN's feedback card — like the reference "Improvement" toast */}
+          {coachToast && feedbackOn && (
+            <div className="t-in absolute right-3 top-3 z-20 w-[70%] max-w-xs rounded-2xl border p-3 backdrop-blur" style={{
+              borderColor: coachToast.kind === "improvement" ? "rgba(242,169,59,.6)" : "rgba(203,251,0,.5)",
+              background: coachToast.kind === "improvement" ? "rgba(58,38,10,.88)" : "rgba(14,24,10,.88)",
+            }}>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs">{coachToast.kind === "improvement" ? "⚠️" : "✔️"}</span>
+                <span className="text-[9px] font-semibold uppercase tracking-[.18em]" style={{ color: coachToast.kind === "improvement" ? BRAND.amber : BRAND.lime }}>{coachToast.title}</span>
+                <span className="ml-auto text-[8px] uppercase tracking-[.12em] text-white/40">AUREN</span>
+              </div>
+              <p className="mt-1 text-[12px] leading-4.5 leading-snug text-white/95">{coachToast.text}</p>
+            </div>
+          )}
+
+          {/* his line — subtitle at the bottom of the video, clear of his face */}
+          {marcusText && (
+            <button onClick={marcusTw.skip} className="absolute inset-x-3 bottom-3 z-20 rounded-2xl p-3 text-left sm:inset-x-5" style={{ background: "linear-gradient(rgba(5,7,11,.55), rgba(5,7,11,.85))", backdropFilter: "blur(3px)" }} aria-live="polite">
+              <div className="text-[9px] font-semibold uppercase tracking-[.18em]" style={{ color: BRAND.warmRed }}>Marcus{!marcusTw.done && <span className="ml-2 font-normal normal-case text-white/35">tap to skip</span>}</div>
+              <p className="mt-1 max-h-[18vh] overflow-y-auto text-[15px] leading-snug text-white sm:text-base">{marcusTw.shown}</p>
+            </button>
+          )}
+        </div>
+
+        {/* spacer for fixed input */}
+        <div style={{ height: "76px" }} />
+        {inputBar}
+      </main>
+    );
+  }
+
+  // ═══════════════ SESSION MODE · AUREN floats fixed on top, feed scrolls under ═══════════════
   return (
     <main className="min-h-screen text-white" style={{ background: `linear-gradient(160deg, #05070B, ${BRAND.deep} 45%, #0B0F16)` }}>
-      <style>{`
-        @keyframes aurenPulse { 0%,100% { opacity:1; transform:scale(1) } 50% { opacity:.5; transform:scale(.85) } }
-        @keyframes aurenPulseRing { 0% { opacity:.6; transform:scale(1) } 100% { opacity:0; transform:scale(1.3) } }
-        @keyframes aurenWave { 0%,100%{transform:scaleY(.3)} 50%{transform:scaleY(1.3)} }
-        @keyframes aurenBlink { 0%, 93%, 100% { opacity:1 } 95.5% { opacity:0 } }
-        @keyframes slideUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
-        .auren-pulse { animation: aurenPulse 1.6s ease-in-out infinite; }
-        .auren-pulse-ring { animation: aurenPulseRing 2s ease-out infinite; transform-origin:center; }
-        .auren-wave { animation: aurenWave 1.1s ease-in-out infinite; }
-        .auren-blink { animation: aurenBlink 4.6s linear infinite; }
-        .a-up { animation: slideUp .35s ease both; }
-        .no-sb { scrollbar-width:none } .no-sb::-webkit-scrollbar{ display:none }
-        .caret::after { content:"▍"; color:${BRAND.lime}; animation: aurenPulse 1s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce){ .auren-pulse,.auren-pulse-ring,.auren-wave,.auren-blink{animation:none!important} .a-up{animation:none!important} }
-      `}</style>
+      {styles}
 
-      {/* ═══════════ LAYER 1 · FIXED TOP · the Digital Human — ~46% of screen, in front of everything ═══════════ */}
+      {/* LAYER 1 · fixed top · the Digital Human — ~46% of screen */}
       <div className="fixed inset-x-0 top-0 z-50 flex flex-col" style={{ height: "46vh", background: "linear-gradient(160deg, #0A0E15, #05070B)", boxShadow: "0 22px 40px -12px rgba(0,0,0,.95), 0 1px 0 rgba(203,251,0,.15) inset" }}>
-        {/* slim brand row */}
         <div className="flex shrink-0 items-center justify-between gap-2 px-3 py-1.5 sm:px-5">
           <div className="flex items-center gap-2">
             <Mark small />
@@ -309,16 +525,15 @@ export default function AurenMvp() {
           </div>
         </div>
 
-        {/* her face — nothing overlaps it */}
         <div className="relative mx-3 min-h-0 flex-1 overflow-hidden rounded-2xl border transition-all duration-500 sm:mx-5"
           style={{ borderColor: coachFlash ? "rgba(203,251,0,.85)" : "rgba(203,251,0,.3)", boxShadow: coachFlash ? "0 0 50px rgba(203,251,0,.3)" : "none", background: "linear-gradient(150deg, rgba(23,32,51,.9), rgba(5,7,11,.98))" }}>
           <div className="absolute left-1/2 top-0 h-[260%] w-full max-w-md" style={{ transform: "translateX(-50%) translateY(-24%)", WebkitMaskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)", maskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)" }}>
-            <DigitalHumanPortrait speaking={!doneSpeaking} listening={false} />
+            <DigitalHumanPortrait speaking={!aurenTw.done} listening={false} />
           </div>
           <div className="absolute top-2 left-2.5 z-10 flex items-center gap-1.5">
             <span className="auren-pulse h-1.5 w-1.5 rounded-full" style={{ background: BRAND.lime, boxShadow: `0 0 10px ${BRAND.lime}` }} />
             <span className="rounded-full border px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[.16em]" style={{ color: BRAND.lime, borderColor: "rgba(203,251,0,.4)", background: "rgba(8,10,15,.6)" }}>
-              {!doneSpeaking ? "speaking" : "listening"}
+              {!aurenTw.done ? "speaking" : "listening"}
             </span>
           </div>
           <div className="absolute top-2 right-2.5 z-10 hidden sm:block">
@@ -326,22 +541,21 @@ export default function AurenMvp() {
           </div>
         </div>
 
-        {/* her voice — its own band BELOW her face, inside her layer */}
-        <button onClick={skip} className="mx-3 mb-2.5 mt-2 shrink-0 rounded-xl border p-2.5 text-left sm:mx-5" style={{ borderColor: "rgba(203,251,0,.3)", background: "rgba(8,10,15,.85)" }} aria-live="polite">
+        <button onClick={aurenTw.skip} className="mx-3 mb-2.5 mt-2 shrink-0 rounded-xl border p-2.5 text-left sm:mx-5" style={{ borderColor: "rgba(203,251,0,.3)", background: "rgba(8,10,15,.85)" }} aria-live="polite">
           <div className="flex items-center gap-1.5">
             <span className="text-[8px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.lime }}>AUREN</span>
-            {!doneSpeaking && <span className="text-[8px] uppercase tracking-[.14em] text-white/35">tap to skip</span>}
+            {!aurenTw.done && <span className="text-[8px] uppercase tracking-[.14em] text-white/35">tap to skip</span>}
           </div>
-          <p ref={speechRef} className={`no-sb mt-1 max-h-[9.5vh] overflow-y-auto text-[13px] leading-snug text-white/95 sm:text-sm ${!doneSpeaking ? "caret" : ""}`}>{spokenText}</p>
+          <p ref={speechRef} className={`no-sb mt-1 max-h-[9.5vh] overflow-y-auto text-[13px] leading-snug text-white/95 sm:text-sm ${!aurenTw.done ? "caret" : ""}`}>{aurenTw.shown}</p>
         </button>
       </div>
 
-      {/* ═══════════ LAYER 2 · PAGE FLOW · the conversation scrolls under her ═══════════ */}
+      {/* LAYER 2 · the conversation scrolls under her */}
       <div className="px-3 sm:px-5" style={{ paddingTop: "calc(46vh + 14px)", paddingBottom: "170px" }}>
         <div className="mx-auto max-w-3xl space-y-2.5">
           {phase === "intro" && feed.length === 0 && (
             <div className="a-up rounded-2xl border p-4 text-center" style={{ borderColor: "rgba(247,248,250,.1)", background: "rgba(247,248,250,.03)" }}>
-              <p className="text-sm text-white/80">One live session: interview → AILS score → scam rehearsal → evidential scorecard.</p>
+              <p className="text-sm text-white/80">One live session: interview → AILS score → roleplay rehearsal → evidential scorecard.</p>
               <p className="mt-1 text-xs text-white/50">She stays floating above — the conversation scrolls here, beneath her.</p>
             </div>
           )}
@@ -363,7 +577,7 @@ export default function AurenMvp() {
               <div key={i} className="a-up max-w-[88%] rounded-2xl rounded-tl-md border p-3" style={{ borderColor: "rgba(255,107,107,.4)", background: "rgba(255,107,107,.09)" }}>
                 <div className="flex items-center gap-1.5">
                   <span className="grid h-5 w-5 place-items-center rounded-full text-[9px] font-bold" style={{ background: "rgba(255,107,107,.25)", color: BRAND.warmRed }}>M</span>
-                  <span className="text-[9px] font-semibold uppercase tracking-[.16em]" style={{ color: BRAND.warmRed }}>"Marcus" · simulated · AI persona</span>
+                  <span className="text-[9px] font-semibold uppercase tracking-[.16em]" style={{ color: BRAND.warmRed }}>"Marcus" · roleplay</span>
                 </div>
                 <p className="mt-1 text-sm leading-6 text-white/95">{m.text}</p>
               </div>
@@ -440,34 +654,8 @@ export default function AurenMvp() {
         </div>
       </div>
 
-      {/* ═══════════ LAYER 3 · FIXED BOTTOM · the input — you talk to her ═══════════ */}
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t px-3 pb-3 pt-2.5 sm:px-5" style={{ borderColor: "rgba(247,248,250,.08)", background: "rgba(5,7,11,.94)", backdropFilter: "blur(10px)" }}>
-        <div className="mx-auto max-w-3xl">
-          <div className="flex items-center gap-2">
-            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border" style={{ borderColor: "rgba(247,248,250,.2)", background: "rgba(247,248,250,.05)" }} title="Voice input — production build">
-              <span style={{ color: doneSpeaking ? BRAND.lime : "rgba(247,248,250,.35)" }}>🎙</span>
-            </div>
-            <input ref={inputRef} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && submit()}
-              placeholder={doneSpeaking ? placeholder : "AUREN is speaking…"} disabled={!doneSpeaking || awaiting === "done"} autoComplete="off"
-              className="min-w-0 flex-1 rounded-full border bg-transparent px-4 py-2.5 text-sm text-white placeholder-white/40 outline-none transition focus:border-white/60 disabled:opacity-50"
-              style={{ borderColor: "rgba(247,248,250,.25)", background: "rgba(247,248,250,.04)" }} />
-            <button onClick={() => submit()} disabled={!doneSpeaking || !input.trim() || awaiting === "done"}
-              className="shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:opacity-40" style={{ background: BRAND.lime, color: BRAND.graphite }}>
-              Send
-            </button>
-          </div>
-          {doneSpeaking && chips.length > 0 && awaiting !== "done" && (
-            <div className="no-sb mt-1.5 flex items-center gap-1.5 overflow-x-auto px-1">
-              <span className="shrink-0 text-[8px] uppercase tracking-[.16em] text-white/35">or try:</span>
-              {chips.map(c => (
-                <button key={c} onClick={() => submit(c)} className="shrink-0 rounded-full border px-2.5 py-0.5 text-[11px] text-white/60 transition hover:text-white hover:border-white/50" style={{ borderColor: "rgba(247,248,250,.15)" }}>
-                  {c}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      {/* LAYER 3 · fixed bottom · input */}
+      {inputBar}
     </main>
   );
 }
