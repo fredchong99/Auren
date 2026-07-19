@@ -230,6 +230,10 @@ export default function AurenMvp({ onExit }) {
 
   const [phase, setPhase] = useState("intro");
   const [name, setName] = useState("");
+  const [band, setBand] = useState(null);
+  const [day2Done, setDay2Done] = useState(false);
+  const interviewIds = useRef([]);
+  const bandRef = useRef(band); bandRef.current = band;
   const [dims, setDims] = useState({ IR: 35, AL: 33, RA: 45, SR: 34, BS: 45 });
   const [startDims, setStartDims] = useState(null);
   const [feed, setFeed] = useState([]);
@@ -284,13 +288,26 @@ export default function AurenMvp({ onExit }) {
     clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setCoachToast(null), 9000);
   };
-  const marcusSays = (idx, delay = 0) => {
+  const marcusLine = (text, delay = 0) => {
     setTimeout(() => {
-      const text = STR[langRef.current].marcus[idx];
       setMarcusText(text); push({ type: "marcus", text });
       voice(text, "marcus");
     }, delay);
   };
+  // Band-matched persona sophistication: Confident/Advanced face the polished
+  // recruiter script; Novice/Developing face the classic WhatsApp pattern.
+  const marcusSays = (idx, delay = 0) => {
+    setTimeout(() => {
+      const Lc = STR[langRef.current];
+      const hard = (bandRef.current === "confident" || bandRef.current === "advanced") && Lc.marcusPro;
+      const text = (hard ? Lc.marcusPro : Lc.marcus)[idx];
+      setMarcusText(text); push({ type: "marcus", text });
+      voice(text, "marcus");
+    }, delay);
+  };
+  // Coaching intensity by level: full (live coach + positive notes) · light
+  // (intervene on risk only) · observer (silent, debrief at the end).
+  const coachStyle = band === "advanced" ? "observer" : band === "confident" ? "light" : "full";
   const skipCurrent = () => { stopSpeech(); (roleplay ? marcusTw : aurenTw).skip(); };
 
   const submit = (raw) => {
@@ -313,6 +330,7 @@ export default function AurenMvp({ onExit }) {
       push({ type: "user", text });
       const qi = Number(awaiting.slice(1));
       const r = classifyInterview(qi, text);
+      interviewIds.current.push(r.id);
       setDims(d => { const nd = { ...d }; for (const [k, v] of Object.entries(r.adj)) nd[k] = Math.max(5, Math.min(95, nd[k] + v)); return nd; });
       push({ type: "obs", obsId: r.id, adj: r.adj });
       const reaction = L.reacts[r.id](name, frag(text));
@@ -327,9 +345,15 @@ export default function AurenMvp({ onExit }) {
       setStartDims(prev => prev ?? snap);
       setPhase("ails"); setAwaiting("ready-rehearsal");
       const score = Math.round(Object.values(snap).reduce((a, b) => a + b, 0) / 5);
-      push({ type: "ails", dims: snap, score });
+      // Level band from interview signals — this routes difficulty and coaching.
+      const ids = interviewIds.current;
+      const strong = ids.filter(i => i === "evidence" || i === "plan").length;
+      const risky = ids.filter(i => i === "aiTrust" || i === "social" || i === "sell").length;
+      const b = strong >= 2 && risky === 0 ? "advanced" : strong >= 1 && risky <= 1 ? "confident" : risky >= 2 ? "novice" : "developing";
+      setBand(b);
+      push({ type: "ails", dims: snap, score, band: b });
       const weak = DIM_KEYS.filter(k => snap[k] < 40).map(k => L.dims[k]).join(lang === "ms" ? " dan " : " and ") || L.weakestNone;
-      say(L.ailsLine(name, score, weak));
+      say(L.ailsLine(name, score, weak) + " " + L.bandLine(L.bands[b]));
       return;
     }
 
@@ -338,8 +362,24 @@ export default function AurenMvp({ onExit }) {
       push({ type: "sys", key: "roleplaySys" });
       setPhase("rehearsal"); setAwaiting("r0");
       stopSpeech();
-      toast({ kind: "auren", text: L.watchToast });
+      toast({ kind: "auren", text: coachStyle === "observer" ? L.ui.observerNote : L.watchToast });
       marcusSays(0, 500);
+      return;
+    }
+
+    if (awaiting === "d0") {
+      push({ type: "user", text, toMarcus: true });
+      const v = classifyRehearsal(2, text);
+      const pass = v.tone !== "risky";
+      setDims(d => ({ ...d, [v.dim]: Math.max(5, Math.min(95, d[v.dim] + v.delta)) }));
+      push({ type: "obs", sig: v.sig, dim: v.dim, delta: v.delta, tone: v.tone });
+      setAwaiting("done");
+      setTimeout(() => {
+        setPhase("scorecard");
+        setMarcusText(""); setCoachToast(null);
+        say(L.day2Close(name, pass));
+        push({ type: "day2", pass, quote: text, sig: v.sig, dim: v.dim, delta: v.delta });
+      }, 1500);
       return;
     }
 
@@ -351,13 +391,13 @@ export default function AurenMvp({ onExit }) {
       setDims(d => ({ ...d, [v.dim]: Math.max(5, Math.min(95, d[v.dim] + v.delta)) }));
       push({ type: "obs", sig: v.sig, dim: v.dim, delta: v.delta, tone: v.tone });
 
-      if (feedbackOn) {
+      if (feedbackOn && coachStyle !== "observer") {
         if (v.coach) {
           push({ type: "auren", text: L.coach[v.coach] });
           setCoachFlash(true); setTimeout(() => setCoachFlash(false), 2600);
           toast({ kind: "improvement", text: L.coach[v.coach] });
           voice(L.coach[v.coach], "auren");
-        } else {
+        } else if (coachStyle === "full") {
           toast({ kind: "good", sig: v.sig, text: L.ana[v.ana] });
         }
       }
@@ -386,11 +426,26 @@ export default function AurenMvp({ onExit }) {
     toast({ kind: "auren", text: L.watchToastAgain(name) });
     marcusSays(0, 500);
   };
+  // Simulated Day-2 return: she remembers the weakest moment and retests the
+  // same behavioural pattern in a new disguise, silently — one turn.
+  const worstEvidence = () => evidence.find(e => e.tone === "risky")
+    || (evidence.length ? evidence.reduce((a, b) => (b.delta < a.delta ? b : a), evidence[0]) : null);
+  const returnTomorrow = () => {
+    const worst = worstEvidence();
+    if (!worst) return;
+    setDay2Done(true);
+    stopSpeech();
+    push({ type: "sys", key: "day2Sys" });
+    setPhase("rehearsal"); setAwaiting("d0");
+    toast({ kind: "auren", text: L.day2Greet(name, frag(worst.quote, 44)) });
+    marcusLine(STR[langRef.current].marcusDay2, 600);
+  };
   const restart = () => {
     stopSpeech();
     setPhase("intro"); setName(""); setDims({ IR: 35, AL: 33, RA: 45, SR: 34, BS: 45 });
     setStartDims(null); setFeed([]); setEvidence([]); setAwaiting("name"); setInput("");
     setMarcusText(""); setCoachToast(null);
+    setBand(null); setDay2Done(false); interviewIds.current = [];
     currentLine.current = "";
     say(L.greetingAgain);
   };
@@ -404,12 +459,12 @@ export default function AurenMvp({ onExit }) {
   const chips = awaiting === "name" ? L.chips.name
     : awaiting === "q0" ? L.chips.q0 : awaiting === "q1" ? L.chips.q1 : awaiting === "q2" ? L.chips.q2
     : awaiting === "ready-ails" || awaiting === "ready-rehearsal" ? L.chips.ready
-    : awaiting === "r0" ? L.chips.r0 : awaiting === "r1" ? L.chips.r1 : awaiting === "r2" ? L.chips.r2 : [];
+    : awaiting === "r0" ? L.chips.r0 : awaiting === "r1" ? L.chips.r1 : awaiting === "r2" || awaiting === "d0" ? L.chips.r2 : [];
 
   const placeholder = awaiting === "name" ? L.ui.phName
     : awaiting.startsWith("q") ? L.ui.phAnswer
     : awaiting.startsWith("ready") ? L.ui.phReady
-    : awaiting.startsWith("r") ? L.ui.phMarcus
+    : awaiting.startsWith("r") || awaiting === "d0" ? L.ui.phMarcus
     : L.ui.phDone;
 
   // language + voice controls (both modes)
@@ -638,7 +693,10 @@ export default function AurenMvp({ onExit }) {
               <div key={i} className="a-up rounded-2xl border p-4" style={{ borderColor: "rgba(203,251,0,.4)", background: "rgba(8,10,15,.6)" }}>
                 <div className="flex items-baseline justify-between">
                   <span className="text-[10px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.lime }}>{L.ui.ailsTitle}</span>
-                  <span className="font-mono text-3xl font-bold" style={{ color: BRAND.lime }}>{m.score}</span>
+                  <span className="flex items-baseline gap-2">
+                    {m.band && <span className="rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[.14em]" style={{ borderColor: "rgba(216,181,109,.5)", color: BRAND.gold }}>{L.ui.levelLabel} · {L.bands[m.band]}</span>}
+                    <span className="font-mono text-3xl font-bold" style={{ color: BRAND.lime }}>{m.score}</span>
+                  </span>
                 </div>
                 <div className="mt-2.5 space-y-1.5">
                   {DIM_KEYS.map(k => (
@@ -686,7 +744,30 @@ export default function AurenMvp({ onExit }) {
                   <span className="text-[8px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.regYellow }}>{L.ui.regSees}</span>
                   <p className="mt-1 text-[11px] leading-4 text-white/80">{L.ui.regBody(verdict === "certified" ? L.ui.regPassed : evidence[2] && evidence[2].tone === "risky" ? L.ui.regFailed : L.ui.regCoached)}</p>
                 </div>
+                {(() => { const w = worstEvidence(); return w ? (
+                  <div className="mt-2.5 rounded-xl border p-3" style={{ borderColor: "rgba(216,181,109,.45)", background: "rgba(216,181,109,.07)" }}>
+                    <span className="text-[8px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.gold }}>{L.ui.nextSessionTitle}</span>
+                    <p className="mt-1 text-[11px] leading-4 text-white/80">{L.nextSessionBody(L.sig[w.sig])}</p>
+                  </div>
+                ) : null; })()}
                 <div className="mt-3.5 flex flex-wrap gap-2">
+                  {!day2Done && <button onClick={returnTomorrow} className="rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: BRAND.lime, color: BRAND.graphite }}>{L.ui.returnTomorrow}</button>}
+                  <button onClick={rehearseAgain} className="rounded-full border px-4 py-2 text-[13px] font-semibold text-white/90" style={{ borderColor: "rgba(203,251,0,.4)" }}>{L.ui.rehearseAgain}</button>
+                  <button onClick={restart} className="rounded-full border px-4 py-2 text-[13px] font-semibold text-white/90" style={{ borderColor: "rgba(247,248,250,.3)" }}>{L.ui.restart}</button>
+                </div>
+              </div>
+            );
+            if (m.type === "day2") return (
+              <div key={i} className="a-up rounded-2xl border p-4" style={{ borderColor: m.pass ? "rgba(203,251,0,.5)" : "rgba(242,169,59,.55)", background: "rgba(8,10,15,.65)" }}>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-[.2em]" style={{ color: m.pass ? BRAND.lime : BRAND.amber }}>{L.ui.retestTitle}</span>
+                  <span className="rounded-full border px-2.5 py-0.5 font-mono text-[11px]" style={{ borderColor: m.pass ? "rgba(203,251,0,.5)" : "rgba(242,169,59,.5)", color: m.pass ? BRAND.lime : BRAND.amber }}>
+                    {L.dims[m.dim]} {m.delta > 0 ? "+" : ""}{m.delta} · AIRS {ails}
+                  </span>
+                </div>
+                <p className="mt-2 border-l-2 pl-2.5 text-[13px] italic text-white/95" style={{ borderColor: m.pass ? BRAND.lime : BRAND.amber }}>"{m.quote}"</p>
+                <p className="mt-1.5 text-[12px] leading-5 text-white/75">{m.pass ? L.ui.retestPass : L.ui.retestFail}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
                   <button onClick={rehearseAgain} className="rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: BRAND.lime, color: BRAND.graphite }}>{L.ui.rehearseAgain}</button>
                   <button onClick={restart} className="rounded-full border px-4 py-2 text-[13px] font-semibold text-white/90" style={{ borderColor: "rgba(247,248,250,.3)" }}>{L.ui.restart}</button>
                 </div>

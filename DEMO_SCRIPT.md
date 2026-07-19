@@ -24,8 +24,10 @@ Tap the ☰ menu once, let them see the eleven-section sitemap — point at **Me
 - Q3: type `I'd sell everything`
 Point at the **observed** chips and the AIRS chip appearing in the header.
 
-**Beat 4 · The score (15s).** Type `ready`. Her card shows the five dimensions. One line from you:
-> "Assessment happened inside a conversation. No quiz. This is the AUREN Investor Readiness Score — AIRS — and it updates with every word from now on."
+**Beat 4 · The score (20s).** Type `ready`. Her card shows the five dimensions **plus your assigned level band** (the answers above produce *Novice*). One line from you:
+> "Assessment happened inside a conversation. No quiz. This is the AUREN Investor Readiness Score — AIRS — with a level. The level isn't a label: it routes everything — which scam persona I face, and how much she intervenes. A sophisticated investor answering these questions would get a smoother, harder scammer and silent-observer coaching. Two people, two different products."
+
+(If an investor wants proof: restart and answer Q2 with `my own research — filings and fees` and Q3 with `I'd check my written plan` — the band becomes Advanced, Marcus turns into a polished "allocation desk" recruiter, and AUREN goes silent-observer.)
 
 **Beat 5 · The rehearsal — fail on purpose (60s).** Type `ready`. Marcus fills the screen; AUREN moves to the corner, watching.
 - Reply 1 — **deliberately fail**: type `sure sounds great, how do I sign up?` → the sentiment chip drops to 😟 −3 and the amber **⚠ Improvement** card appears. Say: *"That's the product: she caught me capitulating, live, mid-conversation — before any money moved."*
@@ -38,6 +40,14 @@ Point at the **observed** chips and the AIRS chip appearing in the header.
 
 **Beat 7 · The evidence (30s).** She returns and hands over the scorecard. Scroll it slowly:
 > "My own words, turn-stamped, scored — 'you can't pass by memorizing a script.' And this yellow card is what the regulator receives: one anonymized data point. At population scale, an early-warning sensor network for emerging fraud."
+
+Point at the gold **Booked for your next session** box: *"She just told me exactly what she'll retest — unprompted, in a new disguise."*
+
+**Beat 8 · The loop (40s — this is the differentiator).** Tap **Return tomorrow ↻ · simulated**.
+- She greets you by name and quotes *your own failed line from yesterday*. Say: "She remembers."
+- A new scam arrives — different pitch, same trap underneath. Answer with the verification line: `I'll verify this offline before I do anything`.
+- The **Retest** card confirms: *"Pattern recognized — the behaviour transferred to a brand-new variation, unprompted."* Say to the room:
+> "That's the product. Not one lesson — a feedback loop: assess, rehearse, coach, retest until the behavior transfers. A course ends. AUREN comes back."
 
 **Close.** Tap **Rehearse again ↻**, hand them the device now if they want to play, and say:
 > "Everything you just saw is scripted intelligence in a prototype shell. In production this runs on the HoloMe Platform — BYOND Asia's Physical AI Interface stack: photoreal avatar, live voice, and Nexus-grounded intelligence — same flow you just used. That's the build we're raising for."

@@ -429,9 +429,52 @@ The purpose is not to guarantee that an investor will never make a mistake or fa
 
 ---
 
-# Part Five — Measurement and Certification
+# Part Five — The Investor Journey Over Time
 
-## 14. The AUREN Investor Readiness Score (AIRS)
+## 14. Two Front Doors
+
+The platform is entered through two deliberately different front doors.
+
+**Direct-to-consumer.** The retail investor meets AUREN before creating an account. She conducts the onboarding conversation as a guest session and presents the starting readiness picture. Only then does she invite the investor to register — to keep the score, and to let her remember them. Identity verification is not requested at the door; eKYC and liveness are reserved for the certification gate, where the credential must be trustworthy. Value first, commitment second.
+
+**Institutional.** When a bank, broker, university or regulator issues the seat, the order inverts: the investor arrives through institutional authentication or eKYC, and AUREN's opening acknowledges the context — the institution has asked her to prepare the investor before a product is activated, a course is credited or a campaign objective is met.
+
+The journey that follows is the same in both cases. Only the door differs.
+
+## 15. Levels, Not Menus
+
+The onboarding conversation does more than open the relationship. It routes it.
+
+AUREN's interview is adaptive: each answer determines the next probe, so an experienced trader is never asked what a stock is, and a first-time investor is never confronted with portfolio theory. From a few minutes of conversation the platform assigns a starting level band — **Novice, Developing, Confident or Advanced** — alongside the five-dimension readiness profile.
+
+The band silently configures the journey:
+
+- **Scenario difficulty.** A novice faces the classic, recognisable recruitment pattern. An advanced investor faces the polished version — credible language, plausible credentials, professional pressure.
+- **Coaching intensity.** A novice receives live intervention at the first risky move. A confident investor is coached only when risk actually appears. An advanced investor is observed in silence and receives the full debrief at the end — the mode of a professional assessment.
+- **Persona sophistication.** The adversary is always calibrated to be worth beating.
+
+The investor never chooses from a menu of courses. AUREN prescribes — because a mentor who asks "what would you like to learn?" is not assessing, and a platform that gives every investor the same three questions is not personalising.
+
+## 16. The Feedback Loop That Brings Investors Back
+
+A single session proves a mechanic. Readiness is built by the loop.
+
+Every session ends with a booked next action: AUREN names the one behaviour she will retest — unprompted, in a new disguise — the next time the investor returns. When they do, she opens with memory: the exact words of the weakest moment, and a fresh variation of the same underlying trap. Passing the variation is worth more than passing the original, because it demonstrates pattern recognition rather than memorisation.
+
+Across weeks, the loop compounds:
+
+- **Spaced retesting.** Failed moments return as variations at increasing intervals until the behaviour transfers.
+- **Readiness decay.** A dimension left untested for too long is honestly marked as unverified — because real readiness decays, and saying so is both accurate and motivating.
+- **Live-threat drills.** Scenario libraries are refreshed from regulator advisories, so a typology circulating in a market this week becomes a rehearsal in that market this week. The early-warning network runs in both directions: investor behaviour informs the regulator, and the regulator's intelligence becomes the next drill.
+- **Certification, then maintenance.** Certification is a milestone inside the relationship, not the end of it. Certified investors receive periodic unannounced drills and event-triggered sessions — a market shock prompts a discipline rehearsal that same day.
+
+This loop is also the platform's defensibility. Scenario content can be imitated. An investor's accumulated behavioural history with a mentor who remembers them cannot.
+
+---
+
+# Part Six — Measurement and Certification
+
+## 17. The AUREN Investor Readiness Score (AIRS)
 
 The AUREN Investor Readiness Score — **AIRS** — reflects demonstrated performance across the five readiness dimensions.
 
@@ -456,7 +499,7 @@ AUREN measures behaviour demonstrated within the platform.
 
 **The score should not be presented as a guarantee of future conduct or complete immunity from fraud.** Its purpose is to provide a structured and evidence-based view of investor preparedness.
 
-## 15. Certification of Demonstrated Competency
+## 18. Certification of Demonstrated Competency
 
 Traditional certification often confirms that an investor completed a course.
 
@@ -480,9 +523,9 @@ Every classification remains connected to transcript evidence and the applicable
 
 ---
 
-# Part Six — Institutional and Regulatory Value
+# Part Seven — Institutional and Regulatory Value
 
-## 16. From One Investor to Market-Level Intelligence
+## 19. From One Investor to Market-Level Intelligence
 
 AUREN begins with a personal relationship between one investor and one digital human.
 
@@ -505,7 +548,7 @@ Subject to privacy, consent and regulatory requirements, anonymised analytics ma
 
 This enables regulators and institutions to evaluate not only how many people completed an education programme, but whether observable behaviour changed.
 
-## 17. The Regulator Dashboard
+## 20. The Regulator Dashboard
 
 The regulator dashboard can provide four categories of insight.
 
@@ -521,7 +564,7 @@ The objective is not surveillance of individual investors.
 
 The objective is to provide privacy-conscious, population-level insight that helps improve investor-protection strategy.
 
-## 18. Value for Banks, Brokers and Universities
+## 21. Value for Banks, Brokers and Universities
 
 AUREN can also support regulated institutions and educational organisations.
 
@@ -533,9 +576,9 @@ AUREN can also support regulated institutions and educational organisations.
 
 ---
 
-# Part Seven — Cross-Jurisdictional Deployment
+# Part Eight — Cross-Jurisdictional Deployment
 
-## 19. One AUREN, Many Languages and Markets
+## 22. One AUREN, Many Languages and Markets
 
 AUREN is designed to maintain a consistent identity while adapting to different languages, cultures and regulatory environments.
 
@@ -566,9 +609,9 @@ Configuration, not code changes, is the localization mechanism. This is how a si
 
 ---
 
-# Part Eight — The Technology Behind AUREN
+# Part Nine — The Technology Behind AUREN
 
-## 20. Powered by the HoloMe Platform
+## 23. Powered by the HoloMe Platform
 
 AUREN is built by BYOND Asia and powered by the HoloMe Platform.
 
@@ -580,7 +623,7 @@ This matters because AUREN is not an isolated avatar or one-time prototype. She 
 
 > The interface evolves. The platform remains. The place is permanent.
 
-## 21. The Three Brain Architecture
+## 24. The Three Brain Architecture
 
 AUREN is supported by the HoloMe **Three Brain Architecture** — Persona, Knowledge and Real-Time.
 
@@ -592,7 +635,7 @@ AUREN is supported by the HoloMe **Three Brain Architecture** — Persona, Knowl
 
 Together, these three intelligence systems allow AUREN to feel human while remaining grounded, configurable and auditable.
 
-## 22. HoloMe Studio: The Deployment Factory
+## 25. HoloMe Studio: The Deployment Factory
 
 HoloMe Studio enables new AUREN deployments to be configured for different institutions and jurisdictions.
 
@@ -600,7 +643,7 @@ Through Studio, deployments can define AUREN's language and voice, local scenari
 
 This allows localisation to occur through configuration and content production rather than a complete platform rebuild.
 
-## 23. The Trust Layer
+## 26. The Trust Layer
 
 Regulated deployment requires more than an engaging interface.
 
@@ -612,9 +655,9 @@ The design principle: **no important score, classification or institutional insi
 
 ---
 
-# Part Nine — Answering the IOSCO Problem Statements
+# Part Ten — Answering the IOSCO Problem Statements
 
-## 24. Problem Statement One: AI-Enabled Fraud and Scams
+## 27. Problem Statement One: AI-Enabled Fraud and Scams
 
 IOSCO's first challenge concerns how technology can help retail investors identify and avoid AI-enabled fraud and scams, including deepfakes and social-media manipulation, across jurisdictions and cultural contexts.
 
@@ -632,7 +675,7 @@ AUREN reinforces the central rule:
 
 > **Never act on a financial claim from a source, person or entity that cannot be independently verified.**
 
-## 25. Problem Statement Two: Safe and Informed Use of AI
+## 28. Problem Statement Two: Safe and Informed Use of AI
 
 IOSCO's second challenge concerns how retail investors can use AI to learn about capital markets while understanding hallucinations, transparency limits and explainability constraints.
 
@@ -656,7 +699,7 @@ The objective is not distrust of AI.
 
 It is disciplined and informed use.
 
-## 26. How AUREN Maps to the Assessment Criteria
+## 29. How AUREN Maps to the Assessment Criteria
 
 | IOSCO criterion | How AUREN answers it |
 |---|---|
@@ -667,9 +710,9 @@ It is disciplined and informed use.
 
 ---
 
-# Part Ten — The Working Prototype
+# Part Eleven — The Working Prototype
 
-## 27. What Exists Today
+## 30. What Exists Today
 
 AUREN is not only a concept on paper.
 
@@ -677,14 +720,16 @@ A working interactive prototype — at prototype stage — demonstrates the comp
 
 - one continuous session hosted by the AUREN mentor *(the continuity thesis, Part Two)*;
 - conversational onboarding *(Stage 1)*;
-- generation of an initial readiness profile *(Stage 2)*;
+- generation of an initial readiness profile with an assigned level band — Novice, Developing, Confident or Advanced *(Stage 2 · Part Five)*;
+- level-matched routing: the band selects the adversarial persona's sophistication and AUREN's coaching intensity, from live intervention to silent-observer mode with a full debrief *(Part Five)*;
 - a full-screen scam role-play with a separate adversarial persona *(Stage 4)*;
 - AUREN visibly present as coach during the interaction, with real-time coaching prompts *(Stage 5)*;
 - sentiment and response analysis *(Stage 5)*;
 - evidence-based scoring and transcript-level competency mapping *(Stage 6)*;
 - classification as certified, needs review or requires retraining *(Stage 7)*;
-- multilingual experience in English, Bahasa Melayu and Spanish, with spoken voice *(Part Seven)*;
-- regulator-view demonstration and anonymised session analytics *(Part Six)*.
+- a booked next action closing every scorecard, and a simulated next-day return in which AUREN recalls the weakest moment and retests the same pattern in a new disguise *(Part Five — the feedback loop, demonstrated)*;
+- multilingual experience in English, Bahasa Melayu and Spanish, with spoken voice *(Part Eight)*;
+- regulator-view demonstration and anonymised session analytics *(Part Seven)*.
 
 The prototype proves the learning and assessment mechanic.
 
@@ -692,9 +737,9 @@ The HoloMe Platform provides the path to production deployment: the production b
 
 ---
 
-# Part Eleven — Deployment Pathways
+# Part Twelve — Deployment Pathways
 
-## 28. Five Deployment Models
+## 31. Five Deployment Models
 
 AUREN can be deployed through five primary pathways.
 
@@ -712,9 +757,9 @@ Across each pathway, AUREN remains the visible mentor. The deployment channel ma
 
 ---
 
-# Part Twelve — The Madrid Demonstration
+# Part Thirteen — The Madrid Demonstration
 
-## 29. What We Will Show
+## 32. What We Will Show
 
 On Demo Day — 8 October 2026, in Madrid — AUREN will be presented to a judging panel of thirty-nine Committee 8 Plenary members and the IOSCO Secretary General.
 
@@ -722,7 +767,7 @@ The judges will meet AUREN.
 
 A participant will begin with a natural conversation. AUREN will identify a potential vulnerability. She will introduce a realistic investment-risk scenario. A separate adversarial persona will apply pressure. AUREN will remain present, observing and coaching. The participant will make decisions in real time.
 
-At the end of the scenario, AUREN will return to the participant's exact words and explain which responses demonstrated readiness and which exposed vulnerability. The Investor Readiness Score will update. The regulator dashboard will then show how the interaction becomes an anonymised data point within a wider population-level view.
+At the end of the scenario, AUREN will return to the participant's exact words and explain which responses demonstrated readiness and which exposed vulnerability. The Investor Readiness Score will update, and AUREN will book the next session — naming the one behaviour she will retest. A simulated next-day return will then show the loop itself: she remembers the weakest moment and retests the same pattern in a new disguise. The regulator dashboard will then show how the interaction becomes an anonymised data point within a wider population-level view.
 
 The demonstration will not only show a digital human.
 
@@ -730,9 +775,9 @@ It will show a complete investor-readiness relationship.
 
 ---
 
-# Part Thirteen — The Strategic Proposition
+# Part Fourteen — The Strategic Proposition
 
-## 30. From Education to Readiness
+## 33. From Education to Readiness
 
 Investor protection has traditionally focused on warnings, educational content and access to information.
 
