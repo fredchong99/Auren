@@ -132,14 +132,15 @@ export default function AurenMvp() {
   const [coachFlash, setCoachFlash] = useState(false);
   const { shown: spokenText, done: doneSpeaking, skip } = useTypewriter(aurenText);
   const inputRef = useRef(null);
-  const feedRef = useRef(null);
+  const speechRef = useRef(null);
   const currentLine = useRef(aurenText);
 
   const ails = Math.round(Object.values(dims).reduce((a, b) => a + b, 0) / 5);
   const startAils = startDims ? Math.round(Object.values(startDims).reduce((a, b) => a + b, 0) / 5) : null;
 
   useEffect(() => { if (doneSpeaking && inputRef.current) inputRef.current.focus(); }, [doneSpeaking, awaiting]);
-  useEffect(() => { if (feedRef.current) feedRef.current.scrollTo({ top: feedRef.current.scrollHeight, behavior: "smooth" }); }, [feed, spokenText.length > 0 && doneSpeaking]);
+  useEffect(() => { window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" }); }, [feed]);
+  useEffect(() => { if (speechRef.current) speechRef.current.scrollTop = speechRef.current.scrollHeight; }, [spokenText]);
 
   const push = (item) => setFeed(f => [...f, item]);
 
@@ -272,8 +273,12 @@ export default function AurenMvp() {
     : "Session complete — restart below";
 
   // ───────────────────────────── render ─────────────────────────────
+  // Three true layers:
+  //   z-50 FIXED TOP    — the Digital Human, ~46% of the screen, never covered
+  //   page flow         — the conversation feed, scrolls UNDER her layer
+  //   z-50 FIXED BOTTOM — the input bar
   return (
-    <main className="flex h-screen flex-col text-white" style={{ background: `radial-gradient(circle at 80% 0%, rgba(203,251,0,.08), transparent 32%), linear-gradient(160deg, #05070B, ${BRAND.deep} 45%, #0B0F16)` }}>
+    <main className="min-h-screen text-white" style={{ background: `linear-gradient(160deg, #05070B, ${BRAND.deep} 45%, #0B0F16)` }}>
       <style>{`
         @keyframes aurenPulse { 0%,100% { opacity:1; transform:scale(1) } 50% { opacity:.5; transform:scale(.85) } }
         @keyframes aurenPulseRing { 0% { opacity:.6; transform:scale(1) } 100% { opacity:0; transform:scale(1.3) } }
@@ -285,59 +290,59 @@ export default function AurenMvp() {
         .auren-wave { animation: aurenWave 1.1s ease-in-out infinite; }
         .auren-blink { animation: aurenBlink 4.6s linear infinite; }
         .a-up { animation: slideUp .35s ease both; }
+        .no-sb { scrollbar-width:none } .no-sb::-webkit-scrollbar{ display:none }
         .caret::after { content:"▍"; color:${BRAND.lime}; animation: aurenPulse 1s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce){ .auren-pulse,.auren-pulse-ring,.auren-wave,.auren-blink{animation:none!important} .a-up{animation:none!important} }
       `}</style>
 
-      {/* ═══ FLOATING LAYER · the Digital Human — always on top, never covered ═══ */}
-      <div className="z-40 shrink-0 px-3 pt-3 sm:px-5" style={{ boxShadow: "0 18px 30px -18px rgba(0,0,0,.85)" }}>
-        <div className="mx-auto max-w-3xl">
-          <div className="flex items-center justify-between gap-3 pb-2">
-            <div className="flex items-center gap-2.5">
-              <Mark small />
-              <div>
-                <div className="text-xs font-semibold tracking-[.18em]">AUREN <span className="font-normal text-white/50">· live session</span></div>
-                <div className="text-[8px] uppercase tracking-[.2em] text-white/45">Investor Intelligence Academy · MVP</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {startDims && <span className="rounded-full border px-2.5 py-0.5 font-mono text-[11px]" style={{ borderColor: "rgba(203,251,0,.4)", color: BRAND.lime, background: "rgba(203,251,0,.07)" }}>AILS {ails}</span>}
-              <Pill tone="muted">Not advice</Pill>
-            </div>
+      {/* ═══════════ LAYER 1 · FIXED TOP · the Digital Human — ~46% of screen, in front of everything ═══════════ */}
+      <div className="fixed inset-x-0 top-0 z-50 flex flex-col" style={{ height: "46vh", background: "linear-gradient(160deg, #0A0E15, #05070B)", boxShadow: "0 22px 40px -12px rgba(0,0,0,.95), 0 1px 0 rgba(203,251,0,.15) inset" }}>
+        {/* slim brand row */}
+        <div className="flex shrink-0 items-center justify-between gap-2 px-3 py-1.5 sm:px-5">
+          <div className="flex items-center gap-2">
+            <Mark small />
+            <span className="text-[11px] font-semibold tracking-[.18em]">AUREN <span className="font-normal text-white/45">· live session</span></span>
           </div>
-
-          {/* her window — compact, fixed height, face-cropped */}
-          <div className="relative overflow-hidden rounded-3xl border transition-all duration-500"
-            style={{ height: "min(31vh, 260px)", borderColor: coachFlash ? "rgba(203,251,0,.85)" : "rgba(203,251,0,.3)", boxShadow: coachFlash ? "0 0 50px rgba(203,251,0,.3)" : "0 0 40px rgba(203,251,0,.06)", background: "linear-gradient(150deg, rgba(23,32,51,.9), rgba(5,7,11,.98))" }}>
-            {/* face crop: portrait scaled+shifted so the FACE fills the strip */}
-            <div className="absolute left-1/2 top-0 h-[260%] w-full max-w-md" style={{ transform: "translateX(-50%) translateY(-24%)", WebkitMaskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)", maskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)" }}>
-              <DigitalHumanPortrait speaking={!doneSpeaking} listening={false} />
-            </div>
-            <div className="absolute inset-x-0 bottom-0 h-16" style={{ background: "linear-gradient(transparent, rgba(5,7,11,.9))" }} />
-            <div className="absolute top-2.5 left-3 z-10 flex items-center gap-2">
-              <span className="auren-pulse h-1.5 w-1.5 rounded-full" style={{ background: BRAND.lime, boxShadow: `0 0 10px ${BRAND.lime}` }} />
-              <span className="rounded-full border px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-[.18em]" style={{ color: BRAND.lime, borderColor: "rgba(203,251,0,.4)", background: "rgba(8,10,15,.6)" }}>
-                {!doneSpeaking ? "AUREN · speaking" : "AUREN · listening"}
-              </span>
-            </div>
-            <div className="absolute top-2.5 right-3 z-10 hidden sm:block">
-              <span className="rounded-full border px-2.5 py-0.5 text-[9px] uppercase tracking-[.14em] text-white/60" style={{ borderColor: "rgba(247,248,250,.2)", background: "rgba(8,10,15,.6)" }}>EN · 中文 · عربي · BM · ES</span>
-            </div>
-            {/* her current line — live subtitle inside her own layer */}
-            <button onClick={skip} className="absolute inset-x-2.5 bottom-2.5 z-10 rounded-xl border p-2.5 text-left backdrop-blur-sm" style={{ borderColor: "rgba(203,251,0,.3)", background: "rgba(5,7,11,.72)" }} aria-live="polite">
-              <p className={`max-h-20 overflow-y-auto text-[13px] leading-snug text-white/95 sm:text-sm ${!doneSpeaking ? "caret" : ""}`}>{spokenText}</p>
-            </button>
+          <div className="flex items-center gap-1.5">
+            {startDims && <span className="rounded-full border px-2 py-0.5 font-mono text-[10px]" style={{ borderColor: "rgba(203,251,0,.4)", color: BRAND.lime, background: "rgba(203,251,0,.07)" }}>AILS {ails}</span>}
+            <span className="rounded-full border px-2 py-0.5 text-[8px] uppercase tracking-[.16em] text-white/55" style={{ borderColor: "rgba(247,248,250,.18)" }}>Not advice</span>
           </div>
         </div>
+
+        {/* her face — nothing overlaps it */}
+        <div className="relative mx-3 min-h-0 flex-1 overflow-hidden rounded-2xl border transition-all duration-500 sm:mx-5"
+          style={{ borderColor: coachFlash ? "rgba(203,251,0,.85)" : "rgba(203,251,0,.3)", boxShadow: coachFlash ? "0 0 50px rgba(203,251,0,.3)" : "none", background: "linear-gradient(150deg, rgba(23,32,51,.9), rgba(5,7,11,.98))" }}>
+          <div className="absolute left-1/2 top-0 h-[260%] w-full max-w-md" style={{ transform: "translateX(-50%) translateY(-24%)", WebkitMaskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)", maskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)" }}>
+            <DigitalHumanPortrait speaking={!doneSpeaking} listening={false} />
+          </div>
+          <div className="absolute top-2 left-2.5 z-10 flex items-center gap-1.5">
+            <span className="auren-pulse h-1.5 w-1.5 rounded-full" style={{ background: BRAND.lime, boxShadow: `0 0 10px ${BRAND.lime}` }} />
+            <span className="rounded-full border px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[.16em]" style={{ color: BRAND.lime, borderColor: "rgba(203,251,0,.4)", background: "rgba(8,10,15,.6)" }}>
+              {!doneSpeaking ? "speaking" : "listening"}
+            </span>
+          </div>
+          <div className="absolute top-2 right-2.5 z-10 hidden sm:block">
+            <span className="rounded-full border px-2 py-0.5 text-[8px] uppercase tracking-[.12em] text-white/55" style={{ borderColor: "rgba(247,248,250,.2)", background: "rgba(8,10,15,.6)" }}>EN · 中文 · عربي · BM · ES</span>
+          </div>
+        </div>
+
+        {/* her voice — its own band BELOW her face, inside her layer */}
+        <button onClick={skip} className="mx-3 mb-2.5 mt-2 shrink-0 rounded-xl border p-2.5 text-left sm:mx-5" style={{ borderColor: "rgba(203,251,0,.3)", background: "rgba(8,10,15,.85)" }} aria-live="polite">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[8px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.lime }}>AUREN</span>
+            {!doneSpeaking && <span className="text-[8px] uppercase tracking-[.14em] text-white/35">tap to skip</span>}
+          </div>
+          <p ref={speechRef} className={`no-sb mt-1 max-h-[9.5vh] overflow-y-auto text-[13px] leading-snug text-white/95 sm:text-sm ${!doneSpeaking ? "caret" : ""}`}>{spokenText}</p>
+        </button>
       </div>
 
-      {/* ═══ SCROLLING FEED · the conversation flows beneath her ═══ */}
-      <div ref={feedRef} className="min-h-0 flex-1 overflow-y-auto px-3 pb-4 pt-3 sm:px-5">
+      {/* ═══════════ LAYER 2 · PAGE FLOW · the conversation scrolls under her ═══════════ */}
+      <div className="px-3 sm:px-5" style={{ paddingTop: "calc(46vh + 14px)", paddingBottom: "170px" }}>
         <div className="mx-auto max-w-3xl space-y-2.5">
           {phase === "intro" && feed.length === 0 && (
             <div className="a-up rounded-2xl border p-4 text-center" style={{ borderColor: "rgba(247,248,250,.1)", background: "rgba(247,248,250,.03)" }}>
               <p className="text-sm text-white/80">One live session: interview → AILS score → scam rehearsal → evidential scorecard.</p>
-              <p className="mt-1 text-xs text-white/50">She stays with you the whole way — the conversation scrolls here, under her.</p>
+              <p className="mt-1 text-xs text-white/50">She stays floating above — the conversation scrolls here, beneath her.</p>
             </div>
           )}
 
@@ -345,7 +350,7 @@ export default function AurenMvp() {
             if (m.type === "auren") return (
               <div key={i} className="a-up max-w-[92%] rounded-2xl rounded-tl-md border p-3" style={{ borderColor: "rgba(203,251,0,.22)", background: "rgba(203,251,0,.05)" }}>
                 <div className="text-[9px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.lime }}>AUREN</div>
-                <p className="mt-0.5 text-sm leading-6 text-white/92">{m.text}</p>
+                <p className="mt-0.5 text-sm leading-6 text-white/90">{m.text}</p>
               </div>
             );
             if (m.type === "user") return (
@@ -357,7 +362,7 @@ export default function AurenMvp() {
             if (m.type === "marcus") return (
               <div key={i} className="a-up max-w-[88%] rounded-2xl rounded-tl-md border p-3" style={{ borderColor: "rgba(255,107,107,.4)", background: "rgba(255,107,107,.09)" }}>
                 <div className="flex items-center gap-1.5">
-                  <span className="grid h-4.5 w-4.5 h-5 w-5 place-items-center rounded-full text-[9px] font-bold" style={{ background: "rgba(255,107,107,.25)", color: BRAND.warmRed }}>M</span>
+                  <span className="grid h-5 w-5 place-items-center rounded-full text-[9px] font-bold" style={{ background: "rgba(255,107,107,.25)", color: BRAND.warmRed }}>M</span>
                   <span className="text-[9px] font-semibold uppercase tracking-[.16em]" style={{ color: BRAND.warmRed }}>"Marcus" · simulated · AI persona</span>
                 </div>
                 <p className="mt-1 text-sm leading-6 text-white/95">{m.text}</p>
@@ -365,7 +370,7 @@ export default function AurenMvp() {
             );
             if (m.type === "obs") return (
               <div key={i} className="a-up mx-auto flex max-w-[94%] items-baseline gap-2 rounded-full border px-3.5 py-1.5" style={{ borderColor: m.tone === "risky" ? "rgba(255,107,107,.35)" : "rgba(203,251,0,.25)", background: "rgba(8,10,15,.5)" }}>
-                <span className="text-[8px] font-semibold uppercase tracking-[.18em]" style={{ color: m.tone === "risky" ? BRAND.warmRed : BRAND.lime }}>observed</span>
+                <span className="shrink-0 text-[8px] font-semibold uppercase tracking-[.18em]" style={{ color: m.tone === "risky" ? BRAND.warmRed : BRAND.lime }}>observed</span>
                 <span className="text-[11px] leading-4 text-white/75">{m.obs}{m.deltaStr ? " · " : ""}{m.deltaStr && <span className="font-mono" style={{ color: BRAND.gold }}>{m.deltaStr}</span>}</span>
               </div>
             );
@@ -435,8 +440,8 @@ export default function AurenMvp() {
         </div>
       </div>
 
-      {/* ═══ INPUT · fixed at the bottom — you talk to her ═══ */}
-      <div className="z-40 shrink-0 border-t px-3 pb-3 pt-2.5 sm:px-5" style={{ borderColor: "rgba(247,248,250,.08)", background: "rgba(5,7,11,.92)", backdropFilter: "blur(10px)" }}>
+      {/* ═══════════ LAYER 3 · FIXED BOTTOM · the input — you talk to her ═══════════ */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t px-3 pb-3 pt-2.5 sm:px-5" style={{ borderColor: "rgba(247,248,250,.08)", background: "rgba(5,7,11,.94)", backdropFilter: "blur(10px)" }}>
         <div className="mx-auto max-w-3xl">
           <div className="flex items-center gap-2">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full border" style={{ borderColor: "rgba(247,248,250,.2)", background: "rgba(247,248,250,.05)" }} title="Voice input — production build">
@@ -452,10 +457,10 @@ export default function AurenMvp() {
             </button>
           </div>
           {doneSpeaking && chips.length > 0 && awaiting !== "done" && (
-            <div className="mt-1.5 flex flex-wrap items-center gap-1.5 px-1">
-              <span className="text-[8px] uppercase tracking-[.16em] text-white/35">or try:</span>
+            <div className="no-sb mt-1.5 flex items-center gap-1.5 overflow-x-auto px-1">
+              <span className="shrink-0 text-[8px] uppercase tracking-[.16em] text-white/35">or try:</span>
               {chips.map(c => (
-                <button key={c} onClick={() => submit(c)} className="rounded-full border px-2.5 py-0.5 text-[11px] text-white/60 transition hover:text-white hover:border-white/50" style={{ borderColor: "rgba(247,248,250,.15)" }}>
+                <button key={c} onClick={() => submit(c)} className="shrink-0 rounded-full border px-2.5 py-0.5 text-[11px] text-white/60 transition hover:text-white hover:border-white/50" style={{ borderColor: "rgba(247,248,250,.15)" }}>
                   {c}
                 </button>
               ))}
