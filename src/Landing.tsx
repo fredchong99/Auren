@@ -12,11 +12,14 @@ import { HalfBody } from "./Mvp";
  */
 
 const SERIF = "Didot, 'Didot LT STD', 'Bodoni MT', 'Playfair Display', Georgia, 'Times New Roman', serif";
-const INK = "#101114";
-const MUT = "#6E7076";
-const LINE = "#E4E4E0";
-const PAPER = "#F7F7F4";
-const LIME = "#B8E600";
+// Original AUREN brand — dark navy/graphite + lime (matches the live demo and Fred's concept code)
+const INK = "#F7F8FA";
+const MUT = "#9BA3AF";
+const LINE = "rgba(247,248,250,.14)";
+const PAPER = "#080A0F";
+const LIME = "#CBFB00";
+const PANEL = "rgba(23,32,51,.45)";
+const GRAPHITE = "#111418";
 
 const SITEMAP = [
   ["overview", "Overview"],
@@ -67,16 +70,16 @@ function H2({ children }) {
   return <h2 className="mt-3 text-[34px] leading-[1.08] sm:text-5xl" style={{ fontFamily: SERIF, color: INK, fontWeight: 500 }}>{children}</h2>;
 }
 function Em({ children }) {
-  return <em style={{ fontStyle: "italic", fontWeight: 600 }}>{children}</em>;
+  return <em style={{ fontStyle: "italic", fontWeight: 600, color: LIME }}>{children}</em>;
 }
 function Sub({ children }) {
-  return <p className="mt-5 max-w-xl text-[17px] leading-7" style={{ color: "#4A4C52" }}>{children}</p>;
+  return <p className="mt-5 max-w-xl text-[17px] leading-7" style={{ color: "rgba(247,248,250,.75)" }}>{children}</p>;
 }
 function NumCard({ icon, num, total, title, body, serifTitle = false, onClick }) {
   return (
-    <button onClick={onClick} className="block w-full border-t px-6 py-8 text-left transition hover:bg-black/[.02] first:border-t-0 sm:px-8" style={{ borderColor: LINE }}>
+    <button onClick={onClick} className="block w-full border-t px-6 py-8 text-left transition hover:bg-white/[.04] first:border-t-0 sm:px-8" style={{ borderColor: LINE }}>
       <div className="flex items-start justify-between">
-        <div className="grid h-12 w-12 place-items-center rounded-full border text-lg" style={{ borderColor: LINE, color: INK }}>{icon}</div>
+        <div className="grid h-12 w-12 place-items-center rounded-full border text-lg" style={{ borderColor: "rgba(203,251,0,.35)", color: LIME }}>{icon}</div>
         <span className="text-sm" style={{ color: MUT }}>{num}{total ? ` / ${total}` : ""}</span>
       </div>
       <h3 className="mt-8 text-[24px] leading-tight" style={serifTitle ? { fontFamily: SERIF, color: INK, fontWeight: 500 } : { color: INK, fontWeight: 600 }}>{title}</h3>
@@ -85,14 +88,14 @@ function NumCard({ icon, num, total, title, body, serifTitle = false, onClick })
   );
 }
 function ScoreRow({ label, chip, tone = "neutral" }) {
-  const style = tone === "pass" ? { borderColor: "#B7C9B4", color: "#2F6B3C" }
-    : tone === "warn" ? { borderColor: "#E6B24A", color: "#B07500" }
-    : tone === "risk" ? { borderColor: "#E08A85", color: "#C0392B" }
+  const style = tone === "pass" ? { borderColor: "rgba(203,251,0,.5)", color: LIME }
+    : tone === "warn" ? { borderColor: "rgba(242,169,59,.55)", color: "#F2A93B" }
+    : tone === "risk" ? { borderColor: "rgba(255,107,107,.55)", color: "#FF6B6B" }
     : { borderColor: LINE, color: INK };
   return (
-    <div className="flex items-center justify-between gap-3 rounded-2xl border bg-white px-5 py-4" style={{ borderColor: LINE }}>
+    <div className="flex items-center justify-between gap-3 rounded-2xl border px-5 py-4" style={{ borderColor: LINE, background: "rgba(8,10,15,.5)" }}>
       <span className="text-[16px]" style={{ color: INK }}>{label}</span>
-      <span className="shrink-0 rounded-full border px-3.5 py-1 font-mono text-[13px]" style={{ ...style, background: "#FFFFFF" }}>{chip}</span>
+      <span className="shrink-0 rounded-full border px-3.5 py-1 font-mono text-[13px]" style={{ ...style, background: "rgba(8,10,15,.6)" }}>{chip}</span>
     </div>
   );
 }
@@ -102,11 +105,11 @@ function Field({ label, required, placeholder, textarea, value, onChange }) {
       <span className="text-[16px] font-medium" style={{ color: INK }}>{label} {required && <span style={{ color: "#C0392B" }}>*</span>}</span>
       {textarea ? (
         <textarea value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={4}
-          className="mt-2 w-full border-b bg-transparent pb-3 text-[17px] outline-none placeholder:text-black/30 focus:border-black"
+          className="mt-2 w-full border-b bg-transparent pb-3 text-[17px] outline-none placeholder:text-white/30 focus:border-white"
           style={{ borderColor: LINE, color: INK }} />
       ) : (
         <input value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-          className="mt-2 w-full border-b bg-transparent pb-3 text-[17px] outline-none placeholder:text-black/30 focus:border-black"
+          className="mt-2 w-full border-b bg-transparent pb-3 text-[17px] outline-none placeholder:text-white/30 focus:border-white"
           style={{ borderColor: LINE, color: INK }} />
       )}
     </label>
@@ -125,9 +128,9 @@ export default function Landing({ onTry }) {
   const submitForm = () => { if (form.name.trim() && form.email.trim() && form.msg.trim()) setSent(true); };
 
   return (
-    <main id="overview" className="min-h-screen" style={{ background: PAPER, color: INK, fontFamily: "-apple-system, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif" }}>
+    <main id="overview" className="min-h-screen" style={{ background: "linear-gradient(160deg, #05070B, #172033 45%, #0B0F16)", color: INK, fontFamily: "-apple-system, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif" }}>
       {/* ── nav ── */}
-      <header className="sticky top-0 z-40 border-b" style={{ background: "rgba(247,247,244,.92)", backdropFilter: "blur(10px)", borderColor: LINE }}>
+      <header className="sticky top-0 z-40 border-b" style={{ background: "rgba(8,10,15,.9)", backdropFilter: "blur(10px)", borderColor: LINE }}>
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3.5">
           <button onClick={() => goTo("overview")} className="flex items-center gap-2.5 text-left">
             <div className="grid h-10 w-10 place-items-center rounded-2xl border-2" style={{ borderColor: INK }}>
@@ -141,10 +144,10 @@ export default function Landing({ onTry }) {
             </div>
           </button>
           <div className="flex items-center gap-2.5">
-            <button onClick={onTry} className="hidden rounded-full px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-85 sm:block" style={{ background: INK }}>
+            <button onClick={onTry} className="hidden rounded-full px-5 py-2.5 text-sm font-semibold transition hover:opacity-85 sm:block" style={{ background: LIME, color: GRAPHITE }}>
               Try the demo →
             </button>
-            <button onClick={() => setMenuOpen(true)} aria-label="Open menu" className="grid h-12 w-12 place-items-center rounded-full border bg-white transition hover:bg-black/[.03]" style={{ borderColor: LINE }}>
+            <button onClick={() => setMenuOpen(true)} aria-label="Open menu" className="grid h-12 w-12 place-items-center rounded-full border transition hover:bg-white/[.06]" style={{ borderColor: LINE, background: "rgba(247,248,250,.05)" }}>
               <div className="space-y-1.5">
                 <span className="block h-[2px] w-5" style={{ background: INK }} />
                 <span className="block h-[2px] w-5" style={{ background: INK }} />
@@ -160,7 +163,7 @@ export default function Landing({ onTry }) {
           <div className="mx-auto max-w-5xl px-5 py-4">
             <div className="flex items-center justify-between">
               <span className="text-xl font-bold tracking-[.14em]">AUREN</span>
-              <button onClick={() => setMenuOpen(false)} aria-label="Close menu" className="grid h-12 w-12 place-items-center rounded-full border bg-white text-lg" style={{ borderColor: LINE }}>✕</button>
+              <button onClick={() => setMenuOpen(false)} aria-label="Close menu" className="grid h-12 w-12 place-items-center rounded-full border text-lg" style={{ borderColor: LINE, background: "rgba(247,248,250,.05)", color: INK }}>✕</button>
             </div>
             <nav className="mt-10 space-y-1">
               {SITEMAP.map(([id, label], i) => (
@@ -170,7 +173,7 @@ export default function Landing({ onTry }) {
                 </button>
               ))}
             </nav>
-            <button onClick={() => { setMenuOpen(false); onTry(); }} className="mt-8 w-full rounded-full px-7 py-4 text-[16px] font-semibold text-white" style={{ background: INK }}>
+            <button onClick={() => { setMenuOpen(false); onTry(); }} className="mt-8 w-full rounded-full px-7 py-4 text-[16px] font-semibold" style={{ background: LIME, color: GRAPHITE }}>
               Try the live demo →
             </button>
             <p className="mt-6 pb-8 text-center text-[12px]" style={{ color: MUT }}>IOSCO TechSprint 2026 · Demo Day 8 October · Madrid</p>
@@ -191,10 +194,10 @@ export default function Landing({ onTry }) {
           evidence: the AUREN Investor Readiness Score (AIRS).
         </Sub>
         <div className="mt-8 flex flex-wrap items-center gap-5">
-          <button onClick={onTry} className="rounded-full px-7 py-4 text-[15px] font-semibold text-white transition hover:opacity-85" style={{ background: INK }}>
+          <button onClick={onTry} className="rounded-full px-7 py-4 text-[15px] font-semibold transition hover:opacity-85" style={{ background: LIME, color: GRAPHITE }}>
             Try the live demo →
           </button>
-          <button onClick={() => goTo("platform")} className="text-[15px] font-medium" style={{ color: INK }}>See how it works →</button>
+          <button onClick={() => goTo("platform")} className="text-[15px] font-medium" style={{ color: LIME }}>See how it works →</button>
         </div>
 
         <div className="mx-auto mt-14 w-full max-w-sm">
@@ -209,7 +212,7 @@ export default function Landing({ onTry }) {
                 <div className="text-[9px] font-semibold uppercase tracking-[.18em]" style={{ color: LIME }}>AUREN speaks</div>
                 <p className="mt-1 text-[13px] leading-snug text-white/95">"Before I teach you anything, I'd like to understand how you think about risk, AI, and money."</p>
               </div>
-              <div className="absolute bottom-24 right-3 rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: "#FFFFFF", color: INK }}>Try Now →</div>
+              <div className="absolute bottom-24 right-3 rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: LIME, color: GRAPHITE }}>Try Now →</div>
             </div>
           </button>
           <p className="mt-3 text-center text-[13px]" style={{ color: MUT }}>Live interactive demo · ~3 minutes · she speaks — working English · Bahasa Melayu · Español toggle (中文 · العربية in production)</p>
@@ -227,7 +230,7 @@ export default function Landing({ onTry }) {
             industrial. <span style={{ color: INK }}>The problem is not a lack of knowledge. It is a lack of
             readiness — the ability to apply knowledge when the decision is uncertain, emotional, or manipulated.</span>
           </Sub>
-          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border" style={{ borderColor: LINE, background: PANEL }}>
             <NumCard onClick={onTry} icon={<Icon name="alert" />} num="01" total="04" serifTitle title="Fraud at manufacturing scale"
               body="$12.5B lost to digital fraud in 2023 — investment fraud the costliest category at $4.57B, up 38% year-on-year. Generative AI compresses time-to-fraud from weeks to minutes. (FBI IC3)" />
             <NumCard onClick={onTry} icon={<Icon name="eye" />} num="02" total="04" serifTitle title="The old tells are gone"
@@ -251,7 +254,7 @@ export default function Landing({ onTry }) {
             <span style={{ color: INK }}>teach → challenge → coach → assess → adapt.</span> Tap any role to meet
             her in the demo.
           </Sub>
-          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border" style={{ borderColor: LINE, background: PANEL }}>
             <NumCard onClick={onTry} icon={<Icon name="person" />} num="01" total="04" serifTitle title="AUREN as Mentor"
               body="She explains financial concepts, scam patterns, AI limitations, and verification methods — adapting her language, pace, and depth to each investor." />
             <NumCard onClick={onTry} icon={<Icon name="eye" />} num="02" total="04" serifTitle title="AUREN as Coach"
@@ -279,7 +282,7 @@ export default function Landing({ onTry }) {
             scorecard, regulator dashboard — configurable for any jurisdiction. “Configuration, not code changes,
             is the localization mechanism.”
           </Sub>
-          <div className="mt-10 rounded-[2rem] border bg-white p-5 sm:p-8" style={{ borderColor: LINE }}>
+          <div className="mt-10 rounded-[2rem] border p-5 sm:p-8" style={{ borderColor: LINE, background: PANEL }}>
             <div className="text-[15px]" style={{ color: MUT }}>Operating flow — every card opens the live demo</div>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {[
@@ -290,9 +293,9 @@ export default function Landing({ onTry }) {
                 ["sparkle", "05", "Evidential scorecard", "Quote-level evidence: what was said, why it mattered, what to say instead."],
                 ["grid", "06", "Regulator dashboard", "Anonymized cohort analytics — an early-warning sensor network for emerging fraud."],
               ].map(([icon, n, t, b]) => (
-                <button key={n} onClick={onTry} className="rounded-2xl border p-5 text-left transition hover:bg-black/[.02]" style={{ borderColor: LINE }}>
+                <button key={n} onClick={onTry} className="rounded-2xl border p-5 text-left transition hover:bg-white/[.04]" style={{ borderColor: LINE }}>
                   <div className="flex items-start justify-between">
-                    <span className="grid h-11 w-11 place-items-center rounded-full border" style={{ borderColor: LINE, color: INK }}><Icon name={icon} /></span>
+                    <span className="grid h-11 w-11 place-items-center rounded-full border" style={{ borderColor: "rgba(203,251,0,.35)", color: LIME }}><Icon name={icon} /></span>
                     <span className="text-sm" style={{ color: MUT }}>{n}</span>
                   </div>
                   <div className="mt-4 text-[17px] font-semibold" style={{ color: INK }}>{t}</div>
@@ -314,7 +317,7 @@ export default function Landing({ onTry }) {
             documented in retail-fraud research. Built to feel like the real event, not a chatbot. Tap any persona
             to meet them in the demo.
           </Sub>
-          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border" style={{ borderColor: LINE, background: PANEL }}>
             {[
               ["person", "AUREN — the mentor", "HOST · EVERY STEP OF THE JOURNEY"],
               ["chat", "“Marcus” — scam recruiter", "WHATSAPP · RECRUITMENT PATTERN"],
@@ -323,8 +326,8 @@ export default function Landing({ onTry }) {
               ["mic", "Synthetic finfluencer", "TIKTOK · UNVERIFIABLE ADVICE"],
               ["chartDown", "Market-panic voice", "CRASH · LOSS AVERSION"],
             ].map(([icon, name, tag], i) => (
-              <button key={name} onClick={onTry} className={`flex w-full items-center gap-5 px-6 py-6 text-left transition hover:bg-black/[.02] sm:px-8 ${i > 0 ? "border-t" : ""}`} style={{ borderColor: LINE }}>
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border" style={{ borderColor: LINE, color: INK }}><Icon name={icon} size={24} /></span>
+              <button key={name} onClick={onTry} className={`flex w-full items-center gap-5 px-6 py-6 text-left transition hover:bg-white/[.04] sm:px-8 ${i > 0 ? "border-t" : ""}`} style={{ borderColor: LINE }}>
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border" style={{ borderColor: "rgba(203,251,0,.35)", color: LIME }}><Icon name={icon} size={24} /></span>
                 <span>
                   <span className="block text-[22px] leading-tight" style={{ fontFamily: SERIF, color: INK, fontWeight: 500 }}>{name}</span>
                   <span className="mt-1 block text-[12px] tracking-[.18em]" style={{ color: MUT }}>{tag}</span>
@@ -346,7 +349,7 @@ export default function Landing({ onTry }) {
             revealed vulnerability or demonstrated skill, and the specific effect on each competency dimension.
             The evidence is the transcript.”
           </Sub>
-          <div className="mt-10 rounded-[2rem] border bg-white p-5 sm:p-8" style={{ borderColor: LINE }}>
+          <div className="mt-10 rounded-[2rem] border p-5 sm:p-8" style={{ borderColor: LINE, background: PANEL }}>
             <div className="flex items-baseline justify-between">
               <span className="text-[15px]" style={{ color: MUT }}>Sample scorecard · WhatsApp scam rehearsal</span>
               <span className="font-mono text-[15px]" style={{ color: INK }}>AIRS 42 → 76</span>
@@ -363,7 +366,7 @@ export default function Landing({ onTry }) {
               <em style={{ color: INK }}>"I'm going to verify this offline before I do anything."</em> — verification protocol
               correctly applied under deadline pressure; certification criterion met. Scam Resistance +6.
             </div>
-            <button onClick={onTry} className="mt-6 rounded-full px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: INK }}>Earn your own scorecard →</button>
+            <button onClick={onTry} className="mt-6 rounded-full px-6 py-3.5 text-[15px] font-semibold" style={{ background: LIME, color: GRAPHITE }}>Earn your own scorecard →</button>
           </div>
         </div>
       </section>
@@ -378,7 +381,7 @@ export default function Landing({ onTry }) {
             jurisdiction: “a UK deepfake scenario looks different from a Brazilian pump-and-dump, and both differ
             from a Malaysian WhatsApp investment group.”
           </Sub>
-          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border" style={{ borderColor: LINE, background: PANEL }}>
             <NumCard onClick={onTry} icon={<Icon name="video" />} num="01" serifTitle title="Deepfake & voice-clone recognition"
               body="Rehearse fabricated CEO endorsements and cloned advisor calls — coached on lip-sync, blink-rate, and audio artifacts, on the exact asset being judged." />
             <NumCard onClick={onTry} icon={<Icon name="chat" />} num="02" serifTitle title="Social-media pressure"
@@ -400,7 +403,7 @@ export default function Landing({ onTry }) {
             Built for the governance, control, and reliability that regulators and financial institutions require —
             the platform's Trust Layer is a qualifying condition, not a feature.
           </Sub>
-          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border" style={{ borderColor: LINE, background: PANEL }}>
             {[
               ["01", "Integrated eKYC + liveness detection", "Passport, national ID, or QR-to-phone — the credential is trustworthy from day one."],
               ["02", "Privacy by design", "Cohort analytics are anonymized; no personal data leaves the session."],
@@ -426,7 +429,7 @@ export default function Landing({ onTry }) {
         <div className="mx-auto max-w-5xl px-5 py-16">
           <Eyebrow>Deployment</Eyebrow>
           <H2>One platform. <Em>Every surface investors are on.</Em></H2>
-          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border" style={{ borderColor: LINE, background: PANEL }}>
             <NumCard onClick={onTry} icon={<Icon name="monitor" />} num="01" serifTitle title="Web & Mobile"
               body="Consumers rehearse anywhere — freemium B2C with premium scenarios and verified credentials." />
             <NumCard onClick={onTry} icon={<Icon name="tablet" />} num="02" serifTitle title="Kiosk & Branch"
@@ -456,7 +459,7 @@ export default function Landing({ onTry }) {
             happens, they are ready.”
           </blockquote>
           <div className="mt-3 text-[13px] uppercase tracking-[.18em]" style={{ color: MUT }}>Full Project Paper · Executive Summary</div>
-          <button onClick={onTry} className="mt-10 rounded-full px-7 py-4 text-[15px] font-semibold text-white transition hover:opacity-85" style={{ background: INK }}>
+          <button onClick={onTry} className="mt-10 rounded-full px-7 py-4 text-[15px] font-semibold transition hover:opacity-85" style={{ background: LIME, color: GRAPHITE }}>
             Try the live demo →
           </button>
         </div>
@@ -471,7 +474,7 @@ export default function Landing({ onTry }) {
             Submit the form below — we respond within 1–2 business days. Regulators, banks, universities, and
             investors welcome.
           </Sub>
-          <a href="mailto:team@auren.academy" className="mt-8 inline-flex items-center gap-3 rounded-full border bg-white px-6 py-4 font-mono text-[16px] transition hover:bg-black/[.02]" style={{ borderColor: LINE, color: INK }}>
+          <a href="mailto:team@auren.academy" className="mt-8 inline-flex items-center gap-3 rounded-full border px-6 py-4 font-mono text-[16px] transition hover:bg-white/[.04]" style={{ borderColor: LINE, color: INK, background: PANEL }}>
             ✉ team@auren.academy <span style={{ color: MUT }}>↗</span>
           </a>
           {!sent ? (
@@ -481,16 +484,16 @@ export default function Landing({ onTry }) {
               <Field label="Email" required placeholder="you@company.com" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} />
               <Field label="Message" required textarea placeholder="Tell us about your use case, jurisdiction, and timeline" value={form.msg} onChange={v => setForm(f => ({ ...f, msg: v }))} />
               <button onClick={submitForm} disabled={!(form.name.trim() && form.email.trim() && form.msg.trim())}
-                className="rounded-full px-7 py-4 text-[15px] font-semibold text-white transition hover:opacity-85 disabled:opacity-40" style={{ background: INK }}>
+                className="rounded-full px-7 py-4 text-[15px] font-semibold transition hover:opacity-85 disabled:opacity-40" style={{ background: LIME, color: GRAPHITE }}>
                 Send message →
               </button>
               <p className="text-[12px]" style={{ color: MUT }}>Prototype form — in production this delivers to the AUREN partnerships inbox.</p>
             </div>
           ) : (
-            <div className="mt-10 max-w-xl rounded-[2rem] border bg-white p-8" style={{ borderColor: LINE }}>
+            <div className="mt-10 max-w-xl rounded-[2rem] border p-8" style={{ borderColor: LINE, background: PANEL }}>
               <div className="text-[26px]" style={{ fontFamily: SERIF, color: INK }}>Thank you, {form.name.split(" ")[0]}.</div>
               <p className="mt-2 text-[15px] leading-6" style={{ color: MUT }}>Your message has been received. We'll reply to {form.email} within 1–2 business days. In the meantime — try the live demo.</p>
-              <button onClick={onTry} className="mt-6 rounded-full px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: INK }}>Try the live demo →</button>
+              <button onClick={onTry} className="mt-6 rounded-full px-6 py-3.5 text-[15px] font-semibold" style={{ background: LIME, color: GRAPHITE }}>Try the live demo →</button>
             </div>
           )}
         </div>
@@ -548,7 +551,7 @@ export default function Landing({ onTry }) {
       </footer>
 
       {/* floating Try Now */}
-      <button onClick={onTry} className="fixed bottom-5 right-5 z-40 rounded-full px-6 py-3.5 text-[15px] font-semibold text-white shadow-2xl transition hover:opacity-90" style={{ background: INK }}>
+      <button onClick={onTry} className="fixed bottom-5 right-5 z-40 rounded-full px-6 py-3.5 text-[15px] font-semibold shadow-2xl transition hover:opacity-90" style={{ background: LIME, color: GRAPHITE, boxShadow: "0 10px 30px rgba(203,251,0,.25)" }}>
         Try Now →
       </button>
     </main>
