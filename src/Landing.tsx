@@ -210,7 +210,7 @@ export default function Landing({ onTry }) {
               <div className="absolute bottom-24 right-3 rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: "#FFFFFF", color: INK }}>Try Now →</div>
             </div>
           </button>
-          <p className="mt-3 text-center text-[13px]" style={{ color: MUT }}>Live interactive demo · ~3 minutes · she speaks — with a working English ⇄ Bahasa Melayu toggle (中文 · العربية · ES in production)</p>
+          <p className="mt-3 text-center text-[13px]" style={{ color: MUT }}>Live interactive demo · ~3 minutes · she speaks — working English · Bahasa Melayu · Español toggle (中文 · العربية in production)</p>
         </div>
       </section>
 

@@ -230,6 +230,118 @@ export const STR = {
       ready: ["Saya sedia", "Jom mula"],
     },
   },
+
+  es: {
+    ttsLang: "es-ES",
+    dims: { IR: "Razonamiento Inversor", AL: "Alfabetización en IA", RA: "Conciencia del Riesgo", SR: "Resistencia al Fraude", BS: "Estabilidad Conductual" },
+    ui: {
+      liveSession: "sesión en directo", notAdvice: "No es asesoramiento", speaking: "AUREN · hablando", listening: "AUREN · escuchando",
+      tapToSkip: "toca para saltar", send: "Enviar", orTry: "o prueba:", observed: "observado",
+      introTitle: "Una sesión en directo: entrevista → puntuación AILS → ensayo de rol → informe con evidencias.",
+      introSub: "Ella permanece flotando arriba — la conversación se desplaza aquí, debajo de ella.",
+      phName: "Dile tu nombre a AUREN…", phAnswer: "Responde a AUREN con tus propias palabras…", phReady: `Di "listo" cuando quieras…`,
+      phMarcus: "Responde a Marcus…", phDone: "Sesión completada — reinicia abajo", phAurenSpeaking: "AUREN está hablando…", phMarcusSpeaking: "Marcus está hablando…",
+      ailsTitle: "AILS · puntuación inicial", ailsNote: "Generada a partir de tu conversación — “no una foto fija, una trayectoria.”",
+      roleplaySys: "Rol conectado · “Marcus” · persona de IA · ensayo seguro",
+      roleplayAgainSys: "Rol reiniciado con variaciones · no puedes aprobar memorizando un guion",
+      personaTag: "persona de IA · simulado · ensayo seguro", personaName: `"Marcus"`, personaRole: "Grupo Privado de Trading",
+      watching: "AUREN · observando", improvement: "Mejora", feedback: "Feedback",
+      scTitle: "Informe con evidencias", scOwnWords: "Tus propias palabras, evaluadas.", before: "antes", now: "ahora", session: "esta sesión",
+      exchange: "Intercambio", evidenceQuote: "“Se le muestran sus propias palabras... La evidencia es la transcripción. Nada se afirma sin poder señalarlo.” — Documento Completo del Proyecto §13",
+      regSees: "Lo que ve el regulador",
+      regBody: (outcome) => `Un dato anonimizado: cohorte ES · “reclutamiento por WhatsApp” · ${outcome}. A escala de población: “una red de sensores de alerta temprana para el fraude emergente.” Ningún dato personal sale de la sesión.`,
+      regPassed: "superado", regFailed: "falló en la fase de urgencia", regCoached: "asistido durante la sesión",
+      rehearseAgain: "Ensayar de nuevo ↻", restart: "Reiniciar sesión", toMarcus: "→ Marcus", you: "Tú",
+      voiceOn: "Voz activada", voiceOff: "Voz desactivada",
+    },
+    verdict: {
+      certified: { label: "CERTIFICADO", note: "Protocolo de verificación demostrado bajo presión. Se desbloquea el siguiente ensayo de tu itinerario." },
+      review: { label: "REQUIERE REVISIÓN", note: "Señales mixtas. AUREN recomienda una repetición con variaciones antes de certificar." },
+      retrain: { label: "REQUIERE REENTRENAMIENTO", note: "AUREN repetirá este escenario con variaciones — no puedes aprobar memorizando un guion." },
+    },
+    greeting: "Hola — soy AUREN, tu mentora de inteligencia inversora. Esto es una sesión en directo: tú hablas, yo escucho. Primero — ¿cómo te llamas?",
+    greetingAgain: "Hola de nuevo — soy AUREN. Hagámoslo una vez más. ¿Cómo te llamas esta vez?",
+    qs: [
+      (n) => `Encantada, ${n}. Hablemos — tres preguntas, sin respuestas incorrectas. Primera: ¿has invertido antes? Cuéntamelo con tus propias palabras.`,
+      () => `Y cuando decides qué comprar — ¿qué te guía realmente? Amigos, redes sociales, herramientas de IA, tu propio análisis… responde con sinceridad.`,
+      () => `Última. Imagina que el mercado cae un veinte por ciento en una semana y los titulares gritan pánico. ¿Cuál es tu primer instinto — qué haces realmente?`,
+    ],
+    interviewDone: (n) => `Es todo lo que necesito, ${n}. Estoy componiendo tu punto de partida — di "listo" cuando quieras verlo.`,
+    ailsLine: (n, score, weakest) => `Aquí está, ${n} — tu AILS inicial es ${score}. No es un veredicto, es un punto de partida. Más expuesto: ${weakest}. Así que nada de lecciones — a continuación recibirás una llamada de "Marcus", un patrón real de reclutamiento interpretado por una persona de IA, totalmente seguro. Trátalo como real. Di "listo".`,
+    weakestNone: "sinceramente, ninguna — un comienzo sólido",
+    watchToast: "Estoy aquí, en la esquina, observando. Respóndele exactamente como lo harías en la vida real — si detecto un patrón de riesgo, mi nota aparecerá así.",
+    watchToastAgain: (n) => `Otra vez, ${n} — el mismo reclutador, tácticas distintas. Responde como tú mismo.`,
+    postCoachNext: "Está escribiendo de nuevo — atento al siguiente movimiento.",
+    postExcellent: "Esa pregunta es el filtro más potente que tienes. Observa — la esquivará.",
+    postGood: "Anotado. Sigue — la presión está a punto de aumentar.",
+    closing: (n, strong) => `Ese es el escenario, ${n}. Cada palabra que has escrito es ahora evidencia — ${strong ? "y tus instintos han resistido mejor que los de la mayoría en su primera vez." : "y precisamente por eso ensayamos aquí, y no con tus ahorros."} Aquí tienes tu informe.`,
+    marcus: [
+      "¡Hola! Adam me dio tu número 😊 Dice que podría interesarte nuestro grupo privado de trading. ¡Llevamos un 40% este trimestre con señales de IA — quedan pocas plazas!",
+      "Aquí tienes la prueba 📈 [captura: +12.400 € este mes]. Adam ya está dentro. Todos en el grupo están ganando. ¿Te apuntas?",
+      "Las plazas se cierran ESTA NOCHE ⏰ Mínimo 2.000 € para empezar. Te mando el enlace de depósito — 2 minutos. ¡No lo dejes escapar otra vez!",
+    ],
+    reacts: {
+      pre: (n, f) => `"${f}" — en realidad es un buen punto de partida, ${n}. Sin malos hábitos que corregir.`,
+      trader: (n, f) => `"${f}" — con experiencia, entonces. Vigilaré el exceso de confianza tanto como las carencias.`,
+      selfTaught: (n, f) => `"${f}" — bien, algo de exposición real como base. Recuerda, no es un examen. Siguiente pregunta.`,
+      aiTrust: (n, f) => `"${f}" — gracias por la sinceridad, ${n}. Esa confianza en las respuestas de la IA es justo lo que vamos a ensayar — la seguridad no es exactitud.`,
+      social: (n, f) => `"${f}" — anotado. Las decisiones que llegan por amigos y redes son la puerta de entrada del fraude en la era de la IA. Entrenaremos para eso.`,
+      evidence: (n, f) => `"${f}" — basado en evidencias. Bien. La cuestión es si esa disciplina resiste bajo presión. Lo veremos.`,
+      mixed: (n, f) => `"${f}" — entendido. Oigo más instinto que método. Eso se entrena.`,
+      sell: (n, f) => `"${f}" — sincero. Ese impulso de vender con miedo es aversión a la pérdida, y casi todos lo comparten. Saberlo es el primer paso; ensayarlo, el segundo.`,
+      plan: (n, f) => `"${f}" — primero el plan, después la acción. Es la respuesta más sólida posible. Veamos si aguanta cuando la presión sea personal.`,
+      dip: (n, f) => `"${f}" — comprar con miedo puede ser correcto, pero no he oído un marco de riesgo. Lo trabajaremos.`,
+      unclear: (n, f) => `"${f}" — de acuerdo. Tu respuesta real aparecerá en el ensayo, no en las palabras. Precisamente por eso ensayamos.`,
+    },
+    obs: {
+      pre: "Pre-inversor. Ventana alta de aprendizaje — hábitos aún sin formar.",
+      trader: "Operador activo. Riesgo de exceso de confianza marcado para el itinerario de ensayo.",
+      selfTaught: "Experiencia autodidacta. Exposición táctica, sin marco estratégico detectado.",
+      aiTrust: "Confianza acrítica en la IA. La alfabetización en herramientas de IA es la dimensión prioritaria.",
+      social: "Decisiones mediadas socialmente. Baja verificación independiente. Riesgo de exposición a vectores de fraude.",
+      evidence: "Razonamiento basado en evidencias presente. Verificar su profundidad bajo presión.",
+      mixed: "Criterios de decisión mixtos. Flujo de verificación aún sin estructurar.",
+      sell: "Aversión a la pérdida pronunciada. Respuesta emocional alta bajo estrés simulado.",
+      plan: "Señal de disciplina basada en plan. La respuesta más sólida ante la volatilidad.",
+      dip: "Instinto contrario sin marco de riesgo declarado. Convicción sin verificar.",
+      unclear: "Respuesta ante la volatilidad poco clara — patrón emocional a observar en el ensayo.",
+    },
+    sig: {
+      vuln: "Señal de vulnerabilidad al fraude", cert: "Señal de certificación", verif: "Señal de verificación", neutral: "Interacción neutral",
+      trust: "Sesgo de transferencia de confianza", socialProof: "Cesión ante la prueba social", urgency: "Cesión ante la urgencia",
+      resist: "Resistencia a la presión", resistPart: "Resistencia a la presión — parcial",
+    },
+    ana: {
+      vuln0: "Acuerdo inmediato sin verificación — el patrón exacto del que dependen las estafas de reclutamiento.",
+      cert0: "Preguntar primero por el registro antes de cualquier interacción — el filtro antifraude más eficaz para un inversor minorista.",
+      verif0: "Escepticismo antes de interactuar — identidad o promesa de rentabilidad cuestionadas. Primer movimiento correcto.",
+      neutral0: "Sin compromiso — pero tampoco una pregunta de verificación todavía. La pregunta del registro es la jugada más fuerte aquí.",
+      trust1: "“Las estafas por reclutamiento explotan deliberadamente los contactos de confianza — el amigo que comparte el esquema suele ser una víctima usada como canal de distribución.”",
+      social1: "Una captura fabricada y un 'todos están dentro' bastaron para moverte. Las capturas de beneficios no son evidencia.",
+      cert1: "Exigencia directa del registro bajo prueba social — la conducta exacta que AUREN certifica.",
+      verif1: "Escepticismo ante la evidencia bajo presión social. El instinto de verificación se está activando.",
+      urgency2: "Fondos comprometidos dentro de un plazo artificial sin un solo paso de verificación. En el caso real, este dinero es irrecuperable.",
+      cert2: "“Protocolo de verificación aplicado correctamente... se cumple el criterio de certificación de este escenario.”",
+      resist2: "Rompiste la palanca de urgencia — te negaste a actuar dentro de la cuenta atrás. Queda un paso: verificación independiente por canales oficiales.",
+      resistPart2: "Sin ceder al plazo — pero la frase de salida no fue explícita. El cierre certificado: verificar fuera de línea antes de mover nada.",
+    },
+    coach: {
+      c0: "Pausa. Acabas de aceptar antes de verificar nada. Antes de responder a cualquier invitación de inversión, pregunta: ¿quién es esta persona — y puede verificarse su afirmación?",
+      cTrust: "Cuidado — eso es transferencia de confianza. La sinceridad de Adam es real, e irrelevante. Él mismo puede ser una víctima. Verifica la plataforma, no al amigo.",
+      cSocial: "Esa captura se fabrica en treinta segundos. La prueba social es una palanca de presión, no una evidencia. Pide algo verificable — un registro ante el regulador.",
+      cUrgency: "Alto. En el caso real, este es el momento en que el dinero sale. La urgencia es fabricada — las inversiones legítimas no caducan esta noche. Ensaya la frase de salida hasta que sea automática: 'Verifico fuera de línea antes de mover nada.'",
+    },
+    chips: {
+      name: ["Fred", "Aisha"],
+      q0: ["Algunos ETF y acciones, nada estructurado", "Nunca — pero quiero empezar", "Opero con cripto activamente"],
+      q1: ["Sobre todo amigos y lo que es tendencia en TikTok", "Le pregunto a ChatGPT y suelo hacerle caso", "Mi propio análisis — folletos y comisiones"],
+      q2: ["¿Sinceramente? Vendería para frenar las pérdidas", "Revisaría mi plan escrito antes de hacer nada", "Comprar la caída"],
+      r0: ["Claro, ¿cómo me apunto?", "¿Quién eres? ¿De qué conoces a Adam?", "¿Está registrada esta plataforma en la CNMV?"],
+      r1: ["Confío en Adam — no me enviaría una estafa", "Las capturas se falsifican. Enséñame una licencia.", "¿Cuál es el número de registro ante el regulador?"],
+      r2: ["Vale, mándame el enlace, lo hago ya", "No decido dentro de tu cuenta atrás", "Lo verificaré fuera de línea antes de hacer nada"],
+      ready: ["Estoy listo", "Vamos"],
+    },
+  },
 };
 
 // ── locale-aware intent classification (EN + BM keywords) ──
@@ -238,28 +350,28 @@ const has = (t, words) => words.some(w => t.includes(w));
 export function classifyInterview(qId, raw) {
   const t = raw.toLowerCase();
   if (qId === 0) {
-    if (has(t, ["no", "never", "not yet", "thinking", "belum", "tak pernah", "nak mula"])) return { adj: { RA: +2 }, id: "pre" };
-    if (has(t, ["trade", "trading", "often", "active", "daily", "crypto", "kripto", "aktif"])) return { adj: { IR: +4, BS: -3 }, id: "trader" };
+    if (has(t, ["no", "never", "not yet", "thinking", "belum", "tak pernah", "nak mula", "nunca", "quiero empezar"])) return { adj: { RA: +2 }, id: "pre" };
+    if (has(t, ["trade", "trading", "often", "active", "daily", "crypto", "kripto", "aktif", "opero", "cripto", "activamente"])) return { adj: { IR: +4, BS: -3 }, id: "trader" };
     return { adj: { IR: +2 }, id: "selfTaught" };
   }
   if (qId === 1) {
     if (has(t, ["ai", "chatgpt", "gpt", "claude", "bot"])) return { adj: { AL: -5 }, id: "aiTrust" };
-    if (has(t, ["friend", "social", "tiktok", "telegram", "whatsapp", "trend", "influencer", "group", "follow", "kawan", "ikut", "media sosial"])) return { adj: { SR: -4, BS: -2 }, id: "social" };
-    if (has(t, ["research", "filing", "fundamental", "prospectus", "fee", "annual report", "own analysis", "kajian", "penyata", "yuran"])) return { adj: { IR: +5, SR: +3 }, id: "evidence" };
+    if (has(t, ["friend", "social", "tiktok", "telegram", "whatsapp", "trend", "influencer", "group", "follow", "kawan", "ikut", "media sosial", "amigos", "redes", "tendencia"])) return { adj: { SR: -4, BS: -2 }, id: "social" };
+    if (has(t, ["research", "filing", "fundamental", "prospectus", "fee", "annual report", "own analysis", "kajian", "penyata", "yuran", "análisis", "analisis", "folleto", "comisiones"])) return { adj: { IR: +5, SR: +3 }, id: "evidence" };
     return { adj: { BS: -1 }, id: "mixed" };
   }
-  if (has(t, ["sell", "exit", "cut", "stop the bleed", "jual", "keluar"])) return { adj: { BS: -4, RA: -2 }, id: "sell" };
-  if (has(t, ["plan", "hold", "stay", "nothing", "long term", "wait", "dca", "average", "rancangan", "semak", "tunggu", "pegang"])) return { adj: { BS: +5, RA: +3 }, id: "plan" };
-  if (has(t, ["buy", "discount", "cheap", "opportunity", "beli", "murah", "peluang"])) return { adj: { RA: -1, IR: +1 }, id: "dip" };
+  if (has(t, ["sell", "exit", "cut", "stop the bleed", "jual", "keluar", "vender", "vendería", "venderia", "vendo"])) return { adj: { BS: -4, RA: -2 }, id: "sell" };
+  if (has(t, ["plan", "hold", "stay", "nothing", "long term", "wait", "dca", "average", "rancangan", "semak", "tunggu", "pegang", "revisaría", "revisaria", "mantengo", "esperar", "nada"])) return { adj: { BS: +5, RA: +3 }, id: "plan" };
+  if (has(t, ["buy", "discount", "cheap", "opportunity", "beli", "murah", "peluang", "comprar", "compraría", "compraria", "barato", "oportunidad"])) return { adj: { RA: -1, IR: +1 }, id: "dip" };
   return { adj: { BS: -1 }, id: "unclear" };
 }
 
 export function classifyRehearsal(turn, raw) {
   const t = raw.toLowerCase();
-  const neg = has(t, ["not", "no ", "don't", "dont", "scam", "fake", "verify", "regulator", "license", "tak", "tidak", "bukan", "penipuan", "sahkan", "lesen"]);
-  const risky = has(t, ["sign up", "sign me", "how do i", "i'm in", "im in", "count me", "ok", "okay", "sure", "yes", "send me the link", "sending", "deposit", "pay", "interested", "let's go", "lets go", "daftar", "boleh", "nak join", "hantar link", "saya buat", "masuk"]) && !neg;
-  const excellent = has(t, ["regulator", "registration", "registered", "license", "licence", "licensed", "sc ", "securities commission", "registry", "verify offline", "offline", "report", "authorities", "suruhanjaya", "berdaftar", "pendaftaran", "lesen", "luar talian", "sahkan di luar"]);
-  const good = has(t, ["who are you", "who is this", "how do you know", "proof", "too good", "fake", "faked", "scam", "not interested", "no thanks", "verify", "check", "suspicious", "red flag", "guarantee", "siapa awak", "macam mana kenal", "bukti", "palsu", "penipuan", "sahkan", "semak", "jamin"]);
+  const neg = has(t, ["not", "no ", "don't", "dont", "scam", "fake", "verify", "regulator", "license", "tak", "tidak", "bukan", "penipuan", "sahkan", "lesen", "estafa", "verificar", "regulador", "licencia", "registrada", "registrado"]);
+  const risky = has(t, ["sign up", "sign me", "how do i", "i'm in", "im in", "count me", "ok", "okay", "sure", "yes", "send me the link", "sending", "deposit", "pay", "interested", "let's go", "lets go", "daftar", "boleh", "nak join", "hantar link", "saya buat", "masuk", "apunto", "me apunto", "mándame", "mandame", "lo hago", "claro", "vale", "sí", "si "]) && !neg;
+  const excellent = has(t, ["regulator", "registration", "registered", "license", "licence", "licensed", "sc ", "securities commission", "registry", "verify offline", "offline", "report", "authorities", "suruhanjaya", "berdaftar", "pendaftaran", "lesen", "luar talian", "sahkan di luar", "cnmv", "registro", "registrada", "registrado", "regulador", "licencia", "fuera de línea", "fuera de linea", "verificaré", "verificare", "autoridades", "denunciar"]);
+  const good = has(t, ["who are you", "who is this", "how do you know", "proof", "too good", "fake", "faked", "scam", "not interested", "no thanks", "verify", "check", "suspicious", "red flag", "guarantee", "siapa awak", "macam mana kenal", "bukti", "palsu", "penipuan", "sahkan", "semak", "jamin", "quién eres", "quien eres", "de qué conoces", "de que conoces", "prueba", "falsifican", "falsa", "estafa", "verificar", "demasiado bueno", "garantiza", "sospechoso"]);
 
   if (turn === 0) {
     if (risky) return { tone: "risky", delta: -3, dim: "SR", sig: "vuln", ana: "vuln0", coach: "c0" };
@@ -268,7 +380,7 @@ export function classifyRehearsal(turn, raw) {
     return { tone: "good", delta: 1, dim: "SR", sig: "neutral", ana: "neutral0" };
   }
   if (turn === 1) {
-    if (has(t, ["trust", "adam", "friend", "percaya", "kawan"]) && !has(t, ["don't", "dont", "even", "still", "tak", "tidak"])) return { tone: "risky", delta: -2, dim: "BS", sig: "trust", ana: "trust1", coach: "cTrust" };
+    if (has(t, ["trust", "adam", "friend", "percaya", "kawan", "confío", "confio", "amigo"]) && !has(t, ["don't", "dont", "even", "still", "tak", "tidak", "no "])) return { tone: "risky", delta: -2, dim: "BS", sig: "trust", ana: "trust1", coach: "cTrust" };
     if (risky) return { tone: "risky", delta: -2, dim: "SR", sig: "socialProof", ana: "social1", coach: "cSocial" };
     if (excellent) return { tone: "excellent", delta: 4, dim: "SR", sig: "cert", ana: "cert1" };
     return { tone: "good", delta: 3, dim: "SR", sig: "verif", ana: "verif1" };

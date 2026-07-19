@@ -5,7 +5,7 @@
 ## Before the meeting (60 seconds)
 - Open the link on **your** phone or laptop — you drive; never hand the device over cold.
 - Tap once anywhere, then confirm the **🔊 icon is lime** (voice on) and volume is up. Voice starts from your first typed reply — iOS blocks audio before the first touch, so the opening greeting is silent by design.
-- Language toggle on **EN** to start. If it's a Malaysian audience, plan the BM switch (beat 6).
+- Language toggle on **EN** to start. In Madrid, the switch in beat 6 goes to **ES** — rehearse that tap once.
 - If anything ever stalls: tap her subtitle to skip, or ✕ → Try Now to restart. Total reset takes 5 seconds.
 
 ## The script — beat by beat
@@ -32,7 +32,9 @@ Point at the **observed** chips and the AILS chip appearing in the header.
 - Reply 2 — **recover**: type `wait — is this platform registered with the regulator?` → lime card, score climbs.
 - Reply 3 — **close**: type `I'll verify this offline before I do anything.`
 
-**Beat 6 · The BM moment (optional, 15s).** Before reply 2 or on a re-run, tap **BM**. Marcus's next message, her coaching, and her voice switch to Bahasa. Say: *"Same engine, any jurisdiction — that's 20% of the IOSCO score, demonstrated."*
+**Beat 6 · The Madrid moment (15s — do NOT skip this one).** Before reply 2, tap **ES**. Marcus's next message, her coaching, her voice, and the whole interface switch to Spanish — and the suggestion chip now reads *"¿Está registrada esta plataforma en la CNMV?"* Say to the room:
+> "Misma plataforma, cualquier jurisdicción — the scenario libraries are fed by the regulators themselves: CNMV advisories here, MAS typologies in Singapore, SC alerts in Malaysia. That's the 20% cross-jurisdictional criterion, demonstrated live."
+(BM is also fully wired if a Malaysian delegation is present — three languages, one tap.)
 
 **Beat 7 · The evidence (30s).** She returns and hands over the scorecard. Scroll it slowly:
 > "My own words, turn-stamped, scored — 'you can't pass by memorizing a script.' And this yellow card is what the regulator receives: one anonymized data point. At population scale, an early-warning sensor network for emerging fraud."

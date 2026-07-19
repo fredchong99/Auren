@@ -416,10 +416,10 @@ export default function AurenMvp({ onExit }) {
   const controls = (
     <div className="flex items-center gap-1.5">
       <div className="flex overflow-hidden rounded-full border" style={{ borderColor: "rgba(247,248,250,.25)" }}>
-        {["en", "ms"].map(l => (
+        {["en", "ms", "es"].map(l => (
           <button key={l} onClick={() => setLang(l)} className="px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[.12em] transition"
             style={{ background: lang === l ? BRAND.lime : "transparent", color: lang === l ? BRAND.graphite : "rgba(247,248,250,.6)" }}>
-            {l === "en" ? "EN" : "BM"}
+            {l === "en" ? "EN" : l === "ms" ? "BM" : "ES"}
           </button>
         ))}
       </div>
