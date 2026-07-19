@@ -21,6 +21,7 @@ const LIME = "#B8E600";
 const SITEMAP = [
   ["overview", "Overview"],
   ["challenge", "The Challenge"],
+  ["auren", "Meet AUREN"],
   ["platform", "The Platform"],
   ["personas", "AI Persona Library"],
   ["scorecard", "Scorecard Engine"],
@@ -136,7 +137,7 @@ export default function Landing({ onTry }) {
             </div>
             <div className="leading-none">
               <span className="text-xl font-bold tracking-[.14em]">AUREN</span>
-              <div className="mt-0.5 text-[9px] uppercase tracking-[.22em]" style={{ color: MUT }}>Investor Intelligence Academy</div>
+              <div className="mt-0.5 text-[9px] uppercase tracking-[.22em]" style={{ color: MUT }}>The AI Investor Readiness Platform</div>
             </div>
           </button>
           <div className="flex items-center gap-2.5">
@@ -184,9 +185,10 @@ export default function Landing({ onTry }) {
           Rehearse every investment scam <Em>before it happens.</Em>
         </h1>
         <Sub>
-          AUREN is an AI rehearsal platform where retail investors practice — with a hyper-realistic digital human —
-          the exact situations that determine their outcomes: deepfake endorsements, misleading AI tools,
-          social-media pressure, and market panic. Every session is scored with quote-level evidence.
+          AUREN is a lifelike digital human mentor who prepares retail investors for the exact situations that
+          determine their outcomes: deepfake endorsements, misleading AI tools, social-media pressure, and market
+          panic. She teaches, challenges, coaches, and assesses — and every session is scored with quote-level
+          evidence: the AUREN Investor Readiness Score (AIRS).
         </Sub>
         <div className="mt-8 flex flex-wrap items-center gap-5">
           <button onClick={onTry} className="rounded-full px-7 py-4 text-[15px] font-semibold text-white transition hover:opacity-85" style={{ background: INK }}>
@@ -222,7 +224,8 @@ export default function Landing({ onTry }) {
           <Sub>
             “Investors who can correctly define loss aversion in a quiz still panic-sell in a crash. Investors who have
             read about romance scams still transfer funds to persuasive strangers.” — and AI has made the pressure
-            industrial. <span style={{ color: INK }}>Fraud is no longer a craft. It is a manufactured product.</span>
+            industrial. <span style={{ color: INK }}>The problem is not a lack of knowledge. It is a lack of
+            readiness — the ability to apply knowledge when the decision is uncertain, emotional, or manipulated.</span>
           </Sub>
           <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
             <NumCard onClick={onTry} icon={<Icon name="alert" />} num="01" total="04" serifTitle title="Fraud at manufacturing scale"
@@ -234,6 +237,35 @@ export default function Landing({ onTry }) {
             <NumCard onClick={onTry} icon={<Icon name="sparkle" />} num="04" total="04" serifTitle title="AI is trusted blindly"
               body="Retail investors treat AI answers as authoritative — hallucinated statistics, delivered with the fluency of a trusted advisor, drive real losses." />
           </div>
+        </div>
+      </section>
+
+      {/* ── MEET AUREN ── */}
+      <section id="auren" className="border-t" style={{ borderColor: LINE }}>
+        <div className="mx-auto max-w-5xl px-5 py-16">
+          <Eyebrow>Meet AUREN</Eyebrow>
+          <H2>One mentor. <Em>Four roles.</Em> One continuous relationship.</H2>
+          <Sub>
+            The investor never meets a dashboard, an assessment engine, or a module library — they meet her.
+            AUREN stays with each investor across the whole readiness journey:{" "}
+            <span style={{ color: INK }}>teach → challenge → coach → assess → adapt.</span> Tap any role to meet
+            her in the demo.
+          </Sub>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+            <NumCard onClick={onTry} icon={<Icon name="person" />} num="01" total="04" serifTitle title="AUREN as Mentor"
+              body="She explains financial concepts, scam patterns, AI limitations, and verification methods — adapting her language, pace, and depth to each investor." />
+            <NumCard onClick={onTry} icon={<Icon name="eye" />} num="02" total="04" serifTitle title="AUREN as Coach"
+              body="She watches simulated decisions and intervenes at the point where risky behaviour begins — not after the session is over." />
+            <NumCard onClick={onTry} icon={<Icon name="bars" />} num="03" total="04" serifTitle title="AUREN as Assessor"
+              body="She scores demonstrated behaviour across five readiness dimensions — and explains the evidence behind every result, in the investor's own words." />
+            <NumCard onClick={onTry} icon={<Icon name="alert" />} num="04" total="04" serifTitle title="AUREN as Protector"
+              body="She runs controlled simulations of deception and pressure. She remains the trusted guide throughout — the scammer is always a separate, clearly simulated persona." />
+          </div>
+          <blockquote className="mt-10 max-w-2xl text-[22px] leading-9 sm:text-[26px]" style={{ fontFamily: SERIF, color: INK }}>
+            “AUREN meets me. AUREN understands me. AUREN teaches me. AUREN challenges me. AUREN explains my
+            mistakes. AUREN measures my progress. AUREN remains with me until I am better prepared.”
+          </blockquote>
+          <div className="mt-3 text-[13px] uppercase tracking-[.18em]" style={{ color: MUT }}>The continuity relationship · Full Project Paper</div>
         </div>
       </section>
 
@@ -252,7 +284,7 @@ export default function Landing({ onTry }) {
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {[
                 ["person", "01", "Onboard & interview", "AUREN meets the investor in conversation — eKYC-ready, no forms, no quiz."],
-                ["bars", "02", "AILS score", "A five-dimension literacy score generated from the conversation itself."],
+                ["bars", "02", "Readiness profile · AIRS", "A five-dimension Investor Readiness Score generated from the conversation itself."],
                 ["chat", "03", "AI roleplay", "The investor converses with realistic scam personas — deepfakes, recruiters, panic."],
                 ["pencil", "04", "Real-time coaching", "Risky phrasing and missed verification surface live, mid-conversation."],
                 ["sparkle", "05", "Evidential scorecard", "Quote-level evidence: what was said, why it mattered, what to say instead."],
@@ -307,7 +339,7 @@ export default function Landing({ onTry }) {
       {/* ── SCORECARD ENGINE ── */}
       <section id="scorecard" className="border-t" style={{ borderColor: LINE }}>
         <div className="mx-auto max-w-5xl px-5 py-16">
-          <Eyebrow>Scorecard Engine · AILS</Eyebrow>
+          <Eyebrow>Scorecard Engine · The AUREN Investor Readiness Score (AIRS)</Eyebrow>
           <H2>Every rehearsal ends with <Em>a score and the evidence behind it.</Em></H2>
           <Sub>
             “The learner is not told ‘you scored 42.’ They are shown their own words, the exact moments those words
@@ -317,7 +349,7 @@ export default function Landing({ onTry }) {
           <div className="mt-10 rounded-[2rem] border bg-white p-5 sm:p-8" style={{ borderColor: LINE }}>
             <div className="flex items-baseline justify-between">
               <span className="text-[15px]" style={{ color: MUT }}>Sample scorecard · WhatsApp scam rehearsal</span>
-              <span className="font-mono text-[15px]" style={{ color: INK }}>AILS 42 → 76</span>
+              <span className="font-mono text-[15px]" style={{ color: INK }}>AIRS 42 → 76</span>
             </div>
             <div className="mt-5 space-y-3">
               <ScoreRow label="Verification protocol" chip="Pass" tone="pass" />
@@ -413,7 +445,7 @@ export default function Landing({ onTry }) {
           <Eyebrow>Who We Are</Eyebrow>
           <H2>Built for regulators. <Em>Designed for the moment.</Em></H2>
           <Sub>
-            AUREN — the Investor Intelligence Academy — is our submission to the IOSCO TechSprint 2026, answering both
+            AUREN — The AI Investor Readiness Platform — is our submission to the IOSCO TechSprint 2026, answering both
             problem statements: AI-enabled fraud, and AI literacy for capital markets. Multilingual from day one
             (EN · 中文 · العربية · Bahasa · ES) and architected to serve IOSCO's 130+ member jurisdictions without
             bespoke rebuilds — auditable at every layer. AUREN is built by BYOND Asia — The Physical AI Interface
@@ -479,7 +511,7 @@ export default function Landing({ onTry }) {
             Building <Em>trained instincts</Em> for the AI era.
           </h3>
           <p className="mt-4 max-w-xl text-[15px] leading-6" style={{ color: MUT }}>
-            AUREN is an investor-education rehearsal platform built by BYOND Asia and powered by HoloMe — The
+            AUREN — The AI Investor Readiness Platform — is built by BYOND Asia and powered by HoloMe — The
             Physical Intelligence Interface — for regulators, financial institutions, and universities.
           </p>
           <div className="mt-10 grid gap-10 sm:grid-cols-3">
@@ -508,7 +540,7 @@ export default function Landing({ onTry }) {
             </div>
           </div>
           <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t pt-6 text-[12px]" style={{ borderColor: LINE, color: MUT }}>
-            <span>AUREN · Investor Intelligence Academy · v2.0</span>
+            <span>AUREN · The AI Investor Readiness Platform · v4.0</span>
             <span>IOSCO TechSprint · Demo Day 8 Oct 2026 · Madrid</span>
             <span>Educational platform — not financial advice</span>
           </div>

@@ -12,9 +12,9 @@
 
 **Beat 1 · The story (30s, on the landing page).**
 Scroll slowly through the hero and Challenge section while you say:
-> "Retail investors lost $12.5 billion to digital fraud in one year, and AI has made scams industrial. Courses don't fix this — knowledge doesn't survive contact with pressure. AUREN makes investors *rehearse* the scam before it happens, with a digital human. Let me show you, live."
+> "Retail investors lost $12.5 billion to digital fraud in one year, and AI has made scams industrial. Courses don't fix this — the problem isn't knowledge, it's *readiness*: applying knowledge under pressure. AUREN is a digital human mentor who makes investors rehearse the scam before it happens. Let me show you, live."
 
-Tap the ☰ menu once, let them see the ten-section sitemap, close it. (Signals: full product, not a feature.)
+Tap the ☰ menu once, let them see the eleven-section sitemap — point at **Meet AUREN** ("one mentor, four roles: Mentor, Coach, Assessor, Protector"), close it. (Signals: full product, not a feature.)
 
 **Beat 2 · Meet her (20s).** Tap **Try Now**. She greets and asks your name — type the investor's first name, not yours. She uses it for the rest of the session. She speaks aloud from here.
 
@@ -22,10 +22,10 @@ Tap the ☰ menu once, let them see the ten-section sitemap, close it. (Signals:
 - Q1: type `I trade crypto actively`
 - Q2: type `honestly I just ask ChatGPT and follow Telegram groups` — point at her reply: *she echoes your exact words back*. Say: "She's not a chatbot script — she's classifying what I actually said."
 - Q3: type `I'd sell everything`
-Point at the **observed** chips and the AILS chip appearing in the header.
+Point at the **observed** chips and the AIRS chip appearing in the header.
 
 **Beat 4 · The score (15s).** Type `ready`. Her card shows the five dimensions. One line from you:
-> "Assessment happened inside a conversation. No quiz. This is the AILS score — it updates with every word from now on."
+> "Assessment happened inside a conversation. No quiz. This is the AUREN Investor Readiness Score — AIRS — and it updates with every word from now on."
 
 **Beat 5 · The rehearsal — fail on purpose (60s).** Type `ready`. Marcus fills the screen; AUREN moves to the corner, watching.
 - Reply 1 — **deliberately fail**: type `sure sounds great, how do I sign up?` → the sentiment chip drops to 😟 −3 and the amber **⚠ Improvement** card appears. Say: *"That's the product: she caught me capitulating, live, mid-conversation — before any money moved."*

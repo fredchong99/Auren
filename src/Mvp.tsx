@@ -559,7 +559,7 @@ export default function AurenMvp({ onExit }) {
             <span className="text-[11px] font-semibold tracking-[.18em]">AUREN <span className="font-normal text-white/45">· {L.ui.liveSession}</span></span>
           </div>
           <div className="flex items-center gap-1.5">
-            {startDims && <span className="rounded-full border px-2 py-0.5 font-mono text-[10px]" style={{ borderColor: "rgba(203,251,0,.4)", color: BRAND.lime, background: "rgba(203,251,0,.07)" }}>AILS {ails}</span>}
+            {startDims && <span className="rounded-full border px-2 py-0.5 font-mono text-[10px]" style={{ borderColor: "rgba(203,251,0,.4)", color: BRAND.lime, background: "rgba(203,251,0,.07)" }}>AIRS {ails}</span>}
             <span className="hidden rounded-full border px-2 py-0.5 text-[8px] uppercase tracking-[.16em] text-white/55 sm:block" style={{ borderColor: "rgba(247,248,250,.18)" }}>{L.ui.notAdvice}</span>
             {controls}
             {onExit && <button onClick={() => { stopSpeech(); onExit(); }} aria-label="Back to overview" className="grid h-6 w-6 place-items-center rounded-full border text-xs text-white/70 hover:text-white" style={{ borderColor: "rgba(247,248,250,.25)" }}>✕</button>}
