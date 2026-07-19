@@ -416,8 +416,8 @@ export default function Landing({ onTry }) {
             AUREN — the Investor Intelligence Academy — is our submission to the IOSCO TechSprint 2026, answering both
             problem statements: AI-enabled fraud, and AI literacy for capital markets. Multilingual from day one
             (EN · 中文 · العربية · Bahasa · ES) and architected to serve IOSCO's 130+ member jurisdictions without
-            bespoke rebuilds — auditable at every layer. Avatar realism in production is delivered with our digital-human
-            technology partner, Klleon.
+            bespoke rebuilds — auditable at every layer. AUREN is built by BYOND Asia — The Physical AI Interface
+            Company — and powered by the HoloMe Platform (HoloMe OS · Studio · Nexus).
           </Sub>
           <blockquote className="mt-10 max-w-2xl text-[24px] leading-9 sm:text-[28px]" style={{ fontFamily: SERIF, color: INK }}>
             “AUREN is not a course. It is where investors rehearse the moment before it happens — so that when it
@@ -479,8 +479,8 @@ export default function Landing({ onTry }) {
             Building <Em>trained instincts</Em> for the AI era.
           </h3>
           <p className="mt-4 max-w-xl text-[15px] leading-6" style={{ color: MUT }}>
-            AUREN is an investor-education rehearsal platform built on AI digital-human technology, designed for
-            regulators, financial institutions, and universities.
+            AUREN is an investor-education rehearsal platform built by BYOND Asia and powered by HoloMe — The
+            Physical Intelligence Interface — for regulators, financial institutions, and universities.
           </p>
           <div className="mt-10 grid gap-10 sm:grid-cols-3">
             <div>

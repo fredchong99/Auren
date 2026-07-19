@@ -40,7 +40,7 @@ Point at the **observed** chips and the AILS chip appearing in the header.
 > "My own words, turn-stamped, scored — 'you can't pass by memorizing a script.' And this yellow card is what the regulator receives: one anonymized data point. At population scale, an early-warning sensor network for emerging fraud."
 
 **Close.** Tap **Rehearse again ↻**, hand them the device now if they want to play, and say:
-> "Everything you just saw is scripted intelligence in a prototype shell. Production swaps in a live LLM, real voice, and a photoreal avatar from our partner Klleon — same flow you just used. That's the build we're raising for."
+> "Everything you just saw is scripted intelligence in a prototype shell. In production this runs on the HoloMe Platform — BYOND Asia's Physical AI Interface stack: photoreal avatar, live voice, and Nexus-grounded intelligence — same flow you just used. That's the build we're raising for."
 
 ## If the investor grabs the device
 Fine — the chips under the input bar keep any off-script typing recoverable, and every path ends at the scorecard. If they type something odd and her reply feels generic, say: "The prototype brain is keyword-based — the production LLM handles open conversation," and move to the scorecard.
