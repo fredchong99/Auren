@@ -1,12 +1,14 @@
 // @ts-nocheck
+import { useEffect, useState } from "react";
 import { HalfBody } from "./Mvp";
 
 /**
- * AUREN — product landing (RoleFit-style editorial page)
- * Wraps the live demo with the full company story: challenge,
- * platform, scorecard engine, focus area, who we are.
- * Content sourced from the AUREN Concept Paper v2, Full Project
- * Paper, and Project Paper Deck v2.
+ * AUREN — product site (RoleFit-style editorial page)
+ * Complete investor-facing wrapper around the live demo:
+ * hero · challenge · platform · persona library · scorecard engine ·
+ * first target · security & governance · deployment · who we are ·
+ * contact (form) · company footer — plus a hamburger sitemap menu.
+ * Content sourced from the AUREN papers.
  */
 
 const SERIF = "Didot, 'Didot LT STD', 'Bodoni MT', 'Playfair Display', Georgia, 'Times New Roman', serif";
@@ -15,6 +17,19 @@ const MUT = "#6E7076";
 const LINE = "#E4E4E0";
 const PAPER = "#F7F7F4";
 const LIME = "#B8E600";
+
+const SITEMAP = [
+  ["overview", "Overview"],
+  ["challenge", "The Challenge"],
+  ["platform", "The Platform"],
+  ["personas", "AI Persona Library"],
+  ["scorecard", "Scorecard Engine"],
+  ["target", "First Target"],
+  ["governance", "Security & Governance"],
+  ["deployment", "Deployment"],
+  ["who", "Who We Are"],
+  ["contact", "Contact"],
+];
 
 function Eyebrow({ children }) {
   return <div style={{ color: MUT }} className="text-[15px]">{children}</div>;
@@ -28,16 +43,16 @@ function Em({ children }) {
 function Sub({ children }) {
   return <p className="mt-5 max-w-xl text-[17px] leading-7" style={{ color: "#4A4C52" }}>{children}</p>;
 }
-function NumCard({ icon, num, total, title, body, serifTitle = false }) {
+function NumCard({ icon, num, total, title, body, serifTitle = false, onClick }) {
   return (
-    <div className="border-t px-6 py-8 first:border-t-0 sm:px-8" style={{ borderColor: LINE }}>
+    <button onClick={onClick} className="block w-full border-t px-6 py-8 text-left transition hover:bg-black/[.02] first:border-t-0 sm:px-8" style={{ borderColor: LINE }}>
       <div className="flex items-start justify-between">
         <div className="grid h-12 w-12 place-items-center rounded-full border text-lg" style={{ borderColor: LINE, color: INK }}>{icon}</div>
         <span className="text-sm" style={{ color: MUT }}>{num}{total ? ` / ${total}` : ""}</span>
       </div>
       <h3 className="mt-8 text-[24px] leading-tight" style={serifTitle ? { fontFamily: SERIF, color: INK, fontWeight: 500 } : { color: INK, fontWeight: 600 }}>{title}</h3>
       <p className="mt-3 text-[16px] leading-6" style={{ color: MUT }}>{body}</p>
-    </div>
+    </button>
   );
 }
 function ScoreRow({ label, chip, tone = "neutral" }) {
@@ -52,14 +67,40 @@ function ScoreRow({ label, chip, tone = "neutral" }) {
     </div>
   );
 }
+function Field({ label, required, placeholder, textarea, value, onChange }) {
+  return (
+    <label className="block">
+      <span className="text-[16px] font-medium" style={{ color: INK }}>{label} {required && <span style={{ color: "#C0392B" }}>*</span>}</span>
+      {textarea ? (
+        <textarea value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={4}
+          className="mt-2 w-full border-b bg-transparent pb-3 text-[17px] outline-none placeholder:text-black/30 focus:border-black"
+          style={{ borderColor: LINE, color: INK }} />
+      ) : (
+        <input value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
+          className="mt-2 w-full border-b bg-transparent pb-3 text-[17px] outline-none placeholder:text-black/30 focus:border-black"
+          style={{ borderColor: LINE, color: INK }} />
+      )}
+    </label>
+  );
+}
 
 export default function Landing({ onTry }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [form, setForm] = useState({ name: "", company: "", email: "", msg: "" });
+  const [sent, setSent] = useState(false);
+  useEffect(() => { document.body.style.overflow = menuOpen ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [menuOpen]);
+  const goTo = (id) => {
+    setMenuOpen(false);
+    setTimeout(() => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+  };
+  const submitForm = () => { if (form.name.trim() && form.email.trim() && form.msg.trim()) setSent(true); };
+
   return (
-    <main className="min-h-screen" style={{ background: PAPER, color: INK, fontFamily: "-apple-system, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif" }}>
-      {/* nav */}
+    <main id="overview" className="min-h-screen" style={{ background: PAPER, color: INK, fontFamily: "-apple-system, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif" }}>
+      {/* ── nav ── */}
       <header className="sticky top-0 z-40 border-b" style={{ background: "rgba(247,247,244,.92)", backdropFilter: "blur(10px)", borderColor: LINE }}>
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-          <div className="flex items-center gap-2.5">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3.5">
+          <button onClick={() => goTo("overview")} className="flex items-center gap-2.5 text-left">
             <div className="grid h-10 w-10 place-items-center rounded-2xl border-2" style={{ borderColor: INK }}>
               <div className="h-4 w-4 rounded-full border-2 relative" style={{ borderColor: INK }}>
                 <span className="absolute left-[-6px] right-[-6px] top-1/2 h-[2px] -translate-y-1/2" style={{ background: INK }} />
@@ -69,12 +110,44 @@ export default function Landing({ onTry }) {
               <span className="text-xl font-bold tracking-[.14em]">AUREN</span>
               <div className="mt-0.5 text-[9px] uppercase tracking-[.22em]" style={{ color: MUT }}>Investor Intelligence Academy</div>
             </div>
-          </div>
-          <button onClick={onTry} className="rounded-full px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-85" style={{ background: INK }}>
-            Try the demo →
           </button>
+          <div className="flex items-center gap-2.5">
+            <button onClick={onTry} className="hidden rounded-full px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-85 sm:block" style={{ background: INK }}>
+              Try the demo →
+            </button>
+            <button onClick={() => setMenuOpen(true)} aria-label="Open menu" className="grid h-12 w-12 place-items-center rounded-full border bg-white transition hover:bg-black/[.03]" style={{ borderColor: LINE }}>
+              <div className="space-y-1.5">
+                <span className="block h-[2px] w-5" style={{ background: INK }} />
+                <span className="block h-[2px] w-5" style={{ background: INK }} />
+              </div>
+            </button>
+          </div>
         </div>
       </header>
+
+      {/* ── sitemap menu overlay ── */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto" style={{ background: PAPER }}>
+          <div className="mx-auto max-w-5xl px-5 py-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xl font-bold tracking-[.14em]">AUREN</span>
+              <button onClick={() => setMenuOpen(false)} aria-label="Close menu" className="grid h-12 w-12 place-items-center rounded-full border bg-white text-lg" style={{ borderColor: LINE }}>✕</button>
+            </div>
+            <nav className="mt-10 space-y-1">
+              {SITEMAP.map(([id, label], i) => (
+                <button key={id} onClick={() => goTo(id)} className="flex w-full items-baseline justify-between border-b py-4 text-left transition hover:pl-2" style={{ borderColor: LINE }}>
+                  <span className="text-[30px] leading-tight sm:text-4xl" style={{ fontFamily: SERIF, color: INK }}>{label}</span>
+                  <span className="font-mono text-sm" style={{ color: MUT }}>{String(i + 1).padStart(2, "0")}</span>
+                </button>
+              ))}
+            </nav>
+            <button onClick={() => { setMenuOpen(false); onTry(); }} className="mt-8 w-full rounded-full px-7 py-4 text-[16px] font-semibold text-white" style={{ background: INK }}>
+              Try the live demo →
+            </button>
+            <p className="mt-6 pb-8 text-center text-[12px]" style={{ color: MUT }}>IOSCO TechSprint 2026 · Demo Day 8 October · Madrid</p>
+          </div>
+        </div>
+      )}
 
       {/* ── HERO ── */}
       <section className="mx-auto max-w-5xl px-5 pb-16 pt-14 sm:pt-20">
@@ -91,10 +164,9 @@ export default function Landing({ onTry }) {
           <button onClick={onTry} className="rounded-full px-7 py-4 text-[15px] font-semibold text-white transition hover:opacity-85" style={{ background: INK }}>
             Try the live demo →
           </button>
-          <a href="#platform" className="text-[15px] font-medium" style={{ color: INK }}>See how it works →</a>
+          <button onClick={() => goTo("platform")} className="text-[15px] font-medium" style={{ color: INK }}>See how it works →</button>
         </div>
 
-        {/* product preview — phone frame with the digital human */}
         <div className="mx-auto mt-14 w-full max-w-sm">
           <button onClick={onTry} className="block w-full overflow-hidden rounded-[2.4rem] border-[10px] text-left shadow-2xl" style={{ borderColor: "#111", background: "#05070B" }}>
             <div className="relative" style={{ aspectRatio: "9/13" }}>
@@ -115,7 +187,7 @@ export default function Landing({ onTry }) {
       </section>
 
       {/* ── THE CHALLENGE ── */}
-      <section className="border-t" style={{ borderColor: LINE }}>
+      <section id="challenge" className="border-t" style={{ borderColor: LINE }}>
         <div className="mx-auto max-w-5xl px-5 py-16">
           <Eyebrow>The Challenge</Eyebrow>
           <H2>Knowledge does not survive <Em>contact with pressure.</Em></H2>
@@ -125,13 +197,13 @@ export default function Landing({ onTry }) {
             industrial. <span style={{ color: INK }}>Fraud is no longer a craft. It is a manufactured product.</span>
           </Sub>
           <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
-            <NumCard icon="⚠︎" num="01" total="04" serifTitle title="Fraud at manufacturing scale"
+            <NumCard onClick={onTry} icon="⚠︎" num="01" total="04" serifTitle title="Fraud at manufacturing scale"
               body="$12.5B lost to digital fraud in 2023 — investment fraud the costliest category at $4.57B, up 38% year-on-year. Generative AI compresses time-to-fraud from weeks to minutes. (FBI IC3)" />
-            <NumCard icon="◎" num="02" total="04" serifTitle title="The old tells are gone"
+            <NumCard onClick={onTry} icon="◎" num="02" total="04" serifTitle title="The old tells are gone"
               body="Deepfake incidents grew ~10× in a single year. Poor spelling and implausible claims no longer identify fraud — AI produces scams with none of those tells. (Sumsub)" />
-            <NumCard icon="✎" num="03" total="04" serifTitle title="Education arrives too late"
+            <NumCard onClick={onTry} icon="✎" num="03" total="04" serifTitle title="Education arrives too late"
               body="Static courses test memorization, and feedback comes after the module ends — not at the moment of decision, where behavior is actually formed." />
-            <NumCard icon="✳" num="04" total="04" serifTitle title="AI is trusted blindly"
+            <NumCard onClick={onTry} icon="✳" num="04" total="04" serifTitle title="AI is trusted blindly"
               body="Retail investors treat AI answers as authoritative — hallucinated statistics, delivered with the fluency of a trusted advisor, drive real losses." />
           </div>
         </div>
@@ -148,7 +220,7 @@ export default function Landing({ onTry }) {
             is the localization mechanism.”
           </Sub>
           <div className="mt-10 rounded-[2rem] border bg-white p-5 sm:p-8" style={{ borderColor: LINE }}>
-            <div className="text-[15px]" style={{ color: MUT }}>Operating flow</div>
+            <div className="text-[15px]" style={{ color: MUT }}>Operating flow — every card opens the live demo</div>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {[
                 ["⌾", "01", "Onboard & interview", "AUREN meets the investor in conversation — eKYC-ready, no forms, no quiz."],
@@ -158,22 +230,54 @@ export default function Landing({ onTry }) {
                 ["✦", "05", "Evidential scorecard", "Quote-level evidence: what was said, why it mattered, what to say instead."],
                 ["▦", "06", "Regulator dashboard", "Anonymized cohort analytics — an early-warning sensor network for emerging fraud."],
               ].map(([icon, n, t, b]) => (
-                <div key={n} className="rounded-2xl border p-5" style={{ borderColor: LINE }}>
+                <button key={n} onClick={onTry} className="rounded-2xl border p-5 text-left transition hover:bg-black/[.02]" style={{ borderColor: LINE }}>
                   <div className="flex items-start justify-between">
-                    <span className="text-lg" style={{ color: INK }}>{icon}</span>
+                    <span className="grid h-11 w-11 place-items-center rounded-full border text-lg" style={{ borderColor: LINE, color: INK }}>{icon}</span>
                     <span className="text-sm" style={{ color: MUT }}>{n}</span>
                   </div>
                   <div className="mt-4 text-[17px] font-semibold" style={{ color: INK }}>{t}</div>
                   <p className="mt-1.5 text-[14px] leading-5" style={{ color: MUT }}>{b}</p>
-                </div>
+                </button>
               ))}
             </div>
           </div>
         </div>
       </section>
 
+      {/* ── AI PERSONA LIBRARY ── */}
+      <section id="personas" className="border-t" style={{ borderColor: LINE }}>
+        <div className="mx-auto max-w-5xl px-5 py-16">
+          <Eyebrow>AI Persona Library</Eyebrow>
+          <H2>AI mentors, recruiters, and scammers <Em>that pressure like real people.</Em></H2>
+          <Sub>
+            AUREN personas hesitate, push back, invoke urgency, and exploit trust — the exact behavioral levers
+            documented in retail-fraud research. Built to feel like the real event, not a chatbot. Tap any persona
+            to meet them in the demo.
+          </Sub>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+            {[
+              ["⊙", "AUREN — the mentor", "HOST · EVERY STEP OF THE JOURNEY"],
+              ["✆", "“Marcus” — scam recruiter", "WHATSAPP · RECRUITMENT PATTERN"],
+              ["▣", "Deepfake CEO", "SOCIAL VIDEO · FAKE ENDORSEMENT"],
+              ["☎", "Voice-clone “advisor”", "PHONE · URGENT TRANSFER"],
+              ["✳", "Synthetic finfluencer", "TIKTOK · UNVERIFIABLE ADVICE"],
+              ["𝄢", "Market-panic voice", "CRASH · LOSS AVERSION"],
+            ].map(([icon, name, tag], i) => (
+              <button key={name} onClick={onTry} className={`flex w-full items-center gap-5 px-6 py-6 text-left transition hover:bg-black/[.02] sm:px-8 ${i > 0 ? "border-t" : ""}`} style={{ borderColor: LINE }}>
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border text-xl" style={{ borderColor: LINE, color: INK }}>{icon}</span>
+                <span>
+                  <span className="block text-[22px] leading-tight" style={{ fontFamily: SERIF, color: INK, fontWeight: 500 }}>{name}</span>
+                  <span className="mt-1 block text-[12px] tracking-[.18em]" style={{ color: MUT }}>{tag}</span>
+                </span>
+                <span className="ml-auto text-lg" style={{ color: MUT }}>→</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── SCORECARD ENGINE ── */}
-      <section className="border-t" style={{ borderColor: LINE }}>
+      <section id="scorecard" className="border-t" style={{ borderColor: LINE }}>
         <div className="mx-auto max-w-5xl px-5 py-16">
           <Eyebrow>Scorecard Engine · AILS</Eyebrow>
           <H2>Every rehearsal ends with <Em>a score and the evidence behind it.</Em></H2>
@@ -199,12 +303,13 @@ export default function Landing({ onTry }) {
               <em style={{ color: INK }}>"I'm going to verify this offline before I do anything."</em> — verification protocol
               correctly applied under deadline pressure; certification criterion met. Scam Resistance +6.
             </div>
+            <button onClick={onTry} className="mt-6 rounded-full px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: INK }}>Earn your own scorecard →</button>
           </div>
         </div>
       </section>
 
       {/* ── FIRST TARGET ── */}
-      <section className="border-t" style={{ borderColor: LINE }}>
+      <section id="target" className="border-t" style={{ borderColor: LINE }}>
         <div className="mx-auto max-w-5xl px-5 py-16">
           <Eyebrow>First Target</Eyebrow>
           <H2>Our first focus area: <Em>retail investors in the AI-scam era.</Em></H2>
@@ -214,24 +319,68 @@ export default function Landing({ onTry }) {
             from a Malaysian WhatsApp investment group.”
           </Sub>
           <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
-            <NumCard icon="▣" num="01" serifTitle title="Deepfake & voice-clone recognition"
+            <NumCard onClick={onTry} icon="▣" num="01" serifTitle title="Deepfake & voice-clone recognition"
               body="Rehearse fabricated CEO endorsements and cloned advisor calls — coached on lip-sync, blink-rate, and audio artifacts, on the exact asset being judged." />
-            <NumCard icon="✆" num="02" serifTitle title="Social-media pressure"
+            <NumCard onClick={onTry} icon="✆" num="02" serifTitle title="Social-media pressure"
               body="Live roleplay against WhatsApp recruiters, Telegram pump-and-dump rings, and synthetic finfluencers — resistance built through repetition." />
-            <NumCard icon="✳" num="03" serifTitle title="AI-tool literacy"
+            <NumCard onClick={onTry} icon="✳" num="03" serifTitle title="AI-tool literacy"
               body="Dialogues with chatbots that hallucinate, guarantee returns, or blur education into advice — building calibrated trust, not blind trust." />
-            <NumCard icon="𝄢" num="04" serifTitle title="Market-panic discipline"
+            <NumCard onClick={onTry} icon="𝄢" num="04" serifTitle title="Market-panic discipline"
               body="Simulated crashes and FOMO cycles — practicing the discipline of returning to a written plan under fear and greed." />
           </div>
-          <p className="mt-6 max-w-2xl text-[15px] leading-6" style={{ color: MUT }}>
-            Deployment pathways: <span style={{ color: INK }}>B2C subscription · bank & broker licensing · university curriculum ·
-            regulator national rollouts · compliance-training vertical.</span>
-          </p>
+        </div>
+      </section>
+
+      {/* ── SECURITY & GOVERNANCE ── */}
+      <section id="governance" className="border-t" style={{ borderColor: LINE }}>
+        <div className="mx-auto max-w-5xl px-5 py-16">
+          <Eyebrow>Security & Operations</Eyebrow>
+          <H2>Regulator-grade trust, <Em>auditability built in.</Em></H2>
+          <Sub>
+            Built for the governance, control, and reliability that regulators and financial institutions require —
+            the platform's Trust Layer is a qualifying condition, not a feature.
+          </Sub>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+            {[
+              ["01", "Integrated eKYC + liveness detection", "Passport, national ID, or QR-to-phone — the credential is trustworthy from day one."],
+              ["02", "Privacy by design", "Cohort analytics are anonymized; no personal data leaves the session."],
+              ["03", "Audit logs at every layer", "Every score movement is anchored in transcript evidence — auditable by regulators, defensible to procurement."],
+              ["04", "Per-jurisdiction configuration", "Language, compliance regime, escalation paths, and reporting formats — configured, not rebuilt."],
+              ["05", "Regulator-updated scenario libraries", "UK FCA warnings, MAS typologies, SEBI alerts, CNMV advisories feed jurisdiction-specific rehearsals."],
+              ["06", "Audit-ready exports", "Formatted for IOSCO C8 reporting and cross-jurisdictional comparison."],
+            ].map(([n, t, b], i) => (
+              <div key={n} className={`flex items-start gap-5 px-6 py-6 sm:px-8 ${i > 0 ? "border-t" : ""}`} style={{ borderColor: LINE }}>
+                <span className="pt-1 font-mono text-sm" style={{ color: MUT }}>{n}</span>
+                <div>
+                  <div className="text-[19px] font-semibold" style={{ color: INK }}>{t}</div>
+                  <p className="mt-1 text-[14px] leading-5" style={{ color: MUT }}>{b}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── DEPLOYMENT ── */}
+      <section id="deployment" className="border-t" style={{ borderColor: LINE }}>
+        <div className="mx-auto max-w-5xl px-5 py-16">
+          <Eyebrow>Deployment</Eyebrow>
+          <H2>One platform. <Em>Every surface investors are on.</Em></H2>
+          <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
+            <NumCard onClick={onTry} icon="🖥" num="01" serifTitle title="Web & Mobile"
+              body="Consumers rehearse anywhere — freemium B2C with premium scenarios and verified credentials." />
+            <NumCard onClick={onTry} icon="▢" num="02" serifTitle title="Kiosk & Branch"
+              body="Onboarding-integrated rehearsal for bank and broker customers, particularly around high-risk products." />
+            <NumCard onClick={onTry} icon="⟨/⟩" num="03" serifTitle title="Embedded Widget / SDK"
+              body="Integrate AUREN into existing LMS, banking apps, university portals, and enterprise systems." />
+            <NumCard onClick={onTry} icon="▦" num="04" serifTitle title="Regulator API"
+              body="National literacy programs with governed access to anonymized cohort analytics and vulnerability heatmaps." />
+          </div>
         </div>
       </section>
 
       {/* ── WHO WE ARE ── */}
-      <section className="border-t" style={{ borderColor: LINE }}>
+      <section id="who" className="border-t" style={{ borderColor: LINE }}>
         <div className="mx-auto max-w-5xl px-5 py-16">
           <Eyebrow>Who We Are</Eyebrow>
           <H2>Built for regulators. <Em>Designed for the moment.</Em></H2>
@@ -239,7 +388,8 @@ export default function Landing({ onTry }) {
             AUREN — the Investor Intelligence Academy — is our submission to the IOSCO TechSprint 2026, answering both
             problem statements: AI-enabled fraud, and AI literacy for capital markets. Multilingual from day one
             (EN · 中文 · العربية · Bahasa · ES) and architected to serve IOSCO's 130+ member jurisdictions without
-            bespoke rebuilds — auditable at every layer.
+            bespoke rebuilds — auditable at every layer. Avatar realism in production is delivered with our digital-human
+            technology partner, Klleon.
           </Sub>
           <blockquote className="mt-10 max-w-2xl text-[24px] leading-9 sm:text-[28px]" style={{ fontFamily: SERIF, color: INK }}>
             “AUREN is not a course. It is where investors rehearse the moment before it happens — so that when it
@@ -252,17 +402,93 @@ export default function Landing({ onTry }) {
         </div>
       </section>
 
-      {/* footer */}
+      {/* ── CONTACT ── */}
+      <section id="contact" className="border-t" style={{ borderColor: LINE }}>
+        <div className="mx-auto max-w-5xl px-5 py-16">
+          <Eyebrow>Contact</Eyebrow>
+          <H2>Considering AUREN? <Em>Reach out</Em> directly.</H2>
+          <Sub>
+            Submit the form below — we respond within 1–2 business days. Regulators, banks, universities, and
+            investors welcome.
+          </Sub>
+          <a href="mailto:team@auren.academy" className="mt-8 inline-flex items-center gap-3 rounded-full border bg-white px-6 py-4 font-mono text-[16px] transition hover:bg-black/[.02]" style={{ borderColor: LINE, color: INK }}>
+            ✉ team@auren.academy <span style={{ color: MUT }}>↗</span>
+          </a>
+          {!sent ? (
+            <div className="mt-10 max-w-xl space-y-8">
+              <Field label="Name" required placeholder="Jane Doe" value={form.name} onChange={v => setForm(f => ({ ...f, name: v }))} />
+              <Field label="Company" placeholder="Company name" value={form.company} onChange={v => setForm(f => ({ ...f, company: v }))} />
+              <Field label="Email" required placeholder="you@company.com" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} />
+              <Field label="Message" required textarea placeholder="Tell us about your use case, jurisdiction, and timeline" value={form.msg} onChange={v => setForm(f => ({ ...f, msg: v }))} />
+              <button onClick={submitForm} disabled={!(form.name.trim() && form.email.trim() && form.msg.trim())}
+                className="rounded-full px-7 py-4 text-[15px] font-semibold text-white transition hover:opacity-85 disabled:opacity-40" style={{ background: INK }}>
+                Send message →
+              </button>
+              <p className="text-[12px]" style={{ color: MUT }}>Prototype form — in production this delivers to the AUREN partnerships inbox.</p>
+            </div>
+          ) : (
+            <div className="mt-10 max-w-xl rounded-[2rem] border bg-white p-8" style={{ borderColor: LINE }}>
+              <div className="text-[26px]" style={{ fontFamily: SERIF, color: INK }}>Thank you, {form.name.split(" ")[0]}.</div>
+              <p className="mt-2 text-[15px] leading-6" style={{ color: MUT }}>Your message has been received. We'll reply to {form.email} within 1–2 business days. In the meantime — try the live demo.</p>
+              <button onClick={onTry} className="mt-6 rounded-full px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: INK }}>Try the live demo →</button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── COMPANY FOOTER ── */}
       <footer className="border-t" style={{ borderColor: LINE }}>
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-8 text-[12px]" style={{ color: MUT }}>
-          <span>AUREN · Investor Intelligence Academy · v2.0</span>
-          <span>IOSCO TechSprint · Demo Day 8 Oct 2026 · Madrid</span>
-          <span>Educational platform — not financial advice</span>
+        <div className="mx-auto max-w-5xl px-5 py-14">
+          <div className="flex items-center gap-2.5">
+            <div className="grid h-10 w-10 place-items-center rounded-2xl border-2" style={{ borderColor: INK }}>
+              <div className="h-4 w-4 rounded-full border-2 relative" style={{ borderColor: INK }}>
+                <span className="absolute left-[-6px] right-[-6px] top-1/2 h-[2px] -translate-y-1/2" style={{ background: INK }} />
+              </div>
+            </div>
+            <span className="text-2xl font-bold tracking-[.12em]">AUREN</span>
+          </div>
+          <h3 className="mt-6 max-w-lg text-[30px] leading-tight sm:text-4xl" style={{ fontFamily: SERIF, fontWeight: 500 }}>
+            Building <Em>trained instincts</Em> for the AI era.
+          </h3>
+          <p className="mt-4 max-w-xl text-[15px] leading-6" style={{ color: MUT }}>
+            AUREN is an investor-education rehearsal platform built on AI digital-human technology, designed for
+            regulators, financial institutions, and universities.
+          </p>
+          <div className="mt-10 grid gap-10 sm:grid-cols-3">
+            <div>
+              <div className="text-[14px]" style={{ color: MUT }}>Product</div>
+              <div className="mt-4 space-y-3">
+                {[["platform", "The Platform"], ["personas", "Persona Library"], ["scorecard", "Scorecard Engine"], ["deployment", "Deployment"]].map(([id, l]) => (
+                  <button key={id} onClick={() => goTo(id)} className="block text-[17px]" style={{ color: INK }}>{l}</button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="text-[14px]" style={{ color: MUT }}>Company</div>
+              <div className="mt-4 space-y-3">
+                {[["who", "About"], ["challenge", "Why now"], ["governance", "Security"], ["contact", "Contact"]].map(([id, l]) => (
+                  <button key={id} onClick={() => goTo(id)} className="block text-[17px]" style={{ color: INK }}>{l}</button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="text-[14px]" style={{ color: MUT }}>Contact</div>
+              <div className="mt-4 space-y-3 text-[17px]" style={{ color: INK }}>
+                <a className="block" href="mailto:team@auren.academy">team@auren.academy</a>
+                <button onClick={onTry} className="block" style={{ color: INK }}>Try the live demo →</button>
+              </div>
+            </div>
+          </div>
+          <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t pt-6 text-[12px]" style={{ borderColor: LINE, color: MUT }}>
+            <span>AUREN · Investor Intelligence Academy · v2.0</span>
+            <span>IOSCO TechSprint · Demo Day 8 Oct 2026 · Madrid</span>
+            <span>Educational platform — not financial advice</span>
+          </div>
         </div>
       </footer>
 
-      {/* floating Try Now — always available, like the reference */}
-      <button onClick={onTry} className="fixed bottom-5 right-5 z-50 rounded-full px-6 py-3.5 text-[15px] font-semibold text-white shadow-2xl transition hover:opacity-90" style={{ background: INK }}>
+      {/* floating Try Now */}
+      <button onClick={onTry} className="fixed bottom-5 right-5 z-40 rounded-full px-6 py-3.5 text-[15px] font-semibold text-white shadow-2xl transition hover:opacity-90" style={{ background: INK }}>
         Try Now →
       </button>
     </main>
