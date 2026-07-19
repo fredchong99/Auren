@@ -18,7 +18,7 @@ Both are fully self-contained HTML (no build, no dependencies, work offline). So
 
 The MVP is deliberately cut down to the core loop the papers define — the features that score against IOSCO's criteria as a *working product*, with the Digital Human as the interface the consumer actually talks to:
 
-The MVP is styled as a live video call with AUREN — she fills the screen, her words type out as she speaks, and there is exactly ONE way to interact: you talk to her through a single input bar (type anything; mic is mocked for the production voice build). No multiple-choice cards.
+The MVP is one live session with AUREN in a three-layer layout: **the Digital Human floats at the top of the screen at all times on her own layer — nothing ever covers her.** Her words type out live in her window as she speaks; the conversation (her history, your replies, the simulated scam chat, the AILS card, the scorecard) is a scrollable feed beneath her; one fixed input bar at the bottom is the only way to interact (type anything; mic is mocked for the production voice build). No multiple-choice cards.
 
 1. **She greets you and asks your name** — everything after is personalized in her speech (Innovation: the Digital Human IS the product surface).
 2. **Conversational interview** — three open questions; her scripted brain classifies whatever you type and she reacts by echoing your own words back ("'I just ask ChatGPT' — thank you for the honesty…"). Observations appear as ambient toasts, not panels (Clarity & Relevance: "a conversation, not a questionnaire").
