@@ -9,7 +9,7 @@
 
 | Demo | Link | Use it for |
 |---|---|---|
-| **MVP — the working product** (hero: the Digital Human) | https://claude.ai/code/artifact/8b03ed81-fd7c-475a-8433-c813fda01646 | Live demos to judges, investors, consumers. One continuous ~3-min session: Meet AUREN → Interview → AILS → Rehearsal → Scorecard. Also [`index.html`](index.html). |
+| **Product site + working MVP** (hero: the Digital Human) | https://claude.ai/code/artifact/8b03ed81-fd7c-475a-8433-c813fda01646 | The full investor-facing product: an editorial landing page (challenge, platform, scorecard engine, focus areas, who we are — RoleFit-style) with the live ~3-min demo session behind every "Try Now" button. Also [`index.html`](index.html). Sources: [`src/Landing.tsx`](src/Landing.tsx), [`src/Root.tsx`](src/Root.tsx). |
 | **Full investor walkthrough** (16 sections) | https://claude.ai/code/artifact/346384df-8930-4d0b-b820-3cb78e136acd | Deep-dive: problem, architecture, course, regulator dashboard, commercialization. Also [`walkthrough.html`](walkthrough.html). |
 
 Both are fully self-contained HTML (no build, no dependencies, work offline). Sources: [`src/Mvp.tsx`](src/Mvp.tsx) and [`src/App.tsx`](src/App.tsx).

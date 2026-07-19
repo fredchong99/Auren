@@ -123,7 +123,7 @@ const CHIPS = {
 // ─────────────────────────────────────────────────────────────
 // Half-body digital humans — seated, hands folded, RoleFit-style
 // ─────────────────────────────────────────────────────────────
-function HalfBody({ variant = "auren", speaking = false }) {
+export function HalfBody({ variant = "auren", speaking = false }) {
   const A = variant === "auren";
   const v = variant;
   const skin = A ? ["#F5D7B8", "#E8B895", "#C99571"] : ["#EAC49B", "#D3A276", "#A97B52"];
@@ -288,7 +288,7 @@ function HalfBody({ variant = "auren", speaking = false }) {
   );
 }
 // ─────────────────────────────────────────────────────────────
-export default function AurenMvp() {
+export default function AurenMvp({ onExit }) {
   const [phase, setPhase] = useState("intro"); // intro · interview · ails · rehearsal · scorecard
   const [name, setName] = useState("");
   const [dims, setDims] = useState({ IR: 35, AL: 33, RA: 45, SR: 34, BS: 45 });
@@ -611,6 +611,7 @@ export default function AurenMvp() {
           <div className="flex items-center gap-1.5">
             {startDims && <span className="rounded-full border px-2 py-0.5 font-mono text-[10px]" style={{ borderColor: "rgba(203,251,0,.4)", color: BRAND.lime, background: "rgba(203,251,0,.07)" }}>AILS {ails}</span>}
             <span className="rounded-full border px-2 py-0.5 text-[8px] uppercase tracking-[.16em] text-white/55" style={{ borderColor: "rgba(247,248,250,.18)" }}>Not advice</span>
+            {onExit && <button onClick={onExit} aria-label="Back to overview" className="grid h-6 w-6 place-items-center rounded-full border text-xs text-white/70 hover:text-white" style={{ borderColor: "rgba(247,248,250,.25)" }}>✕</button>}
           </div>
         </div>
 
