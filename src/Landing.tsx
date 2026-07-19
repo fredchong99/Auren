@@ -31,6 +31,34 @@ const SITEMAP = [
   ["contact", "Contact"],
 ];
 
+
+// Inline SVG icons — consistent stroke set, no Unicode-glyph fallback risk
+function Icon({ name, size = 20 }) {
+  const P = {
+    alert: <><path d="M12 3.5 21 19H3L12 3.5Z" /><line x1="12" y1="10" x2="12" y2="14" /><circle cx="12" cy="16.6" r=".9" fill="currentColor" stroke="none" /></>,
+    eye: <><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z" /><circle cx="12" cy="12" r="2.6" /></>,
+    pencil: <><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19l-4 1Z" /><line x1="14.5" y1="6.5" x2="17.5" y2="9.5" /></>,
+    sparkle: <path d="M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8L12 3Z" />,
+    person: <><circle cx="12" cy="8" r="3.4" /><path d="M4.8 20c1.2-4 4-5.6 7.2-5.6s6 1.6 7.2 5.6" /></>,
+    bars: <><line x1="5" y1="20" x2="5" y2="12" /><line x1="12" y1="20" x2="12" y2="6" /><line x1="19" y1="20" x2="19" y2="9" /></>,
+    chat: <path d="M4 5.5h16v10.5H9L4 20V5.5Z" />,
+    grid: <><rect x="4" y="4" width="6.5" height="6.5" rx="1" /><rect x="13.5" y="4" width="6.5" height="6.5" rx="1" /><rect x="4" y="13.5" width="6.5" height="6.5" rx="1" /><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1" /></>,
+    phone: <path d="M6 3.5h4l1.5 4.5-2.4 1.8a12.5 12.5 0 0 0 5.1 5.1l1.8-2.4L20.5 14v4c0 1.4-1.1 2.6-2.5 2.4C10.5 19.5 4.5 13.5 3.6 6 3.4 4.6 4.6 3.5 6 3.5Z" />,
+    video: <><rect x="3" y="6" width="13" height="12" rx="2" /><path d="M16 10.5 21 8v8l-5-2.5" /></>,
+    chartDown: <><path d="M4 6l5 5 3.5-3.5L20 15" /><path d="M20 10.5V15h-4.5" /></>,
+    monitor: <><rect x="3.5" y="4.5" width="17" height="11.5" rx="1.6" /><line x1="9" y1="20" x2="15" y2="20" /><line x1="12" y1="16" x2="12" y2="20" /></>,
+    tablet: <><rect x="6" y="3.5" width="12" height="17" rx="2" /><circle cx="12" cy="17.6" r=".8" fill="currentColor" stroke="none" /></>,
+    code: <><path d="m8.5 8-4 4 4 4" /><path d="m15.5 8 4 4-4 4" /></>,
+    api: <><circle cx="12" cy="12" r="3" /><line x1="12" y1="3" x2="12" y2="7" /><line x1="12" y1="17" x2="12" y2="21" /><line x1="3" y1="12" x2="7" y2="12" /><line x1="17" y1="12" x2="21" y2="12" /></>,
+    mic: <><rect x="9.5" y="3.5" width="5" height="10" rx="2.5" /><path d="M6 11.5a6 6 0 0 0 12 0" /><line x1="12" y1="17.5" x2="12" y2="21" /></>,
+  };
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {P[name] || P.sparkle}
+    </svg>
+  );
+}
+
 function Eyebrow({ children }) {
   return <div style={{ color: MUT }} className="text-[15px]">{children}</div>;
 }
@@ -182,7 +210,7 @@ export default function Landing({ onTry }) {
               <div className="absolute bottom-24 right-3 rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: "#FFFFFF", color: INK }}>Try Now →</div>
             </div>
           </button>
-          <p className="mt-3 text-center text-[13px]" style={{ color: MUT }}>Live interactive demo · ~3 minutes · type anything, she listens</p>
+          <p className="mt-3 text-center text-[13px]" style={{ color: MUT }}>Live interactive demo · ~3 minutes · she speaks — with a working English ⇄ Bahasa Melayu toggle (中文 · العربية · ES in production)</p>
         </div>
       </section>
 
@@ -197,13 +225,13 @@ export default function Landing({ onTry }) {
             industrial. <span style={{ color: INK }}>Fraud is no longer a craft. It is a manufactured product.</span>
           </Sub>
           <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
-            <NumCard onClick={onTry} icon="⚠︎" num="01" total="04" serifTitle title="Fraud at manufacturing scale"
+            <NumCard onClick={onTry} icon={<Icon name="alert" />} num="01" total="04" serifTitle title="Fraud at manufacturing scale"
               body="$12.5B lost to digital fraud in 2023 — investment fraud the costliest category at $4.57B, up 38% year-on-year. Generative AI compresses time-to-fraud from weeks to minutes. (FBI IC3)" />
-            <NumCard onClick={onTry} icon="◎" num="02" total="04" serifTitle title="The old tells are gone"
+            <NumCard onClick={onTry} icon={<Icon name="eye" />} num="02" total="04" serifTitle title="The old tells are gone"
               body="Deepfake incidents grew ~10× in a single year. Poor spelling and implausible claims no longer identify fraud — AI produces scams with none of those tells. (Sumsub)" />
-            <NumCard onClick={onTry} icon="✎" num="03" total="04" serifTitle title="Education arrives too late"
+            <NumCard onClick={onTry} icon={<Icon name="pencil" />} num="03" total="04" serifTitle title="Education arrives too late"
               body="Static courses test memorization, and feedback comes after the module ends — not at the moment of decision, where behavior is actually formed." />
-            <NumCard onClick={onTry} icon="✳" num="04" total="04" serifTitle title="AI is trusted blindly"
+            <NumCard onClick={onTry} icon={<Icon name="sparkle" />} num="04" total="04" serifTitle title="AI is trusted blindly"
               body="Retail investors treat AI answers as authoritative — hallucinated statistics, delivered with the fluency of a trusted advisor, drive real losses." />
           </div>
         </div>
@@ -223,16 +251,16 @@ export default function Landing({ onTry }) {
             <div className="text-[15px]" style={{ color: MUT }}>Operating flow — every card opens the live demo</div>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               {[
-                ["⌾", "01", "Onboard & interview", "AUREN meets the investor in conversation — eKYC-ready, no forms, no quiz."],
-                ["𝄃𝄃", "02", "AILS score", "A five-dimension literacy score generated from the conversation itself."],
-                ["⚉", "03", "AI roleplay", "The investor converses with realistic scam personas — deepfakes, recruiters, panic."],
-                ["✎", "04", "Real-time coaching", "Risky phrasing and missed verification surface live, mid-conversation."],
-                ["✦", "05", "Evidential scorecard", "Quote-level evidence: what was said, why it mattered, what to say instead."],
-                ["▦", "06", "Regulator dashboard", "Anonymized cohort analytics — an early-warning sensor network for emerging fraud."],
+                ["person", "01", "Onboard & interview", "AUREN meets the investor in conversation — eKYC-ready, no forms, no quiz."],
+                ["bars", "02", "AILS score", "A five-dimension literacy score generated from the conversation itself."],
+                ["chat", "03", "AI roleplay", "The investor converses with realistic scam personas — deepfakes, recruiters, panic."],
+                ["pencil", "04", "Real-time coaching", "Risky phrasing and missed verification surface live, mid-conversation."],
+                ["sparkle", "05", "Evidential scorecard", "Quote-level evidence: what was said, why it mattered, what to say instead."],
+                ["grid", "06", "Regulator dashboard", "Anonymized cohort analytics — an early-warning sensor network for emerging fraud."],
               ].map(([icon, n, t, b]) => (
                 <button key={n} onClick={onTry} className="rounded-2xl border p-5 text-left transition hover:bg-black/[.02]" style={{ borderColor: LINE }}>
                   <div className="flex items-start justify-between">
-                    <span className="grid h-11 w-11 place-items-center rounded-full border text-lg" style={{ borderColor: LINE, color: INK }}>{icon}</span>
+                    <span className="grid h-11 w-11 place-items-center rounded-full border" style={{ borderColor: LINE, color: INK }}><Icon name={icon} /></span>
                     <span className="text-sm" style={{ color: MUT }}>{n}</span>
                   </div>
                   <div className="mt-4 text-[17px] font-semibold" style={{ color: INK }}>{t}</div>
@@ -256,15 +284,15 @@ export default function Landing({ onTry }) {
           </Sub>
           <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
             {[
-              ["⊙", "AUREN — the mentor", "HOST · EVERY STEP OF THE JOURNEY"],
-              ["✆", "“Marcus” — scam recruiter", "WHATSAPP · RECRUITMENT PATTERN"],
-              ["▣", "Deepfake CEO", "SOCIAL VIDEO · FAKE ENDORSEMENT"],
-              ["☎", "Voice-clone “advisor”", "PHONE · URGENT TRANSFER"],
-              ["✳", "Synthetic finfluencer", "TIKTOK · UNVERIFIABLE ADVICE"],
-              ["𝄢", "Market-panic voice", "CRASH · LOSS AVERSION"],
+              ["person", "AUREN — the mentor", "HOST · EVERY STEP OF THE JOURNEY"],
+              ["chat", "“Marcus” — scam recruiter", "WHATSAPP · RECRUITMENT PATTERN"],
+              ["video", "Deepfake CEO", "SOCIAL VIDEO · FAKE ENDORSEMENT"],
+              ["phone", "Voice-clone “advisor”", "PHONE · URGENT TRANSFER"],
+              ["mic", "Synthetic finfluencer", "TIKTOK · UNVERIFIABLE ADVICE"],
+              ["chartDown", "Market-panic voice", "CRASH · LOSS AVERSION"],
             ].map(([icon, name, tag], i) => (
               <button key={name} onClick={onTry} className={`flex w-full items-center gap-5 px-6 py-6 text-left transition hover:bg-black/[.02] sm:px-8 ${i > 0 ? "border-t" : ""}`} style={{ borderColor: LINE }}>
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border text-xl" style={{ borderColor: LINE, color: INK }}>{icon}</span>
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border" style={{ borderColor: LINE, color: INK }}><Icon name={icon} size={24} /></span>
                 <span>
                   <span className="block text-[22px] leading-tight" style={{ fontFamily: SERIF, color: INK, fontWeight: 500 }}>{name}</span>
                   <span className="mt-1 block text-[12px] tracking-[.18em]" style={{ color: MUT }}>{tag}</span>
@@ -319,13 +347,13 @@ export default function Landing({ onTry }) {
             from a Malaysian WhatsApp investment group.”
           </Sub>
           <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
-            <NumCard onClick={onTry} icon="▣" num="01" serifTitle title="Deepfake & voice-clone recognition"
+            <NumCard onClick={onTry} icon={<Icon name="video" />} num="01" serifTitle title="Deepfake & voice-clone recognition"
               body="Rehearse fabricated CEO endorsements and cloned advisor calls — coached on lip-sync, blink-rate, and audio artifacts, on the exact asset being judged." />
-            <NumCard onClick={onTry} icon="✆" num="02" serifTitle title="Social-media pressure"
+            <NumCard onClick={onTry} icon={<Icon name="chat" />} num="02" serifTitle title="Social-media pressure"
               body="Live roleplay against WhatsApp recruiters, Telegram pump-and-dump rings, and synthetic finfluencers — resistance built through repetition." />
-            <NumCard onClick={onTry} icon="✳" num="03" serifTitle title="AI-tool literacy"
+            <NumCard onClick={onTry} icon={<Icon name="sparkle" />} num="03" serifTitle title="AI-tool literacy"
               body="Dialogues with chatbots that hallucinate, guarantee returns, or blur education into advice — building calibrated trust, not blind trust." />
-            <NumCard onClick={onTry} icon="𝄢" num="04" serifTitle title="Market-panic discipline"
+            <NumCard onClick={onTry} icon={<Icon name="chartDown" />} num="04" serifTitle title="Market-panic discipline"
               body="Simulated crashes and FOMO cycles — practicing the discipline of returning to a written plan under fear and greed." />
           </div>
         </div>
@@ -367,13 +395,13 @@ export default function Landing({ onTry }) {
           <Eyebrow>Deployment</Eyebrow>
           <H2>One platform. <Em>Every surface investors are on.</Em></H2>
           <div className="mt-10 overflow-hidden rounded-[2rem] border bg-white" style={{ borderColor: LINE }}>
-            <NumCard onClick={onTry} icon="🖥" num="01" serifTitle title="Web & Mobile"
+            <NumCard onClick={onTry} icon={<Icon name="monitor" />} num="01" serifTitle title="Web & Mobile"
               body="Consumers rehearse anywhere — freemium B2C with premium scenarios and verified credentials." />
-            <NumCard onClick={onTry} icon="▢" num="02" serifTitle title="Kiosk & Branch"
+            <NumCard onClick={onTry} icon={<Icon name="tablet" />} num="02" serifTitle title="Kiosk & Branch"
               body="Onboarding-integrated rehearsal for bank and broker customers, particularly around high-risk products." />
-            <NumCard onClick={onTry} icon="⟨/⟩" num="03" serifTitle title="Embedded Widget / SDK"
+            <NumCard onClick={onTry} icon={<Icon name="code" />} num="03" serifTitle title="Embedded Widget / SDK"
               body="Integrate AUREN into existing LMS, banking apps, university portals, and enterprise systems." />
-            <NumCard onClick={onTry} icon="▦" num="04" serifTitle title="Regulator API"
+            <NumCard onClick={onTry} icon={<Icon name="api" />} num="04" serifTitle title="Regulator API"
               body="National literacy programs with governed access to anonymized cohort analytics and vulnerability heatmaps." />
           </div>
         </div>
