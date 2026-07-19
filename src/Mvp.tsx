@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useEffect, useRef, useState } from "react";
-import { BRAND, DigitalHumanPortrait, Pill, Mark } from "./App";
+import { BRAND, Pill, Mark } from "./App";
 
 /**
  * AUREN — MVP Demo v3 · "Floating Avatar"
@@ -119,87 +119,174 @@ const CHIPS = {
 };
 
 // ─────────────────────────────────────────────────────────────
-// ── "Marcus" — the scam persona as a digital human ──
-function MarcusPortrait({ speaking = false }) {
+
+// ─────────────────────────────────────────────────────────────
+// Half-body digital humans — seated, hands folded, RoleFit-style
+// ─────────────────────────────────────────────────────────────
+function HalfBody({ variant = "auren", speaking = false }) {
+  const A = variant === "auren";
+  const v = variant;
+  const skin = A ? ["#F5D7B8", "#E8B895", "#C99571"] : ["#EAC49B", "#D3A276", "#A97B52"];
+  const hair = A ? ["#2A2018", "#1A1410"] : ["#232019", "#12100C"];
+  const coat = A ? ["#1F2940", "#0E1424"] : ["#2E2A3E", "#161320"];
+  const bg = A ? ["#2E3A55", "#161C2C", "#0A0C12"] : ["#3A3148", "#1E1929", "#0A0810"];
+  const accent = A ? "#CBFB00" : "#FF6B6B";
   return (
-    <svg viewBox="0 0 360 480" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
+    <svg viewBox="0 0 720 560" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <linearGradient id="mskin" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#EAC49B" />
-          <stop offset="55%" stopColor="#D3A276" />
-          <stop offset="100%" stopColor="#A97B52" />
+        <linearGradient id={`skin-${v}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={skin[0]} /><stop offset="55%" stopColor={skin[1]} /><stop offset="100%" stopColor={skin[2]} />
         </linearGradient>
-        <linearGradient id="mhair" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#232019" />
-          <stop offset="100%" stopColor="#12100C" />
+        <linearGradient id={`hair-${v}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={hair[0]} /><stop offset="100%" stopColor={hair[1]} />
         </linearGradient>
-        <linearGradient id="mtop" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2E2A3E" />
-          <stop offset="100%" stopColor="#161320" />
+        <linearGradient id={`coat-${v}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={coat[0]} /><stop offset="100%" stopColor={coat[1]} />
         </linearGradient>
-        <radialGradient id="mbg" cx="50%" cy="30%" r="85%">
-          <stop offset="0%" stopColor="#3A3148" />
-          <stop offset="55%" stopColor="#1E1929" />
-          <stop offset="100%" stopColor="#0A0810" />
+        <radialGradient id={`bg-${v}`} cx="50%" cy="24%" r="90%">
+          <stop offset="0%" stopColor={bg[0]} /><stop offset="55%" stopColor={bg[1]} /><stop offset="100%" stopColor={bg[2]} />
         </radialGradient>
+        <radialGradient id={`halo-${v}`} cx="50%" cy="24%" r="42%">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.14" /><stop offset="100%" stopColor={accent} stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id={`win-${v}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" /><stop offset="100%" stopColor="#DDE6F5" stopOpacity="0.09" />
+        </linearGradient>
+        <linearGradient id={`table-${v}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={A ? "#3A3029" : "#2E2637"} /><stop offset="100%" stopColor={A ? "#241D18" : "#191424"} />
+        </linearGradient>
       </defs>
-      <rect width="360" height="480" fill="url(#mbg)" />
-      <ellipse cx="90" cy="130" rx="130" ry="210" fill="rgba(255,107,107,0.05)" />
-      {/* shoulders — casual jacket over tee */}
-      <path d="M 34 480 Q 56 356, 128 318 L 232 318 Q 304 356, 326 480 Z" fill="url(#mtop)" />
-      <path d="M 150 330 Q 180 352 210 330 L 210 322 L 150 322 Z" fill="#0E0C14" />
-      <path d="M 128 318 L 150 400 L 165 340 M 232 318 L 210 400 L 195 340" fill="none" stroke="#3A3450" strokeWidth="2" opacity="0.7" />
-      {/* neck */}
-      <path d="M 160 292 Q 160 318 167 328 L 193 328 Q 200 318 200 292 Z" fill="url(#mskin)" />
-      <path d="M 160 316 Q 180 322 200 316 L 198 328 L 162 328 Z" fill="rgba(0,0,0,0.18)" />
-      {/* head — squarer jaw */}
-      <path d="M 124 205 Q 122 128 180 122 Q 238 128 236 205 Q 236 252 214 278 Q 197 296 180 296 Q 163 296 146 278 Q 124 252 124 205 Z" fill="url(#mskin)" />
-      {/* short hair, faded sides */}
-      <path d="M 121 190 Q 118 112 180 106 Q 242 112 239 190 Q 236 150 208 140 Q 180 150 152 140 Q 124 150 121 190 Z" fill="url(#mhair)" />
-      <path d="M 121 190 Q 120 205 124 216 Q 126 190 130 178 Z M 239 190 Q 240 205 236 216 Q 234 190 230 178 Z" fill="url(#mhair)" opacity="0.8" />
-      {/* brows — slightly raised, salesman confidence */}
-      <path d="M 146 192 Q 158 184 172 189" stroke="#1C170F" strokeWidth="4" fill="none" strokeLinecap="round" />
-      <path d="M 188 189 Q 202 184 214 192" stroke="#1C170F" strokeWidth="4" fill="none" strokeLinecap="round" />
-      {/* eyes */}
-      <path d="M 149 208 Q 158 211 168 208 M 192 208 Q 201 211 211 208" stroke="#8F6A46" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <g className="auren-blink">
-        <ellipse cx="158" cy="207" rx="9" ry="5.5" fill="#F6F3EE" />
-        <ellipse cx="202" cy="207" rx="9" ry="5.5" fill="#F6F3EE" />
-        <circle cx="159" cy="207" r="4.6" fill="#2E2115" />
-        <circle cx="203" cy="207" r="4.6" fill="#2E2115" />
-        <circle cx="159" cy="207" r="2" fill="#0A0705" />
-        <circle cx="203" cy="207" r="2" fill="#0A0705" />
-        <circle cx="160.5" cy="205.5" r="1" fill="#FFFFFF" />
-        <circle cx="204.5" cy="205.5" r="1" fill="#FFFFFF" />
-        <path d="M 149 205 Q 158 202 167 205 M 193 205 Q 202 202 211 205" stroke="#14100A" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+
+      {/* environment */}
+      <rect width="720" height="560" fill={`url(#bg-${v})`} />
+      <rect width="720" height="560" fill={`url(#halo-${v})`} />
+      <rect x="560" width="160" height="560" fill={`url(#win-${v})`} />
+      <rect x="70" y="70" width="110" height="86" rx="6" fill="#FFFFFF" opacity="0.05" />
+      <rect x="86" y="86" width="78" height="54" rx="3" fill="#FFFFFF" opacity="0.05" />
+      <rect x="536" y="60" width="92" height="120" rx="6" fill="#FFFFFF" opacity="0.04" />
+      <ellipse cx="120" cy="420" rx="150" ry="120" fill="#000000" opacity="0.18" />
+      <ellipse cx="620" cy="430" rx="140" ry="120" fill="#000000" opacity="0.16" />
+
+      {/* table — the person sits behind/on it */}
+      <rect x="0" y="474" width="720" height="86" fill={`url(#table-${v})`} />
+      <rect x="0" y="474" width="720" height="4" fill="#FFFFFF" opacity="0.08" />
+
+      {/* person — scaled to reference framing, anchored at the table */}
+      <g transform="translate(360,552) scale(0.84) translate(-360,-552)">
+      {/* hair behind shoulders */}
+      {A && <path d="M 292 172 Q 286 82 360 74 Q 434 82 428 172 L 438 316 Q 432 348 402 360 L 402 262 Q 414 214 400 180 L 320 180 Q 306 214 318 262 L 318 360 Q 288 348 282 316 Z" fill={`url(#hair-${v})`} />}
+
+      {/* torso — blazer/jacket */}
+      <path d="M 206 560 L 212 386 Q 220 302 296 274 L 424 274 Q 500 302 508 386 L 514 560 Z" fill={`url(#coat-${v})`} />
+      {/* shirt / tee */}
+      {A
+        ? <path d="M 334 276 L 360 314 L 386 276 L 381 264 L 360 272 L 339 264 Z" fill="#EFEDE6" />
+        : <path d="M 332 276 Q 360 300 388 276 L 388 268 L 332 268 Z" fill="#0E0C14" />}
+      {A && <path d="M 349 278 L 371 278 L 365 316 L 355 316 Z" fill="#9AA6C0" />}
+      {A && <path d="M 352 284 L 368 284 M 350 294 L 370 294 M 352 304 L 366 304" stroke="#5E6C8C" strokeWidth="2" opacity="0.6" fill="none" />}
+      {/* lapels */}
+      <path d="M 296 274 L 344 338 L 360 310 L 338 276 Z" fill={coat[1]} opacity="0.9" />
+      <path d="M 424 274 L 376 338 L 360 310 L 382 276 Z" fill={coat[1]} opacity="0.9" />
+      <path d="M 296 274 L 344 338 M 424 274 L 376 338" stroke={A ? "#33415E" : "#403A56"} strokeWidth="2" fill="none" opacity="0.8" />
+
+      {/* arms converging to folded hands */}
+      <path d="M 214 356 Q 190 448 258 500 L 320 512 L 330 470 Q 262 448 250 366 Z" fill={`url(#coat-${v})`} />
+      <path d="M 506 356 Q 530 448 462 500 L 400 512 L 390 470 Q 458 448 470 366 Z" fill={`url(#coat-${v})`} />
+      <path d="M 250 366 Q 262 448 330 470 M 470 366 Q 458 448 390 470" stroke="#000000" strokeWidth="2" opacity="0.18" fill="none" />
+
+      {/* folded hands on the table */}
+      <path d="M 318 468 Q 312 442 342 436 Q 372 432 382 448 Q 390 434 416 440 Q 442 448 434 470 Q 426 490 396 493 L 348 493 Q 324 488 318 468 Z" fill={`url(#skin-${v})`} />
+      <path d="M 340 452 Q 356 446 372 452 M 346 466 Q 362 460 380 466 M 352 480 Q 368 474 386 480" stroke="rgba(120,80,50,0.4)" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 382 448 Q 390 456 388 468" stroke="rgba(120,80,50,0.35)" strokeWidth="2" fill="none" />
+      {A && <circle cx="398" cy="472" r="3" fill="#D8B56D" />}
+      <ellipse cx="378" cy="496" rx="66" ry="7" fill="#000000" opacity="0.25" />
+
       </g>
+
+      {/* teacup — AUREN only, like the reference */}
+      {A && (<g>
+        <ellipse cx="216" cy="512" rx="34" ry="8" fill="#E8E4DC" opacity="0.9" />
+        <path d="M 190 500 Q 192 516 216 517 Q 240 516 242 500 Z" fill="#F2EFE9" />
+        <ellipse cx="216" cy="500" rx="26" ry="6" fill="#CBB9A2" />
+        <path d="M 242 502 Q 254 504 250 512 Q 247 517 240 514" fill="none" stroke="#F2EFE9" strokeWidth="4" />
+      </g>)}
+
+      {/* neck */}
+      <path d="M 340 226 Q 340 252 347 264 L 373 264 Q 380 252 380 226 Z" fill={`url(#skin-${v})`} />
+      <path d="M 340 250 Q 360 257 380 250 L 377 264 L 343 264 Z" fill="rgba(0,0,0,0.16)" />
+
+      {/* head */}
+      <ellipse cx="360" cy="158" rx="56" ry="72" fill={`url(#skin-${v})`} />
+      <ellipse cx="336" cy="164" rx="13" ry="36" fill="rgba(140,90,60,0.13)" />
+      <ellipse cx="384" cy="164" rx="13" ry="36" fill="rgba(140,90,60,0.13)" />
+
+      {/* hair front */}
+      {A
+        ? (<g>
+            <path d="M 306 128 Q 312 84 360 76 Q 408 84 414 128 Q 404 110 378 106 Q 360 116 342 106 Q 316 110 306 128 Z" fill={`url(#hair-${v})`} />
+            <path d="M 304 132 Q 292 176 298 232 Q 302 192 310 158 Z M 416 132 Q 428 176 422 232 Q 418 192 410 158 Z" fill={`url(#hair-${v})`} />
+          </g>)
+        : (<g>
+            <path d="M 302 140 Q 300 78 360 72 Q 420 78 418 140 Q 414 106 388 98 Q 360 108 332 98 Q 306 106 302 140 Z" fill={`url(#hair-${v})`} />
+            <path d="M 302 140 Q 300 156 304 168 Q 307 146 312 136 Z M 418 140 Q 420 156 416 168 Q 413 146 408 136 Z" fill={`url(#hair-${v})`} opacity="0.85" />
+          </g>)}
+
+      {/* brows */}
+      <path d="M 328 140 Q 340 133 353 137" stroke={hair[0]} strokeWidth={A ? 3 : 4} fill="none" strokeLinecap="round" />
+      <path d="M 367 137 Q 380 133 392 140" stroke={hair[0]} strokeWidth={A ? 3 : 4} fill="none" strokeLinecap="round" />
+
+      {/* eyes — blink group over closed-lid lines */}
+      <path d="M 331 156 Q 340 159 350 156 M 370 156 Q 379 159 389 156" stroke="#B58A66" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <g className="auren-blink">
+        <ellipse cx="340" cy="155" rx="8.5" ry="5.2" fill="#FAFAFA" />
+        <ellipse cx="380" cy="155" rx="8.5" ry="5.2" fill="#FAFAFA" />
+        <circle cx="340" cy="155" r="4.4" fill={A ? "#3A2818" : "#2E2115"} />
+        <circle cx="380" cy="155" r="4.4" fill={A ? "#3A2818" : "#2E2115"} />
+        <circle cx="340" cy="155" r="1.9" fill="#0A0604" />
+        <circle cx="380" cy="155" r="1.9" fill="#0A0604" />
+        <circle cx="341.5" cy="153.5" r="1" fill="#FFFFFF" />
+        <circle cx="381.5" cy="153.5" r="1" fill="#FFFFFF" />
+        <path d="M 332 153 Q 340 150 348 153 M 372 153 Q 380 150 388 153" stroke="#1A1008" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      </g>
+
       {/* nose */}
-      <path d="M 180 214 L 175 248 Q 180 254 185 248 Z" fill="rgba(150,100,60,0.25)" />
-      <ellipse cx="176" cy="251" rx="2.2" ry="1.6" fill="rgba(120,80,50,0.35)" />
-      <ellipse cx="184" cy="251" rx="2.2" ry="1.6" fill="rgba(120,80,50,0.35)" />
-      {/* light stubble */}
-      <path d="M 146 262 Q 180 300 214 262 Q 214 276 196 288 Q 180 295 164 288 Q 146 276 146 262 Z" fill="rgba(40,30,20,0.14)" />
-      {/* mouth — confident half-smile / speaking */}
+      <path d="M 360 162 L 356 190 Q 360 195 364 190 Z" fill="rgba(180,120,80,0.2)" />
+      <ellipse cx="357" cy="193" rx="2" ry="1.5" fill="rgba(140,90,60,0.3)" />
+      <ellipse cx="363" cy="193" rx="2" ry="1.5" fill="rgba(140,90,60,0.3)" />
+
+      {/* stubble — Marcus */}
+      {!A && <path d="M 322 208 Q 360 244 398 208 Q 398 222 382 232 Q 360 240 338 232 Q 322 222 322 208 Z" fill="rgba(40,30,20,0.13)" />}
+
+      {/* mouth */}
       {!speaking ? (
-        <path d="M 164 271 Q 182 281 198 269" stroke="#7A4433" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        <g>
+          <path d={A ? "M 348 212 Q 360 218 372 212" : "M 346 212 Q 362 220 376 210"} stroke={A ? "#8A4538" : "#7A4433"} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+          {A && <path d="M 350 212 Q 360 216 370 212 Q 360 214 350 212 Z" fill="#A85A48" opacity="0.8" />}
+        </g>
       ) : (
-        <>
-          <ellipse cx="181" cy="273" rx="10" ry="4.6" fill="#4E241B" />
-          <path d="M 171 270 Q 181 266 191 270" stroke="#8A5240" strokeWidth="2" fill="none" />
-        </>
+        <g>
+          <ellipse cx="360" cy="214" rx="9" ry="4.4" fill={A ? "#5C2A20" : "#4E241B"} />
+          <path d="M 351 212 Q 360 208 369 212" stroke={A ? "#B8675A" : "#8A5240"} strokeWidth="2" fill="none" />
+        </g>
       )}
-      {/* speaking waveform */}
+
+      {/* cheeks + earrings */}
+      {A && <ellipse cx="328" cy="186" rx="9" ry="7" fill="rgba(220,140,120,0.22)" />}
+      {A && <ellipse cx="392" cy="186" rx="9" ry="7" fill="rgba(220,140,120,0.22)" />}
+      {A && <circle cx="303" cy="184" r="2.4" fill={accent} opacity="0.75" />}
+      {A && <circle cx="417" cy="184" r="2.4" fill={accent} opacity="0.75" />}
+
+      {/* speaking waveform on the table edge */}
       {speaking && (
-        <g transform="translate(180, 385)">
-          {[7, 13, 20, 16, 24, 18, 26, 16, 20, 13, 7].map((h, i) => (
-            <rect key={i} x={(i - 5) * 10 - 2} y={-h / 2} width="3" height={h} rx="1.5" fill="#FF6B6B" opacity={0.45 + (i % 3) * 0.15} className="auren-wave" style={{ transformOrigin: `${(i - 5) * 10}px 0px`, animationDelay: `${i * 0.08}s` }} />
+        <g transform="translate(360, 540)">
+          {[6, 11, 17, 13, 20, 15, 22, 13, 17, 11, 6].map((h, i) => (
+            <rect key={i} x={(i - 5) * 9 - 1.5} y={-h / 2} width="3" height={h} rx="1.5" fill={accent} opacity={0.4 + (i % 3) * 0.15} className="auren-wave" style={{ transformOrigin: `${(i - 5) * 9}px 0px`, animationDelay: `${i * 0.08}s` }} />
           ))}
         </g>
       )}
     </svg>
   );
 }
-
 // ─────────────────────────────────────────────────────────────
 export default function AurenMvp() {
   const [phase, setPhase] = useState("intro"); // intro · interview · ails · rehearsal · scorecard
@@ -463,12 +550,14 @@ export default function AurenMvp() {
 
         {/* the persona — full main space */}
         <div className="relative min-h-0 flex-1">
-          <MarcusPortrait speaking={!marcusTw.done} />
+          <div className="absolute inset-0 mx-auto" style={{ maxWidth: "calc((100vh - 150px) * 1.25)" }}>
+            <HalfBody variant="marcus" speaking={!marcusTw.done} />
+          </div>
 
           {/* AUREN — picture-in-picture, watching */}
           <div className="absolute left-3 top-3 z-20 w-[88px] overflow-hidden rounded-xl border shadow-xl transition-all duration-500 sm:w-[110px]" style={{ borderColor: coachFlash ? "rgba(203,251,0,.9)" : "rgba(203,251,0,.45)", boxShadow: coachFlash ? "0 0 30px rgba(203,251,0,.45)" : "0 8px 20px rgba(0,0,0,.6)" }}>
             <div className="relative" style={{ aspectRatio: "4/5", background: "#0A0E15" }}>
-              <DigitalHumanPortrait speaking={coachFlash} listening={false} />
+              <HalfBody variant="auren" speaking={coachFlash} />
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-1 py-0.5" style={{ background: "rgba(5,7,11,.8)" }}>
                 <span className="auren-pulse h-1 w-1 rounded-full" style={{ background: BRAND.lime }} />
                 <span className="text-[7px] font-semibold uppercase tracking-[.14em]" style={{ color: BRAND.lime }}>AUREN · watching</span>
@@ -513,7 +602,7 @@ export default function AurenMvp() {
       {styles}
 
       {/* LAYER 1 · fixed top · the Digital Human — ~46% of screen */}
-      <div className="fixed inset-x-0 top-0 z-50 flex flex-col" style={{ height: "46vh", background: "linear-gradient(160deg, #0A0E15, #05070B)", boxShadow: "0 22px 40px -12px rgba(0,0,0,.95), 0 1px 0 rgba(203,251,0,.15) inset" }}>
+      <div className="fixed inset-x-0 top-0 z-50 flex flex-col" style={{ height: "62vh", background: "linear-gradient(160deg, #0A0E15, #05070B)", boxShadow: "0 22px 40px -12px rgba(0,0,0,.95), 0 1px 0 rgba(203,251,0,.15) inset" }}>
         <div className="flex shrink-0 items-center justify-between gap-2 px-3 py-1.5 sm:px-5">
           <div className="flex items-center gap-2">
             <Mark small />
@@ -525,33 +614,31 @@ export default function AurenMvp() {
           </div>
         </div>
 
-        <div className="relative mx-3 min-h-0 flex-1 overflow-hidden rounded-2xl border transition-all duration-500 sm:mx-5"
-          style={{ borderColor: coachFlash ? "rgba(203,251,0,.85)" : "rgba(203,251,0,.3)", boxShadow: coachFlash ? "0 0 50px rgba(203,251,0,.3)" : "none", background: "linear-gradient(150deg, rgba(23,32,51,.9), rgba(5,7,11,.98))" }}>
-          <div className="absolute left-1/2 top-0 h-[260%] w-full max-w-md" style={{ transform: "translateX(-50%) translateY(-24%)", WebkitMaskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)", maskImage: "linear-gradient(90deg, transparent, black 16%, black 84%, transparent)" }}>
-            <DigitalHumanPortrait speaking={!aurenTw.done} listening={false} />
-          </div>
+        <div className="relative mx-auto mb-2.5 min-h-0 w-full flex-1 overflow-hidden rounded-2xl border transition-all duration-500"
+          style={{ maxWidth: "min(calc(100% - 24px), calc((62vh - 90px) * 1.25))", borderColor: coachFlash ? "rgba(203,251,0,.85)" : "rgba(203,251,0,.3)", boxShadow: coachFlash ? "0 0 50px rgba(203,251,0,.3)" : "none", background: "linear-gradient(150deg, rgba(23,32,51,.9), rgba(5,7,11,.98))" }}>
+          <HalfBody variant="auren" speaking={!aurenTw.done} />
           <div className="absolute top-2 left-2.5 z-10 flex items-center gap-1.5">
             <span className="auren-pulse h-1.5 w-1.5 rounded-full" style={{ background: BRAND.lime, boxShadow: `0 0 10px ${BRAND.lime}` }} />
             <span className="rounded-full border px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[.16em]" style={{ color: BRAND.lime, borderColor: "rgba(203,251,0,.4)", background: "rgba(8,10,15,.6)" }}>
-              {!aurenTw.done ? "speaking" : "listening"}
+              {!aurenTw.done ? "AUREN · speaking" : "AUREN · listening"}
             </span>
           </div>
           <div className="absolute top-2 right-2.5 z-10 hidden sm:block">
             <span className="rounded-full border px-2 py-0.5 text-[8px] uppercase tracking-[.12em] text-white/55" style={{ borderColor: "rgba(247,248,250,.2)", background: "rgba(8,10,15,.6)" }}>EN · 中文 · عربي · BM · ES</span>
           </div>
+          {/* her line — over her hands, never her face */}
+          <button onClick={aurenTw.skip} className="absolute inset-x-2.5 bottom-2.5 z-10 rounded-xl p-2.5 text-left" style={{ background: "linear-gradient(rgba(5,7,11,.45), rgba(5,7,11,.85))", backdropFilter: "blur(3px)" }} aria-live="polite">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[8px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.lime }}>AUREN</span>
+              {!aurenTw.done && <span className="text-[8px] uppercase tracking-[.14em] text-white/35">tap to skip</span>}
+            </div>
+            <p ref={speechRef} className={`no-sb mt-0.5 max-h-[13vh] overflow-y-auto text-[13px] leading-snug text-white/95 sm:text-sm ${!aurenTw.done ? "caret" : ""}`}>{aurenTw.shown}</p>
+          </button>
         </div>
-
-        <button onClick={aurenTw.skip} className="mx-3 mb-2.5 mt-2 shrink-0 rounded-xl border p-2.5 text-left sm:mx-5" style={{ borderColor: "rgba(203,251,0,.3)", background: "rgba(8,10,15,.85)" }} aria-live="polite">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[8px] font-semibold uppercase tracking-[.2em]" style={{ color: BRAND.lime }}>AUREN</span>
-            {!aurenTw.done && <span className="text-[8px] uppercase tracking-[.14em] text-white/35">tap to skip</span>}
-          </div>
-          <p ref={speechRef} className={`no-sb mt-1 max-h-[9.5vh] overflow-y-auto text-[13px] leading-snug text-white/95 sm:text-sm ${!aurenTw.done ? "caret" : ""}`}>{aurenTw.shown}</p>
-        </button>
       </div>
 
       {/* LAYER 2 · the conversation scrolls under her */}
-      <div className="px-3 sm:px-5" style={{ paddingTop: "calc(46vh + 14px)", paddingBottom: "170px" }}>
+      <div className="px-3 sm:px-5" style={{ paddingTop: "calc(62vh + 14px)", paddingBottom: "170px" }}>
         <div className="mx-auto max-w-3xl space-y-2.5">
           {phase === "intro" && feed.length === 0 && (
             <div className="a-up rounded-2xl border p-4 text-center" style={{ borderColor: "rgba(247,248,250,.1)", background: "rgba(247,248,250,.03)" }}>
