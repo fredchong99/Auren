@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
  * AUREN Concept Paper v2 · Full Project Paper · Project Paper Deck v2
  */
 
-const BRAND = {
+export const BRAND = {
   graphite: "#111418",
   navy: "#172033",
   deep: "#080A0F",
@@ -163,7 +163,7 @@ const interviewConversation = [
 
 // ───────────────────────── Primitives ─────────────────────────
 
-function Mark({ small = false }) {
+export function Mark({ small = false }) {
   return (
     <div
       className={`${small ? "h-8 w-8" : "h-12 w-12"} rounded-2xl grid place-items-center border`}
@@ -176,7 +176,7 @@ function Mark({ small = false }) {
   );
 }
 
-function Pill({ children, tone = "lime" }) {
+export function Pill({ children, tone = "lime" }) {
   const styles = {
     lime: { color: BRAND.lime, borderColor: "rgba(203,251,0,.35)", background: "rgba(203,251,0,.07)" },
     gold: { color: BRAND.gold, borderColor: "rgba(216,181,109,.35)", background: "rgba(216,181,109,.08)" },
@@ -223,7 +223,7 @@ function Quote({ children, cite, dark = true }) {
 
 // ───────────────── Hyper-realistic Digital Human (omnipresent host) ─────────────────
 
-function DigitalHumanPortrait({ speaking = false, listening = false }) {
+export function DigitalHumanPortrait({ speaking = false, listening = false }) {
   return (
     <svg viewBox="0 0 360 480" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
       <defs>
